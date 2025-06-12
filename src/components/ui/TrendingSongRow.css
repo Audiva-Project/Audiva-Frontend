@@ -1,0 +1,95 @@
+.trending-row {
+  display: grid;
+  grid-template-columns: 50px 2fr 1fr 1fr 80px;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--transition-fast);
+}
+
+.trending-row:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.trending-cell {
+  display: flex;
+  align-items: center;
+}
+
+.index {
+  color: var(--color-text-tertiary);
+  font-weight: 600;
+}
+
+.song-details {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.song-thumbnail {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.song-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.song-title {
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-artist {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.play-button-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent);
+  color: white;
+  opacity: 0;
+  transition: all var(--transition-fast);
+}
+
+.trending-row:hover .play-button-small {
+  opacity: 1;
+}
+
+.release-date,
+.album {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.duration {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .trending-row {
+    grid-template-columns: 50px 2fr 80px;
+  }
+
+  .release-date,
+  .album {
+    display: none;
+  }
+}

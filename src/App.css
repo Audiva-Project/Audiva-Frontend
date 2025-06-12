@@ -1,0 +1,58 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.app-header h1 {
+  margin: 0 0 1rem 0;
+  font-size: 2rem;
+}
+
+.app-header nav {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.app-header button {
+  padding: 0.5rem 1rem;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.app-header button:hover {
+  background: white;
+  color: #667eea;
+}
+
+.app-header button.active {
+  background: white;
+  color: #667eea;
+}
+
+.app-main {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-footer {
+  background: #f8f9fa;
+  padding: 1rem;
+  text-align: center;
+  color: #6c757d;
+}

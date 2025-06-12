@@ -1,0 +1,116 @@
+.trending-row {
+  display: grid;
+  grid-template-columns: 60px 2fr 1fr 1fr 80px;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color var(--transition);
+  align-items: center;
+}
+
+.trending-row:hover {
+  background-color: var(--bg-hover);
+}
+
+.trending-row:last-child {
+  border-bottom: none;
+}
+
+.row-cell {
+  display: flex;
+  align-items: center;
+}
+
+.rank {
+  justify-content: center;
+}
+
+.rank-number {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.song-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.song-thumbnail {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.song-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.song-title {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-artist {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.play-btn-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: var(--accent-green);
+  color: white;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  opacity: 0;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.trending-row:hover .play-btn-small {
+  opacity: 1;
+}
+
+.play-btn-small:hover {
+  background-color: var(--accent-blue);
+  transform: scale(1.1);
+}
+
+.date,
+.album {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.time {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .trending-row {
+    grid-template-columns: 60px 2fr 80px;
+  }
+
+  .date,
+  .album {
+    display: none;
+  }
+}
