@@ -1,0 +1,49 @@
+.artist-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-2);
+}
+
+
+.artist-card:hover {
+    transform: translateY(-2px);
+}
+
+.artist-card:hover .artist-cover {
+    transform: scale(1.05);
+}
+
+.artist-image-container {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--bg-tertiary);
+    width: 60%;
+    height: 60%;
+    align-items: center;
+}
+
+.artist-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition);
+}
+
+.artist-info {
+    padding: var(--space-2) 0;
+}
+
+.artist-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
