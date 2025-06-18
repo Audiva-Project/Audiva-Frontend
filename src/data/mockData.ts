@@ -161,3 +161,151 @@ export const trendingSongs: Song[] = [
     releaseDate: "Dec 10, 2023",
   },
 ]
+
+export const genres = [
+  {
+    id: "1",
+    name: "Pop",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Pop",
+  },
+  {
+    id: "2",
+    name: "Rock",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Rock",
+  },
+  {
+    id: "3",
+    name: "Hip-Hop",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Hip-Hop",
+  },
+  {
+    id: "4",
+    name: "Electronic",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Electronic",
+  },
+  {
+    id: "5",
+    name: "R&B",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=R&B",
+  },
+]
+
+export const playlists = [
+  {
+    id: "1",
+    name: "Chill Vibes",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Chill",
+  },
+  {
+    id: "2",
+    name: "Workout Hits",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Workout",
+  },
+  {
+    id: "3",
+    name: "Party Anthems",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Party",
+  },
+  {
+    id: "4",
+    name: "Indie Discoveries",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Indie",
+  }
+]
+
+export const artist = [
+  {
+    id: "1",
+    name: "Eminem",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Artist+One",
+  },
+  {
+    id: "2",
+    name: "The Weekend",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Artist+Two",
+  },
+  {
+    id: "3",
+    name: "Taylor Swift",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Artist+Three",
+  },
+  {
+    id: "4",
+    name: "G-Dragon",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Artist+Four",
+  },
+  {
+    id: "5",
+    name: "Billie Eilish",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Artist+Five",
+  },
+  {
+    id: "6",
+    name: "Ariana Grande",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Artist+Six",
+  },
+  {
+    id: "7",
+    name: "Drake",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Artist+Seven",
+  },
+]
+
+export const albums = [
+  {
+    id: "1",
+    name: "Phantom Enigma",
+    artist: "Enigma Spectra",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Phantom+Enigma",
+    releaseDate: "Nov 4, 2023",
+  },
+  {
+    id: "2",
+    name: "Nightmares",
+    artist: "Skywalker",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Nightmares",
+    releaseDate: "Oct 28, 2023",
+  },
+  {
+    id: "3",
+    name: "Encore",
+    artist: "Eminem",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Encore",
+    releaseDate: "Nov 12, 2023",
+  },
+  {
+    id: "4",
+    name: "Surface",
+    artist: "The Neighborhood",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Surface",
+    releaseDate: "Oct 15, 2023",
+  },
+  {
+    id: "5",
+    name: "Lookout",
+    artist: "The Lookout",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Lookout",
+    releaseDate: "Nov 1, 2023",
+  },
+  {
+    id: "6",
+    name: "Time",
+    artist: "Conan",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=Time",
+    releaseDate: "Nov 15, 2023",
+  },
+  {
+    id: "7",
+    name: "LTZ",
+    artist: "LTZ",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=LTZ",
+    releaseDate: "Nov 14, 2023",
+  },
+  {
+    id: "8",
+    name: "We Don't Care",
+    artist: "Marcus Schulz & Alok",
+    coverUrl: "/placeholder.svg?height=200&width=200&text=We+Dont+Care",
+    releaseDate: "Nov 13, 2023",
+  }
+]
