@@ -309,3 +309,107 @@ export const albums = [
     releaseDate: "Nov 13, 2023",
   }
 ]
+
+export const artistSongs = [
+  {
+    id: "1",
+    title: "Without Me",
+    artist: "Eminem",
+    album: "Hard to Imagine the Neighborhood Ever Changing",
+    coverUrl: "/placeholder.svg?height=40&width=40&text=S",
+    audioUrl: "/placeholder.mp3",
+    duration: "3:52",
+    releaseDate: "Nov 4, 2023",
+  },
+  {
+    id: "2",
+    title: "Mockingbird",
+    artist: "Eminem",
+    album: "Encore",
+    coverUrl: "/placeholder.svg?height=40&width=40&text=S",
+    audioUrl: "/placeholder.mp3",
+    duration: "4:10",
+    releaseDate: "Nov 12, 2023",
+  },
+  {
+    id: "3",
+    title: "The Real Slim Shady",
+    artist: "Eminem",
+    album: "The Marshall Mathers LP",
+    coverUrl: "/placeholder.svg?height=40&width=40&text=S",
+    audioUrl: "/placeholder.mp3",
+    duration: "4:44",
+    releaseDate: "May 23, 2000",
+  },
+  {
+    id: "4",
+    title: "Lose Yourself",
+    artist: "Eminem",
+    album: "8 Mile Soundtrack",
+    coverUrl: "/placeholder.svg?height=40&width=40&text=S",
+    audioUrl: "/placeholder.mp3",
+    duration: "3:31",
+    releaseDate: "Oct 28, 2002",
+  },
+  {
+    id: "5",
+    title: "Stan",
+    artist: "Eminem",
+    album: "The Marshall Mathers LP",
+    coverUrl: "/placeholder.svg?height=40&width=40&text=S",
+    audioUrl: "/placeholder.mp3",
+    duration: "6:44",
+    releaseDate: "May 23, 2000",
+  },
+  {
+    id: "6",
+    title: "Mockingbird",
+    artist: "Eminem",
+    album: "Encore",
+    coverUrl: "/placeholder.svg?height=40&width=40&text=S",
+    audioUrl: "/placeholder.mp3",
+    duration: "4:10",
+    releaseDate: "Nov 12, 2023",
+  },
+  {
+    id: "7",
+    title: "Rap God",
+    artist: "Eminem",
+    album: "The Marshall Mathers LP 2",
+    coverUrl: "/placeholder.svg?height=40&width=40&text=S",
+    audioUrl: "/placeholder.mp3",
+    duration: "6:04",
+    releaseDate: "Nov 5, 2013",
+  }
+]
+
+export const artistImages = [
+  {
+    name: "Eminem",
+    imageUrl: "https://th.bing.com/th/id/OIP.XwHVytk1osI2S0VJ5YWe3wHaDn?w=335&h=171&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3",
+  },
+  {
+    name: "The Weekend",
+    imageUrl: "/placeholder.svg?height=200&width=200&text=The+Weekend",
+  },
+  {
+    name: "Taylor Swift",
+    imageUrl: "/placeholder.svg?height=200&width=200&text=Taylor+Swift",
+  },
+  {
+    name: "G-Dragon",
+    imageUrl: "/placeholder.svg?height=200&width=200&text=G-Dragon",
+  },
+  {
+    name: "Billie Eilish",
+    imageUrl: "/placeholder.svg?height=200&width=200&text=Billie+Eilish",
+  },
+  {
+    name: "Ariana Grande",
+    imageUrl: "/placeholder.svg?height=200&width=200&text=Ariana+Grande",
+  },
+  {
+    name: "Drake",
+    imageUrl: "/placeholder.svg?height=200&width=200&text=Drake",
+  }
+]

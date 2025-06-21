@@ -1,0 +1,37 @@
+import { artistSongs } from "@/data/mockData";
+import { ChevronRight } from "lucide-react";
+import TrendingRow from "../ui/TrendingRow";
+
+const PopularSong = () => {
+    return (
+        <section className="trending-section">
+            <div className="section-header">
+                <h2 className="section-title">
+                    Popular <span className="title-highlight">Songs</span>
+                </h2>
+                <button className="view-all-btn">
+                    View All
+                    <ChevronRight size={16} />
+                </button>
+            </div>
+
+            <div className="trending-table">
+                <div className="trending-header">
+                    <div className="header-cell rank">#</div>
+                    <div className="header-cell song">Song</div>
+                    <div className="header-cell date">Release Date</div>
+                    <div className="header-cell album">Album</div>
+                    <div className="header-cell time">Time</div>
+                </div>
+
+                <div className="trending-body">
+                    {artistSongs.map((song, index) => (
+                        <TrendingRow key={song.id} song={song} rank={index + 1} />
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+export default PopularSong;

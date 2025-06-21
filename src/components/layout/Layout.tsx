@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar"
 import Header from "./Header"
 import Player from "./Player"
 import "./Layout.css"
+import Footer from "./Footer"
 
 const Layout = () => {
   return (
@@ -15,6 +16,7 @@ const Layout = () => {
         </main>
       </div>
       <Player />
+      {/* <Footer /> */}
     </div>
   )
 }
