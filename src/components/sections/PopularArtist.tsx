@@ -2,12 +2,21 @@ import { ChevronRight } from "lucide-react";
 import { artist } from "@/data/mockData";
 import "./PopularArtist.css";
 
-const PopularArtist = () => {
+interface ArtistSectionProps {
+    title: {
+        main: string;
+        highlight: string;
+    };
+    artists: Array<any>;
+    // onViewAllClick?: () => void;
+}
+
+const PopularArtist: React.FC<ArtistSectionProps> = ({title, artists}) => {
     return (
         <section className="music-genres-section">
             <div className="section-header">
                 <h2 className="section-title">
-                    Popular <span className="title-highlight">Artists</span>
+                    {title.main} <span className="title-highlight">{title.highlight}</span>
                 </h2>
                 <button className="view-all-btn">
                     View All

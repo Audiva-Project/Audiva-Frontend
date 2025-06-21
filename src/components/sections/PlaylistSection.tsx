@@ -2,13 +2,25 @@ import { ChevronRight } from "lucide-react";
 import GenreCard from "@/components/ui/GenreCard";
 import { playlists } from "@/data/mockData";
 import "./PlaylistSection.css";
+import React from "react";
 
-const PlaylistSection = () => {
+interface Title { 
+    main: string;
+    highlight: string;
+}
+
+interface PlaylistSectionProps {
+  title: Title;
+  playlists: Array<any>;
+  //onViewAllClick?: () => void;
+}
+
+const PlaylistSection: React.FC<PlaylistSectionProps> = ({title, playlists}) => {
     return (
         <section className="music-genres-section">
             <div className="section-header">
                 <h2 className="section-title">
-                    Playlist <span className="title-highlight">Mood</span>
+                    {title.main}<span className="title-highlight">{title.highlight}</span>
                 </h2>
                 <button className="view-all-btn">
                     View All
