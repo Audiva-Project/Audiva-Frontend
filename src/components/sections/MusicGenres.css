@@ -1,0 +1,9 @@
+.music-genres-section {
+  margin-bottom: var(--space-12);
+}
+
+.genres-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4);
+}

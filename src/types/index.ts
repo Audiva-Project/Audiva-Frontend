@@ -4,6 +4,7 @@ export interface Song {
   artist: string
   album: string
   coverUrl: string
+  audioUrl: string
   duration: string
   releaseDate: string
 }
