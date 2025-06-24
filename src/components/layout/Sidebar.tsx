@@ -25,6 +25,10 @@ const Sidebar = () => {
             <Users size={20} />
             <span>Artists</span>
           </NavLink>
+          <NavLink to="/albums" className="nav-item">
+            <ListMusic size={20} />
+            <span>Albums</span>
+          </NavLink>
         </div>
 
         <div className="nav-section">
