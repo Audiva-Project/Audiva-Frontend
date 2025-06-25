@@ -1,5 +1,4 @@
 import { ChevronRight } from "lucide-react";
-import { artist } from "@/data/mockData";
 import "./PopularArtist.css";
 
 interface ArtistSectionProps {
@@ -24,7 +23,7 @@ const PopularArtist: React.FC<ArtistSectionProps> = ({title, artists}) => {
                 </button>
             </div>
             <div className="songs-grid">
-                {artist.map((artist) => (
+                {artists.map((artist) => (
                     <div className="artist-card">
                         <div className="artist-image-container">
                             <img
