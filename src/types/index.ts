@@ -3,7 +3,7 @@ export interface Song {
   title: string
   artist: string
   album: string
-  coverUrl: string
+  thumbnailUrl: string
   audioUrl: string
   duration: string
   releaseDate: string

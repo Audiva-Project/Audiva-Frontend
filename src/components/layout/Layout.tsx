@@ -3,20 +3,27 @@ import Sidebar from "./Sidebar"
 import Header from "./Header"
 import Player from "./Player"
 import "./Layout.css"
-import Footer from "./Footer"
+import { useState } from "react"
+
 
 const Layout = () => {
+  const [currentSong, setCurrentSong] = useState(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+
   return (
     <div className="app-layout">
       <Sidebar />
       <div className="main-container">
         <Header />
         <main className="main-content">
-          <Outlet />
+          <Outlet context={{ currentSong, setCurrentSong, isPlaying, setIsPlaying }} />
         </main>
       </div>
-      <Player />
-      {/* <Footer /> */}
+      <Player
+        currentSong={currentSong}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+      />
     </div>
   )
 }
