@@ -5,10 +5,11 @@
   grid-template-areas:
     "sidebar main"
     "sidebar main"
-    "player player";
+    "player  player";
   height: 100vh;
   width: 100%;
 }
+
 
 .main-container {
   grid-area: main;
@@ -28,7 +29,7 @@
   .app-layout {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "header"
+      "main"
       "main"
       "player";
   }
