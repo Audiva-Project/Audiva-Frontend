@@ -8,7 +8,7 @@ import { artist, playlists } from "@/data/mockData"
 const DiscoverPage = () => {
   return (
     <div className="page-container">
-        <MusicGenres /> 
+        <MusicGenres />
         <PlaylistSection  title={{ main: "Chill", highlight: "Mood" }} playlists={playlists}  />
         <PopularArtist title={{ main: "Popular", highlight: "Artists" }} artists={artist} />
         <NewReleaseSongs />

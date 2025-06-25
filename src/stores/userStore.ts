@@ -1,12 +1,14 @@
 import { create } from "zustand"
 import { devtools, persist } from "zustand/middleware"
 import type { User, Song, Playlist } from "@/types"
+import axios from "axios"
 
 interface UserState {
   user: User | null
   isAuthenticated: boolean
   isLoading: boolean
   error: string | null
+  token: string | null
 
   // Actions
   login: (email: string, password: string) => Promise<void>
@@ -25,21 +27,22 @@ export const useUserStore = create<UserState>()(
         isAuthenticated: false,
         isLoading: false,
         error: null,
+        token: null,
 
         login: async (email: string, password: string) => {
           set({ isLoading: true, error: null })
 
           try {
-            // Simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 1000))
+            const response = await axios.post('/api/auth/login', { email, password })
 
             const user: User = {
-              id: "1",
-              name: "John Doe",
+              id: response.data.user.id,
+              name: response.data.user.name,
               email,
-              avatar: "/placeholder.svg?height=100&width=100&text=JD",
+              avatar: response.data.user.avatar || "/placeholder.svg?height=100&width=100&text=JD",
               playlists: [],
               likedSongs: [],
+              token: response.data.token // Lưu token từ response
             }
 
             set({

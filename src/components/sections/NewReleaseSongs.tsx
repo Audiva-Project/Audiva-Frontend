@@ -1,6 +1,5 @@
 import { ChevronRight } from "lucide-react"
 import SongCard from "@/components/ui/SongCard"
-import { newReleaseSongs } from "@/data/mockData"
 import "./SongsSection.css"
 
 const NewReleaseSongs = () => {
@@ -16,9 +15,9 @@ const NewReleaseSongs = () => {
         </button>
       </div>
       <div className="songs-grid">
-        {newReleaseSongs.map((song) => (
+        {/* {newReleaseSongs.map((song) => (
           <SongCard key={song.id} song={song} />
-        ))}
+        ))} */}
       </div>
     </section>
   )

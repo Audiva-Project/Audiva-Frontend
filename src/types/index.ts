@@ -25,4 +25,5 @@ export interface User {
   avatar: string
   playlists: Playlist[]
   likedSongs: Song[]
+  token?: string
 }

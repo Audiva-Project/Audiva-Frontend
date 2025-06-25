@@ -1,21 +1,25 @@
-import axios from 'axios';
+import axios from "axios";
 
-// Tạo instance axios cơ bản
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-  timeout: 10000,
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
-// Có thể thêm interceptor nếu cần
-api.interceptors.response.use(
-  (response) => response,
+// Interceptor to add token to headers if user is authenticated
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
   (error) => {
-    // Xử lý lỗi chung ở đây nếu muốn
     return Promise.reject(error);
   }
 );
+
 
 export default api;

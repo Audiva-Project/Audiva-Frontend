@@ -1,10 +1,9 @@
 import { ChevronRight } from "lucide-react";
 import GenreCard from "@/components/ui/GenreCard";
-import { playlists } from "@/data/mockData";
 import "./PlaylistSection.css";
 import React from "react";
 
-interface Title { 
+interface Title {
     main: string;
     highlight: string;
 }
