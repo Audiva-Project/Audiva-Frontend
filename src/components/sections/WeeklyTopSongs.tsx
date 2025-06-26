@@ -2,7 +2,6 @@ import { ChevronRight } from "lucide-react"
 import SongCard from "@/components/ui/SongCard"
 import { weeklyTopSongs } from "@/data/mockData"
 import "./SongsSection.css"
-import api from "@/utils/api"
 
 import { useEffect, useState } from "react"
 import axios from "axios"
