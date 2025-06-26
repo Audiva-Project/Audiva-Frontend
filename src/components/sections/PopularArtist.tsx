@@ -11,6 +11,7 @@ interface ArtistSectionProps {
 }
 
 const PopularArtist: React.FC<ArtistSectionProps> = ({title, artists}) => {
+    console.log("PopularArtist component rendered with artists:", artists);
     return (
         <section className="music-genres-section">
             <div className="section-header">
@@ -27,13 +28,13 @@ const PopularArtist: React.FC<ArtistSectionProps> = ({title, artists}) => {
                     <div className="artist-card">
                         <div className="artist-image-container">
                             <img
-                                src={artist.coverUrl}
+                                src={`http://localhost:8080/identity/audio/${artist.avatar}`}
                                 alt={artist.name}
                                 className="artist-image"
                             />
                         </div>
                         <div className="artist-info">
-                            <h3 className="artist-name">{artist.name}</h3>
+                            <h4 className="artist-name">{artist.name}</h4>
                         </div>
                     </div>
                 ))}

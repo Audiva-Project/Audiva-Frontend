@@ -44,33 +44,7 @@ const Sidebar = () => {
             <span>Most played</span>
           </button>
         </div>
-
-        <div className="nav-section">
-          <h3 className="section-title">YOUR FAVORITES</h3>
-
-          <button className="nav-item">
-            <Heart size={20} />
-            <span>Your playlist</span>
-          </button>
-
-          <button className="nav-item add-playlist">
-            <ListMusic size={20} />
-            <span>Add playlist</span>
-          </button>
-        </div>
       </nav>
-
-      <div className="sidebar-footer">
-        <button className="nav-item">
-          <Settings size={20} />
-          <span>Settings</span>
-        </button>
-
-        <button className="nav-item">
-          <LogOut size={20} />
-          <span>Logout</span>
-        </button>
-      </div>
     </aside>
   )
 }
