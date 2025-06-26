@@ -1,14 +1,49 @@
+// Player.tsx
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Play, Pause, SkipBack, SkipForward, Volume2, Repeat, Shuffle, Heart } from "lucide-react"
+import type { Song } from "@/types"
 import "./Player.css"
 
-const Player = () => {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(45)
-  const [duration] = useState(217)
+interface PlayerProps {
+  currentSong: Song | null
+  isPlaying: boolean
+  setIsPlaying: (playing: boolean) => void
+}
+
+const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
+  const audioRef = useRef<HTMLAudioElement>(null)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
   const [volume, setVolume] = useState(70)
+
+  useEffect(() => {
+    if (!audioRef.current) return
+    if (isPlaying) {
+      audioRef.current.play()
+    } else {
+      audioRef.current.pause()
+    }
+  }, [isPlaying, currentSong])
+
+  console.log(currentSong?.audioUrl)
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime)
+    }
+  }
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration)
+    }
+  }
+
+  const handleEnded = () => {
+    setIsPlaying(false)
+    setCurrentTime(0)
+  }
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60)
@@ -20,10 +55,10 @@ const Player = () => {
     <div className="player">
       <div className="player-left">
         <div className="current-track">
-          <img src="/placeholder.svg?height=56&width=56" alt="Current track" className="track-image" />
+          {/* <img src={`http://localhost:8080/identity/audio/${currentSong?.thumbnailUrl}`}/> */}
           <div className="track-info">
-            <div className="track-title">Blinding Lights</div>
-            <div className="track-artist">The Weeknd</div>
+            <div className="track-title">{currentSong?.title || "No song selected"}</div>
+            <div className="track-artist">{currentSong?.artist || "Unknown Artist"}</div>
           </div>
           <button className="like-btn">
             <Heart size={16} />
@@ -67,6 +102,16 @@ const Player = () => {
           </div>
         </div>
       </div>
+
+      {currentSong?.audioUrl && (
+        <audio
+          ref={audioRef}
+          src={`http://localhost:8080/identity/audio/${currentSong.audioUrl}`}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
+          onEnded={handleEnded}
+        />
+      )}
     </div>
   )
 }

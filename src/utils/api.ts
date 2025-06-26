@@ -22,4 +22,13 @@ api.interceptors.request.use(
 );
 
 
-export default api;
+  async delete<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: "DELETE" })
+  },
+}
+
+import axios from "axios";
+export const getSong = async () => {
+  const res = await axios.get('http://localhost:8080/identity/audio');
+  return res.data;
+}
