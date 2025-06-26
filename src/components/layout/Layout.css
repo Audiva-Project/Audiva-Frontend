@@ -10,6 +10,7 @@
   width: 100%;
 }
 
+
 .main-container {
   grid-area: main;
   display: flex;
@@ -28,6 +29,7 @@
   .app-layout {
     grid-template-columns: 1fr;
     grid-template-areas:
+      "main"
       "main"
       "main"
       "player";
