@@ -1,8 +1,16 @@
-// Player.tsx
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Play, Pause, SkipBack, SkipForward, Volume2, Repeat, Shuffle, Heart } from "lucide-react"
+import {
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward,
+  Volume2,
+  Repeat,
+  Shuffle,
+  Heart
+} from "lucide-react"
 import type { Song } from "@/types"
 import "./Player.css"
 
@@ -14,22 +22,25 @@ interface PlayerProps {
 
 const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
   const audioRef = useRef<HTMLAudioElement>(null)
+  const progressBarRef = useRef<HTMLDivElement>(null)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
   const [volume, setVolume] = useState(70)
+  const [isSeeking, setIsSeeking] = useState(false)
 
   useEffect(() => {
     if (!audioRef.current) return
     if (isPlaying) {
-      audioRef.current.play()
+      audioRef.current.play().catch((error) => {
+        console.error("Error playing audio:", error)
+      })
     } else {
       audioRef.current.pause()
     }
   }, [isPlaying, currentSong])
 
-  console.log(currentSong?.audioUrl)
   const handleTimeUpdate = () => {
-    if (audioRef.current) {
+    if (audioRef.current && !isSeeking) {
       setCurrentTime(audioRef.current.currentTime)
     }
   }
@@ -51,11 +62,51 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
     return `${minutes}:${seconds.toString().padStart(2, "0")}`
   }
 
+  const seek = (clientX: number) => {
+    if (!audioRef.current || !progressBarRef.current || !duration) return
+
+    const rect = progressBarRef.current.getBoundingClientRect()
+    const offsetX = clientX - rect.left
+    const clampedX = Math.max(0, Math.min(offsetX, rect.width))
+    const seekTime = (clampedX / rect.width) * duration
+
+    audioRef.current.currentTime = seekTime
+    setCurrentTime(seekTime)
+  }
+
+  const handleSeekClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    seek(e.clientX)
+  }
+
+  const handleSeekStart = () => {
+    setIsSeeking(true)
+  }
+
+  const handleSeekMove = (e: MouseEvent) => {
+    if (isSeeking) {
+      seek(e.clientX)
+    }
+  }
+
+  const handleSeekEnd = () => {
+    setIsSeeking(false)
+  }
+
+  useEffect(() => {
+    if (isSeeking) {
+      document.addEventListener("mousemove", handleSeekMove)
+      document.addEventListener("mouseup", handleSeekEnd)
+    }
+    return () => {
+      document.removeEventListener("mousemove", handleSeekMove)
+      document.removeEventListener("mouseup", handleSeekEnd)
+    }
+  }, [isSeeking])
+
   return (
     <div className="player">
       <div className="player-left">
         <div className="current-track">
-          {/* <img src={`http://localhost:8080/identity/audio/${currentSong?.thumbnailUrl}`}/> */}
           <div className="track-info">
             <div className="track-title">{currentSong?.title || "No song selected"}</div>
             <div className="track-artist">{currentSong?.artist || "Unknown Artist"}</div>
@@ -87,7 +138,12 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
 
         <div className="progress-container">
           <span className="time-text">{formatTime(currentTime)}</span>
-          <div className="progress-bar">
+          <div
+            className="progress-bar"
+            ref={progressBarRef}
+            onClick={handleSeekClick}
+            onMouseDown={handleSeekStart}
+          >
             <div className="progress-fill" style={{ width: `${(currentTime / duration) * 100}%` }} />
           </div>
           <span className="time-text">{formatTime(duration)}</span>
