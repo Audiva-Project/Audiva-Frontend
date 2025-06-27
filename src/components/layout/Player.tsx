@@ -107,6 +107,14 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
     <div className="player">
       <div className="player-left">
         <div className="current-track">
+          <div className="track-image">
+            {currentSong?.thumbnailUrl && (
+              <img
+                src={`http://localhost:8080/identity/audio/${currentSong.thumbnailUrl}`}
+                alt={currentSong.title}
+              />
+            )}
+          </div>
           <div className="track-info">
             <div className="track-title">{currentSong?.title || "No song selected"}</div>
             <div className="track-artist">{currentSong?.artist || "Unknown Artist"}</div>

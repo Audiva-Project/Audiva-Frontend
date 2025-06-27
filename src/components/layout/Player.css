@@ -14,6 +14,32 @@
   min-width: 180px;
 }
 
+.track-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.track-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.track-artist {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.track-image img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
 .current-track {
   display: flex;
   align-items: center;
