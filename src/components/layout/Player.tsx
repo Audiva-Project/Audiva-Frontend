@@ -172,19 +172,27 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
   // skip/back next songs
   const handleSkipForward = () => {
     if (!currentSong || songs.length === 0) return
-    const currentIndex = songs.findIndex(
-      (s) => Number(s.id) === Number(currentSong.id)
-    )
-    if (currentIndex === -1) {
-      console.warn('Current song not found in songs list.')
-      return
+    if (isShuffling) {
+      let randomIndex = Math.floor(Math.random() * songs.length)
+      if (songs.length > 1) {
+        randomIndex = Math.floor(Math.random() * songs.length)
+      }
+      setCurrentSong(songs[randomIndex])
+      setIsPlaying(true)
+    } else {
+      const currentIndex = songs.findIndex(
+        (s) => Number(s.id) === Number(currentSong.id)
+      )
+      if (currentIndex === -1) {
+        console.warn('Current song not found in songs list.')
+        return
+      }
+      const nextIndex = (currentIndex + 1) % songs.length
+      // console.log(`Skipping from index ${currentIndex} to ${nextIndex}`)
+      setCurrentSong(songs[nextIndex])
+      setIsPlaying(true)
     }
-    const nextIndex = (currentIndex + 1) % songs.length
-    console.log(`Skipping from index ${currentIndex} to ${nextIndex}`)
-    setCurrentSong(songs[nextIndex])
-    setIsPlaying(true)
   }
-
   const handleSkipBack = () => {
     if (!currentSong || songs.length === 0) return
     const currentIndex = songs.findIndex((s) => s.id === currentSong.id)
