@@ -7,10 +7,19 @@ import axios from "axios"
 
 import type { Song } from "@/types"
 import type { Album } from "@/types"
+import { useOutletContext } from "react-router-dom"
+
+
+interface LayoutContextType {
+  setSongs: (songs: Song[]) => void
+}
 
 const WeeklyTopSongs = () => {
-  const [songs, setSongs] = useState<Song[]>([])
   const [albumTitle, setAlbumTitle] = useState<string>("")
+
+  // skip/back 28/06
+  const { setSongs } = useOutletContext<LayoutContextType>()
+  const [localSongs, setLocalSongs] = useState<Song[]>([])
 
   useEffect(() => {
     axios.get<{ code: number, result: Album }>(
@@ -25,8 +34,11 @@ const WeeklyTopSongs = () => {
       .then((res) => {
         console.log("Album:", res.data.result);
         console.log("Songs:", res.data.result.songs);
+        const fetchedSongs = res.data.result.songs || []
+        console.log("Fetched Songs:", fetchedSongs)
 
-        setSongs(res.data.result.songs || []);
+        setSongs(fetchedSongs)
+        setLocalSongs(fetchedSongs);
         setAlbumTitle(res.data.result.title || "Untitled Album");
       })
       .catch((err) => console.error("Error loading songs:", err));
@@ -48,7 +60,7 @@ const WeeklyTopSongs = () => {
         </button>
       </div>
       <div className="songs-grid">
-        {songs.map((song) => (
+        {localSongs.map((song) => (
           <SongCard key={song.id} song={song} />
         ))}
       </div>
