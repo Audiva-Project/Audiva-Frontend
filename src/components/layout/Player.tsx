@@ -19,9 +19,11 @@ interface PlayerProps {
   currentSong: Song | null
   isPlaying: boolean
   setIsPlaying: (playing: boolean) => void
+  setCurrentSong: (song: Song) => void
+  songs: Song[]
 }
 
-const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
+const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }: PlayerProps) => {
   const audioRef = useRef<HTMLAudioElement>(null)
   const progressBarRef = useRef<HTMLDivElement>(null)
 
@@ -79,14 +81,8 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
         audioRef.current.currentTime = 0
         audioRef.current.play()
       }
-    } else if (repeatMode === "repeat-all") {
-      if (audioRef.current) {
-        audioRef.current.currentTime = 0
-        audioRef.current.play()
-      }
     } else {
-      setIsPlaying(false)
-      setCurrentTime(0)
+      handleSkipForward()
     }
   }
 
@@ -95,8 +91,6 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
     const seconds = Math.floor(time % 60)
     return `${minutes}:${seconds.toString().padStart(2, "0")}`
   }
-
-
 
   const handleSeekClick = (e: React.MouseEvent<HTMLDivElement>) => {
     seek(e.clientX)
@@ -173,6 +167,29 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
     }
   }, [volume])
 
+  // skip/back songs
+  const handleSkipForward = () => {
+    if (!currentSong || songs.length === 0) return
+
+    const currentIndex = songs.findIndex((s) => s.id === currentSong.id)
+    if (currentIndex === -1) return
+
+    const nextIndex = (currentIndex + 1) % songs.length
+    setCurrentSong(songs[nextIndex])
+    setIsPlaying(true)
+  }
+
+  const handleSkipBack = () => {
+    if (!currentSong || songs.length === 0) return
+
+    const currentIndex = songs.findIndex((s) => s.id === currentSong.id)
+    if (currentIndex === -1) return
+
+    const prevIndex = (currentIndex - 1 + songs.length) % songs.length
+    setCurrentSong(songs[prevIndex])
+    setIsPlaying(true)
+  }
+
   return (
     <div className="player">
       <div className="player-left">
@@ -204,13 +221,13 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
           <button className="control-btn" onClick={toggleShuffle}>
             <Shuffle size={16} color={isShuffling ? "#1db954" : "white"} />
           </button>
-          <button className="control-btn">
+          <button className="control-btn" onClick={handleSkipBack}>
             <SkipBack size={20} />
           </button>
           <button className="play-btn" onClick={() => setIsPlaying(!isPlaying)}>
             {isPlaying ? <Pause size={20} /> : <Play size={20} />}
           </button>
-          <button className="control-btn">
+          <button className="control-btn" onClick={handleSkipForward}>
             <SkipForward size={20} />
           </button>
           <button className="control-btn">
@@ -262,6 +279,7 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
       {
         currentSong?.audioUrl && (
           <audio
+            key={currentSong?.id}
             ref={audioRef}
             src={`http://localhost:8080/identity/audio/${currentSong.audioUrl}`}
             onTimeUpdate={handleTimeUpdate}

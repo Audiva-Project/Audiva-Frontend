@@ -3,14 +3,21 @@ import { ChevronRight } from "lucide-react"
 import { useEffect, useState } from "react"
 import SongCard from "../ui/SongCard"
 import axios from "axios"
+import { useOutletContext } from "react-router-dom"
 
 interface AlbumSectionProps {
   albumId: number
 }
 
+interface LayoutContext {
+  songs: Song[]
+  setSongs: React.Dispatch<React.SetStateAction<Song[]>>
+}
+
 const AlbumSection = ({ albumId }: AlbumSectionProps) => {
-  const [songs, setSongs] = useState<Song[]>([])
+  const [localSongs, setLocalSongs] = useState<Song[]>([])
   const [albumTitle, setAlbumTitle] = useState<string>("")
+  const { setSongs } = useOutletContext<LayoutContext>()
 
   useEffect(() => {
     axios.get<{ code: number, result: Album }>(
@@ -18,13 +25,15 @@ const AlbumSection = ({ albumId }: AlbumSectionProps) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjaGluaC5jb20iLCJzdWIiOiJodXkyIiwiZXhwIjoxNzU0MzM5MTIwLCJpYXQiOjE3NTEwOTkxMjAsImp0aSI6IjI1ZWNiOTBmLWI1NGQtNDE4OC04OWVjLWI2MDkxMzMyM2NkOSIsInNjb3BlIjoiIn0.Gma3ok8K54kAc9UJLm94PIpxDX_qCkr7lyEBo60rKT7cMoFsAHVBXD1kQGiq2FW18VUojn5zxmRVylSW2wAarw`,
+          Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjaGluaC5jb20iLCJzdWIiOiJodXkyIiwiZXhwIjoxNzU0MzM5MTIwLCJpYXQiOjE3NTEwOTkxMjAsImp0aSI6IjI1ZWNiOTBmLWI1NGQtNDE4OC04OWVjLWI2MDkxMzMyM2NkOSIsInNjb3BlIjoiIn0.Gma3ok8K54kAc9UJLm94PIpxDX_qCkr7lyEBo60rKT7cMoFsAHVBXD1kQGiq2FW18VUojn5zxmRVylSW2wAarw`
         },
       }
     )
       .then((res) => {
-        setSongs(res.data.result.songs || [])
+        const fetchedSongs = res.data.result.songs || []
+        setLocalSongs(fetchedSongs)
         setAlbumTitle(res.data.result.title || "Untitled Album")
+        setSongs(prev => [...prev, ...fetchedSongs]) 
       })
       .catch((err) => console.error("Error loading songs:", err))
   }, [albumId])
@@ -39,7 +48,7 @@ const AlbumSection = ({ albumId }: AlbumSectionProps) => {
         </button>
       </div>
       <div className="songs-grid">
-        {songs.map((song) => (
+        {localSongs.map((song) => (
           <SongCard key={song.id} song={song} />
         ))}
       </div>
