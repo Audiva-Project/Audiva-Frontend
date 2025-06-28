@@ -7,6 +7,10 @@ export interface Song {
   audioUrl: string
   duration: string
   releaseDate: string
+  artists: {
+    id: number;
+    name: string;
+  }[];
 }
 
 export interface Playlist {
@@ -26,4 +30,15 @@ export interface User {
   playlists: Playlist[]
   likedSongs: Song[]
   token?: string
+}
+
+export interface Album {
+  id: number;
+  title: string;
+  thumbnailUrl: string;
+  releaseDate: string;
+  artistId: number;
+  artistName: string;
+  songIds: number[];
+  songs: Song[]; // nếu mapper trả về đầy đủ
 }

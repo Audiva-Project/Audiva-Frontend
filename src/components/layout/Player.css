@@ -157,6 +157,11 @@
   border-radius: var(--radius-full);
   cursor: pointer;
   overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+}
+
+.progress-bar :hover {
+  transform: scale(1.1);
 }
 
 .progress-fill {
@@ -194,6 +199,56 @@
   background-color: var(--text-secondary);
   border-radius: var(--radius-full);
   transition: width 0.1s ease;
+}
+
+.volume-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.volume-slider {
+  width: 80px;
+  height: 4px;
+  -webkit-appearance: none;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #a855f7; 
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: #a855f7;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.volume-icon {
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.volume-icon:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
