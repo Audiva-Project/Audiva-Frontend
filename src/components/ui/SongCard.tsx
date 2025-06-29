@@ -46,7 +46,11 @@ const SongCard = ({ song }: { song: Song }) => {
       </div>
       <div className="song-info">
         <h3 className="song-title">{song.title}</h3>
-        <p className="song-artist">{song.artist}</p>
+        <p className="song-artist">
+          {song.artists && song.artists.length > 0
+            ? song.artists.map(artist => artist.name).join(", ")
+            : "Unknown Artist"}
+        </p>
       </div>
     </div>
   )

@@ -12,8 +12,14 @@ interface AuthState {
   error: string | null
   token: string | null
 
-  login: (identifier: string, password: string) => Promise<void> // 🔄 Đổi email -> identifier
-  register: (name: string, email: string, password: string) => Promise<void>
+  login: (identifier: string, password: string) => Promise<void>
+  register: (data: {
+    username: string
+    password: string
+    firstName: string
+    lastName: string
+    dob: string
+  }) => Promise<void>
   logout: () => void
   setUser: (user: User) => void
   setToken: (token: string) => void
@@ -84,39 +90,31 @@ export const useAuthStore = create<AuthState>()(
           }
         },
 
-        register: async (name, email, password) => {
+        register: async ({ username, password, firstName, lastName, dob }) => {
           set({ isLoading: true, error: null })
           try {
-            const response = await api.post("/identity/auth/register", {
-              name,
-              email,
-              password,
+            await api.post("identity/users", {
+                username,
+                password,
+                firstName,
+                lastName,
+                dob,
             })
 
-            const data = response.data as { token: string; user: { id: string; avatar?: string } }
-            const token = data.token
-            localStorage.setItem(TOKEN_KEY, token)
+            await useAuthStore.getState().login(username, password)
+            set({ isLoading: false })
 
-            const user: User = {
-              id: data.user.id,
-              name,
-              email,
-              avatar:
-                data.user.avatar ||
-                `/placeholder.svg?text=${name.charAt(0)}`,
+          } catch (error: any) {
+            let message = "Registration failed"
+            if (error.response?.data?.message) {
+              message = error.response.data.message
             }
 
             set({
-              user,
-              token,
-              isAuthenticated: true,
+              error: message,
               isLoading: false,
             })
-          } catch (error) {
-            set({
-              error: "Registration failed",
-              isLoading: false,
-            })
+            throw new Error(message)
           }
         },
 
@@ -139,7 +137,6 @@ export const useAuthStore = create<AuthState>()(
           } catch (error) {
             console.error("Logout failed:", error)
 
-            // fallback: vẫn xóa token local và reset store
             localStorage.removeItem(TOKEN_KEY)
 
             set({

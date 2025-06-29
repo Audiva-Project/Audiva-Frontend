@@ -1,17 +1,17 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuthStore } from "@/stores/authStore"
 import "./AuthPages.css"
 
 const SignupPage = () => {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
+  const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [dob, setDob] = useState("") // YYYY-MM-DD format
   const [localError, setLocalError] = useState("")
 
   const { register, isLoading, error } = useAuthStore()
@@ -21,18 +21,19 @@ const SignupPage = () => {
     e.preventDefault()
     setLocalError("")
 
-    if (password !== confirmPassword) {
-      setLocalError("Passwords do not match")
-      return
-    }
-
     if (password.length < 6) {
       setLocalError("Password must be at least 6 characters")
       return
     }
 
     try {
-      await register(name, email, password)
+      await register({
+        username,
+        password,
+        firstName,
+        lastName,
+        dob,
+      })
       navigate("/")
     } catch (err) {
       console.error("Registration failed:", err)
@@ -54,26 +55,54 @@ const SignupPage = () => {
           {displayError && <div className="error-message">{displayError}</div>}
 
           <div className="form-group">
-            <label htmlFor="name">Full Name</label>
+            <label htmlFor="username">Username</label>
             <input
               type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your full name"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
               className="form-input"
               required
             />
           </div>
 
+          <div className="form-row">
+  <div className="form-group half-width">
+    <label htmlFor="firstName">First Name</label>
+    <input
+      type="text"
+      id="firstName"
+      value={firstName}
+      onChange={(e) => setFirstName(e.target.value)}
+      placeholder="Enter your first name"
+      className="form-input"
+      required
+    />
+  </div>
+
+  <div className="form-group half-width">
+    <label htmlFor="lastName">Last Name</label>
+    <input
+      type="text"
+      id="lastName"
+      value={lastName}
+      onChange={(e) => setLastName(e.target.value)}
+      placeholder="Enter your last name"
+      className="form-input"
+      required
+    />
+  </div>
+</div>
+
+
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="dob">Date of Birth</label>
             <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              type="date"
+              id="dob"
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
               className="form-input"
               required
             />
@@ -91,19 +120,6 @@ const SignupPage = () => {
               required
             />
           </div>
-{/* 
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm your password"
-              className="form-input"
-              required
-            />
-          </div> */}
 
           <button type="submit" className="btn btn-primary auth-submit" disabled={isLoading}>
             {isLoading ? "Creating account..." : "Create Account"}

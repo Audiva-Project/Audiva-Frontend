@@ -197,6 +197,7 @@
 }
 
 .form-input::placeholder {
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.4);
 }
 
@@ -449,4 +450,14 @@
 
 .btn-primary:disabled .btn-icon {
   animation: loading 1s linear infinite;
+}
+
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.half-width {
+  flex: 1;
 }
