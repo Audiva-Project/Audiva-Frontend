@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { useUserStore } from "@/stores/userStore"
+import { useAuthStore } from "@/stores/authStore"
 import "./AuthPages.css"
 
 const SignupPage = () => {
@@ -14,7 +14,7 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [localError, setLocalError] = useState("")
 
-  const { register, isLoading, error } = useUserStore()
+  const { register, isLoading, error } = useAuthStore()
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -91,7 +91,7 @@ const SignupPage = () => {
               required
             />
           </div>
-
+{/* 
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input
@@ -103,7 +103,7 @@ const SignupPage = () => {
               className="form-input"
               required
             />
-          </div>
+          </div> */}
 
           <button type="submit" className="btn btn-primary auth-submit" disabled={isLoading}>
             {isLoading ? "Creating account..." : "Create Account"}

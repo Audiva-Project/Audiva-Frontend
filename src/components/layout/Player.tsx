@@ -27,7 +27,6 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }: PlayerProps) => {
     }
   }, [isPlaying, currentSong])
 
-  console.log(currentSong?.audioUrl)
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime)

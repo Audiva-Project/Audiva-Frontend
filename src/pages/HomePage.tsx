@@ -7,8 +7,14 @@ import PopularArtist from "@/components/sections/PopularArtist"
 import api from "@/utils/api"
 import { useState, useEffect } from "react"
 
+type Artist = {
+  id: string
+  name: string
+  // add other relevant fields based on your API response
+}
+
 const HomePage = () => {
-  const [artists, setArtists] = useState([])
+  const [artists, setArtists] = useState<Artist[]>([])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -18,8 +24,7 @@ const HomePage = () => {
             Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjaGluaC5jb20iLCJzdWIiOiJBRE1JTiIsImV4cCI6MTc1NDA1OTMzNSwiaWF0IjoxNzUwODE5MzM1LCJqdGkiOiI3NjJhMTY1MC0wM2Q3LTRmOTAtODMzZi05MzA1YmY4ZmI5NWQiLCJzY29wZSI6IlJPTEVfQURNSU4gQ1JFQVRFX0RBVEEgQVBQUk9WRV9QT1NUIn0.dpZd1rxKhTJiTLDCbJ0-jLBCnLeXtvjteEBPCKeU2GXD6osSfl1znuPrFA5inZv8nUu2rL9DzdbdyWyvhxN0_Q"
         }}
         )
-        setArtists(response.data)
-        console.log("Artists fetched successfully:", response.data)
+        setArtists(response.data as Artist[])
       } catch (error) {
         console.error("Error fetching artists:", error)
       }

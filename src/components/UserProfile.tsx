@@ -1,19 +1,37 @@
 "use client"
 
 import { useState } from "react"
-import { useUserStore } from "../stores/userStore"
+import axios from "axios"
+import { useAuthStore } from "../stores/authStore"
 import "./UserProfile.css"
 
 const UserProfile = () => {
-  const { user, isLoading, error, fetchUser, updateUser, clearUser } = useUserStore()
+  const { user, token, setUser, clearUser } = useAuthStore()
 
   const [userId, setUserId] = useState("user123")
   const [editMode, setEditMode] = useState(false)
   const [editName, setEditName] = useState("")
   const [editEmail, setEditEmail] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleFetchUser = () => {
-    fetchUser(userId)
+  const handleFetchUser = async () => {
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const response = await axios.get(`/api/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      setUser(response.data)
+    } catch (err) {
+      setError("Failed to fetch user")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleEditUser = () => {
@@ -24,12 +42,31 @@ const UserProfile = () => {
     }
   }
 
-  const handleSaveUser = () => {
-    updateUser({
-      name: editName,
-      email: editEmail,
-    })
-    setEditMode(false)
+  const handleSaveUser = async () => {
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const response = await axios.put(
+        `/api/users/${user?.id}`,
+        {
+          name: editName,
+          email: editEmail,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      setUser(response.data)
+      setEditMode(false)
+    } catch (err) {
+      setError("Failed to update user")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleCancelEdit = () => {
@@ -66,7 +103,7 @@ const UserProfile = () => {
       {user && (
         <div className="user-card">
           {user.avatar && (
-            <img src={user.avatar || "/placeholder.svg"} alt={`${user.name}'s avatar`} className="user-avatar" />
+            <img src={user.avatar} alt={`${user.name}'s avatar`} className="user-avatar" />
           )}
 
           {editMode ? (

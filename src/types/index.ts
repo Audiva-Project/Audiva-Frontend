@@ -23,7 +23,4 @@ export interface User {
   name: string
   email: string
   avatar: string
-  playlists: Playlist[]
-  likedSongs: Song[]
-  token?: string
 }
