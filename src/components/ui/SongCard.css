@@ -87,3 +87,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.artist-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition);
+}

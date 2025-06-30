@@ -1,20 +1,30 @@
-import React from 'react';
-import './ArtistImageSection.css';
+import React, { useState, useEffect } from 'react'
+import './ArtistImageSection.css'
+import api from '@/utils/api'
 
 interface ArtistImageSectionProps {
-    imageUrl: string;
-    name: string;
+  imgUrl: string
+  name: string
 }
 
-const ArtistImageSection: React.FC<ArtistImageSectionProps> = ({ imageUrl, name }) => (
-    <section className='artist-image-section'>
-        <img
-            src={imageUrl}
-            alt={name}
-            className='artist-image-banner'
-        />
-        <h2 className='artist-name-banner'>{name}</h2>
-    </section>
-);
+interface Artist {
+  id: number
+  name: string
+  avatar?: string
+  // Add other artist properties if needed
+}
 
-export default ArtistImageSection;
+const ArtistImageSection: React.FC<ArtistImageSectionProps> = ({ imgUrl, name } ) => {
+  return (
+    <section className='artist-image-section'>
+      <img
+        src={imgUrl ? imgUrl : 'https://via.placeholder.com/150'}
+        alt={name}
+        className='artist-image-banner'
+      />
+      <h2 className='artist-name-banner'>{name}</h2>
+    </section>
+  )
+}
+
+export default ArtistImageSection

@@ -1,8 +1,13 @@
 import { artistSongs } from "@/data/mockData";
 import { ChevronRight } from "lucide-react";
 import TrendingRow from "../ui/TrendingRow";
+import { Song } from "@/types";
 
-const PopularSong = () => {
+interface PopularSongProps {
+    songs: Song[]
+}
+
+const PopularSong: React.FC<PopularSongProps> = ({ songs }) => {
     return (
         <section className="trending-section">
             <div className="section-header">
@@ -25,7 +30,7 @@ const PopularSong = () => {
                 </div>
 
                 <div className="trending-body">
-                    {artistSongs.map((song, index) => (
+                    {songs.map((song, index) => (
                         <TrendingRow key={song.id} song={song} rank={index + 1} />
                     ))}
                 </div>

@@ -2,7 +2,7 @@ import "./SongsSection.css"
 import AlbumSection from "./AlbumSection"
 
 const WeeklyTopSongs = () => {
-  const albumIds = [1,2]
+  const albumIds = [1, 2, 3]
   return (
     <div>
       {albumIds.map(id => (

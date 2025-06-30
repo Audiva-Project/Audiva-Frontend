@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import "./PopularArtist.css";
 
 interface ArtistSectionProps {
@@ -7,11 +8,10 @@ interface ArtistSectionProps {
         highlight: string;
     };
     artists: Array<any>;
-    // onViewAllClick?: () => void;
 }
 
-const PopularArtist: React.FC<ArtistSectionProps> = ({title, artists}) => {
-    console.log("PopularArtist component rendered with artists:", artists);
+const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists }) => {
+    // console.log("PopularArtist component rendered with artists:", artists);
     return (
         <section className="music-genres-section">
             <div className="section-header">
@@ -23,23 +23,30 @@ const PopularArtist: React.FC<ArtistSectionProps> = ({title, artists}) => {
                     <ChevronRight size={16} />
                 </button>
             </div>
-            <div className="songs-grid">
+            <div className="artist-list">
                 {artists.map((artist) => (
                     <div className="artist-card">
-                        <div className="artist-image-container">
-                            <img
-                                src={`http://localhost:8080/identity/audio/${artist.avatar}`}
-                                alt={artist.name}
-                                className="artist-image"
-                            />
-                        </div>
-                        <div className="artist-info">
-                            <h4 className="artist-name">{artist.name}</h4>
-                        </div>
+                        <Link
+                            key={artist.id}
+                            to={`/artists/${artist.id}`}
+                            className="artist-link"
+                        >
+                            <div className="artist-image-container">
+                                <img
+                                    src={`http://localhost:8080/identity/audio/${artist.avatar}`}
+                                    alt={artist.name}
+                                    className="artist-image"
+                                />
+                            </div>
+                            <div className="artist-info">
+                                <h4 className="artist-name">{artist.name}</h4>
+                            </div>
+                        </Link>
                     </div>
-                ))}
+                ))
+                }
             </div>
-        </section>
+        </section >
     );
 };
 

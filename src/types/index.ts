@@ -40,5 +40,12 @@ export interface Album {
   artistId: number;
   artistName: string;
   songIds: number[];
-  songs: Song[]; // nếu mapper trả về đầy đủ
+  songs: Song[];
+}
+
+export interface Artist {
+  id: number;
+  name: string;
+  avatar: string;
+  albums: Album[];
 }
