@@ -11,7 +11,6 @@ interface ArtistSectionProps {
 }
 
 const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists }) => {
-    // console.log("PopularArtist component rendered with artists:", artists);
     return (
         <section className="music-genres-section">
             <div className="section-header">
