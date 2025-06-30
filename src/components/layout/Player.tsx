@@ -10,7 +10,10 @@ import {
   Repeat,
   Shuffle,
   Heart,
-  VolumeX
+  VolumeX,
+  Download,
+  Mic,
+  Upload
 } from "lucide-react"
 import type { Song } from "@/types"
 import "./Player.css"
@@ -223,9 +226,6 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
                 : "Unknown Artist"}
             </div>
           </div>
-          <button className="like-btn">
-            <Heart size={16} />
-          </button>
         </div>
       </div>
 
@@ -271,6 +271,20 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
       </div>
 
       <div className="player-right">
+                  <button className="like-btn">
+            <Heart size={16} />
+          </button>
+          <button className="download-btn">
+            <a href={`http://localhost:8080/identity/api/songs/${currentSong?.id}/download`} download>
+              <Download size={18} />
+            </a>
+          </button>
+          <button className="karaoke-btn">
+            <Mic size={18} />
+          </button>
+          <button className="upload-btn">
+            <Upload size={18} />
+          </button>
         <div className="volume-container">
           <button onClick={toggleMute} className="volume-icon">
             {isMuted ? <VolumeX size={25} color="#a855f7" /> : <Volume2 size={25} color="white" />}
