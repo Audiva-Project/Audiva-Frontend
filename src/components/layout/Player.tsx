@@ -34,6 +34,8 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
   const [isSeeking, setIsSeeking] = useState(false)
   const [isShuffling, setIsShuffling] = useState(false)
 
+
+  console.log("Current song:", currentSong?.premium)
   // loop songs
   type RepeatMode = "off" | "repeat-one" | "repeat-all"
   const [repeatMode, setRepeatMode] = useState<RepeatMode>("off")
@@ -203,6 +205,23 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
     setIsPlaying(true)
   }
 
+
+  useEffect(() => {
+  if (!audioRef.current || !currentSong?.premium) return
+
+  const checkTime = () => {
+    if (audioRef.current && audioRef.current.currentTime >= 15) {
+      audioRef.current.pause()
+      setIsPlaying(false)
+    }
+  }
+
+  const interval = setInterval(checkTime, 500)
+
+  return () => clearInterval(interval)
+}, [currentSong?.premium, isPlaying])
+
+
   return (
     <div className="player">
       <div className="player-left">
@@ -264,20 +283,28 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
             onClick={handleSeekClick}
             onMouseDown={handleSeekStart}
           >
-            <div className="progress-fill" style={{ width: `${(currentTime / duration) * 100}%` }} />
+            <div
+              className="progress-fill"
+              style={{ width: `${(currentTime / duration) * 100}%` }}
+            />
+            {currentSong?.premium && duration > 0 && (
+              <div
+                className="premium-marker"
+                style={{ left: `${(30 / duration) * 100}%` }}
+              />
+            )}
           </div>
           <span className="time-text">{formatTime(duration)}</span>
-        </div>
+       </div>
       </div>
-
       <div className="player-right">
         <div className="volume-container">
           <button onClick={toggleMute} className="volume-icon">
             {isMuted ? <VolumeX size={25} color="#a855f7" /> : <Volume2 size={25} color="white" />}
           </button>
-          {/* <div className="volume-bar">
+          <div className="volume-bar">
             <div className="volume-fill" style={{ width: `${volume}%` }} />
-          </div> */}
+          </div>
           <input
             type="range"
             min="0"

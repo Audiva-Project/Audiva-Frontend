@@ -156,8 +156,20 @@
   background-color: var(--bg-hover);
   border-radius: var(--radius-full);
   cursor: pointer;
-  overflow: hidden;
+  overflow: visible;
   transition: transform 0.2s ease-in-out;
+  position: relative;
+}
+
+.premium-marker {
+  position: absolute;
+  top: -2px;
+  width: 4px;
+  height: 200%;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 4px rgba(255, 215, 0, 0.8);
+  z-index: 2;
 }
 
 .progress-bar :hover {

@@ -69,6 +69,7 @@ export const useAuthStore = create<AuthState>()(
               name: `${userData.firstName} ${userData.lastName}`.trim(),
               email: userData.username,
               avatar: userData.avatar || `https://greekherald.com.au/wp-content/uploads/2020/07/default-avatar.png`,
+              premium: userData.premium ?? false,
             }
 
             set({ user,

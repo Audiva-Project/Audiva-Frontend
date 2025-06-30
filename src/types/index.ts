@@ -11,6 +11,7 @@ export interface Song {
     id: number;
     name: string;
   }[];
+  premium?: boolean;
 }
 
 export interface Playlist {
@@ -27,6 +28,7 @@ export interface User {
   name: string
   email: string
   avatar: string
+  premium: boolean
 }
 
 export interface Album {
