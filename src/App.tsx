@@ -6,6 +6,11 @@ import ArtistsPageById from "@/pages/ArtistsPageById"
 import LoginPage from "@/pages/LoginPage"
 import SignupPage from "@/pages/SignupPage"
 import ArtistPage from "./pages/ArtistPage"
+import AboutPage from "./pages/AboutPage"
+import AlbumPage from "./pages/AlbumPage"
+import UploadPage from "./pages/UploadPage"
+import RecentlyAddedPage from "./pages/RecentlyAddedPage"
+import HistoryPage from "./pages/HistoryPage"
 
 function App() {
   return (
@@ -16,7 +21,13 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="discover" element={<DiscoverPage />} />
         <Route path="artists/:id" element={<ArtistsPageById />} />
-        <Route path="artists" element={<ArtistPage/>} />
+        <Route path="artists" element={<ArtistPage />} />
+        <Route path="*" element={<div>404 Not Found</div>} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="upload" element={<UploadPage />} />
+        <Route path="albums" element={<AlbumPage />} />
+        <Route path="recently-added" element={<RecentlyAddedPage />} />
+        <Route path="history" element={<HistoryPage />} />
       </Route>
     </Routes>
   )

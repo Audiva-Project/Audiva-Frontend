@@ -1,6 +1,5 @@
 import { Play, Pause } from "lucide-react"
 import type { Song } from "@/types"
-// import { usePlayerStore } from "@/stores/usePlayerStore"
 import { Link, useOutletContext } from "react-router-dom"
 import "./SongCard.css"
 
@@ -11,7 +10,7 @@ interface OutletContextType {
   setIsPlaying: (playing: boolean) => void
 }
 
-const SongCard = ({ song }: { song: Song }) => {
+const SongCard = ({ song, showArtist = true }: { song: Song, showArtist?: boolean }) => {
   const { setCurrentSong, setIsPlaying, currentSong, isPlaying } = useOutletContext<OutletContextType>()
 
   const isCurrent = currentSong?.id === song.id
@@ -46,21 +45,22 @@ const SongCard = ({ song }: { song: Song }) => {
       </div>
       <div className="song-info">
         <h3 className="song-title">{song.title}</h3>
-        <p className="song-artist">
-          {song.artists && song.artists.length > 0 ? (
-            song.artists.map((artist, index) => (
-              <Link
-                key={artist.id}
-                to={`/artists/${artist.id}`}
-                className="artist-link"
-              >
-                {artist.name}{index < song.artists.length - 1 ? ', ' : ''}
-              </Link>
-            ))
-          ) : (
-            "Unknown Artist"
-          )}
-        </p>
+        {showArtist && ( // 👈 wrap artist section
+          <p className="song-artist">
+            {song.artists && song.artists.length > 0
+              ? song.artists.map((artist, index) => (
+                  <Link
+                    key={artist.id}
+                    to={`/artists/${artist.id}`}
+                    className="artist-link"
+                  >
+                    {artist.name}
+                    {index < song.artists.length - 1 ? ", " : ""}
+                  </Link>
+                ))
+              : "Unknown Artist"}
+          </p>
+        )}
       </div>
     </div>
   )

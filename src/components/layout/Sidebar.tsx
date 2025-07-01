@@ -1,6 +1,6 @@
-import { NavLink } from "react-router-dom"
-import { Home, Compass, Users, Clock, Play, Heart, ListMusic, Settings, LogOut } from "lucide-react"
-import "./Sidebar.css"
+import { Link, NavLink } from "react-router-dom"
+import { Home, Compass, Users, Clock, Play, Heart, ListMusic, Settings, LogOut, Upload } from "lucide-react"
+import "@/components/layout/Sidebar.css"
 
 const Sidebar = () => {
   return (
@@ -32,17 +32,19 @@ const Sidebar = () => {
         </div>
 
         <div className="nav-section">
-          <h3 className="section-title">LIBRARY</h3>
-
-          <button className="nav-item">
-            <Clock size={20} />
+          <h3 className="logo">Library</h3>
+          <Link to="recently-added" className="nav-item">
+            <Upload size={20} />
             <span>Recently Added</span>
-          </button>
-
-          <button className="nav-item">
-            <Play size={20} />
-            <span>Most played</span>
-          </button>
+          </Link>
+          <Link to ="/history" className="nav-item">
+            <Clock size={20} />
+            <span>History</span>
+          </Link>
+            <button className="nav-item">
+              <Play size={20} />
+              <span>Most played</span>
+            </button>
         </div>
       </nav>
     </aside>

@@ -1,0 +1,9 @@
+.history-empty {
+  color: #888;
+  font-style: italic;
+}
+
+.history-heading {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
