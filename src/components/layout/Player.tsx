@@ -17,6 +17,7 @@ import {
 } from "lucide-react"
 import type { Song } from "@/types"
 import "./Player.css"
+import { logListening } from "@/utils/listeningHistory"
 
 interface PlayerProps {
   currentSong: Song | null
@@ -58,7 +59,11 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
   useEffect(() => {
     if (!audioRef.current) return
     if (isPlaying) {
-      audioRef.current.play().catch((error) => {
+      audioRef.current.play().then(() => {
+        if(currentSong?.id) {
+          logListening(currentSong.id)
+        }
+      }).catch((error) => {
         console.error("Error playing audio:", error)
       })
     } else {

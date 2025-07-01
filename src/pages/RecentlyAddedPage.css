@@ -1,0 +1,12 @@
+.song-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.uploaded-by {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.3rem;
+}

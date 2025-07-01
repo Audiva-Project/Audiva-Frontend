@@ -17,7 +17,15 @@
 .logo {
   font-size: var(--font-size-2xl);
   font-weight: 700;
-  color: var(--text-primary);
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #d0f0ff 10%,
+    #4facfe 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .sidebar-nav {
@@ -43,15 +51,6 @@
   letter-spacing: 0.5px;
   padding-left: 0px;
   padding-top: 10px;
-  background: linear-gradient(
-    90deg, 
-    white 0%, 
-    white 50%, 
-    #4facfe 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 .nav-item {
