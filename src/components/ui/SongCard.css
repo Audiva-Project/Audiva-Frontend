@@ -37,6 +37,7 @@
   justify-content: center;
   opacity: 0;
   transition: opacity var(--transition);
+  gap: 0.75rem;
 }
 
 .song-card:hover .play-overlay {
@@ -92,4 +93,60 @@
   color: var(--text-secondary);
   text-decoration: none;
   transition: color var(--transition);
+}
+
+.more-options-button {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.more-options-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.more-options-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #4facfe;
+}
+
+/* Updated styles for the options popup */
+.options-popup {
+  position: absolute;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust for its own size */
+  background: rgba(45, 45, 45, 0.95); /* Darker background with some transparency */
+  color: white; /* White text for better contrast */
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+  padding: 0.5rem 0;
+  z-index: 10;
+  min-width: 200px; /* Give it a minimum width for better appearance */
+  text-align: center; /* Center the text within the popup */
+}
+
+.options-popup ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.options-popup li {
+  padding: 0.75rem 1rem; /* Slightly more padding for better touch targets */
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.options-popup li:hover {
+  background: rgba(60, 60, 60, 0.95); /* Slightly lighter background on hover */
 }

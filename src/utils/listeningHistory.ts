@@ -1,3 +1,5 @@
+import { useAuthStore } from "@/stores/authStore";
+
 export function getOrCreateAnonymousId() {
   let id = localStorage.getItem("anonymousId");
   if (!id) {
@@ -12,8 +14,7 @@ export function getOrCreateAnonymousId() {
 }
 
 
-export async function logListening(songId: number) {
-  const token = localStorage.getItem("jwtToken");
+export async function logListening(songId: number, token: String) {
   const body: any = { songId };
 
   if (!token) {
@@ -30,19 +31,16 @@ export async function logListening(songId: number) {
   });
 }
 
-export const getListeningHistory = async () => {
-  const token = localStorage.getItem("jwtToken");
-  console.log("JWT Token:", token);
-
+export const getListeningHistory = async (token?: string) => {
   if (token) {
     const res = await fetch("http://localhost:8080/identity/api/history", {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return res.json();
+    return await res.json();
   } else {
     const anonymousId = localStorage.getItem("anonymousId");
-    // console.log("FE anonymousId:", anonymousId);
+    if (!anonymousId) return [];
     const res = await fetch(`http://localhost:8080/identity/api/history?anonymousId=${anonymousId}`);
-    return res.json();
+    return await res.json();
   }
 };

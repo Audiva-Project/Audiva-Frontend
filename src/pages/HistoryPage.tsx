@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getListeningHistory } from "@/utils/listeningHistory";
 import SongCard from "@/components/ui/SongCard";
 import "@/pages/HistoryPage.css";
+import { useAuthStore } from "@/stores/authStore";
 
 type HistoryItem = {
     song: {
@@ -19,15 +20,16 @@ type HistoryItem = {
 
 const HistoryPage: React.FC = () => {
     const [history, setHistory] = useState<HistoryItem[]>([]);
+    const token = useAuthStore((state) => state.token);
 
     useEffect(() => {
-        const fetchHistory = async () => {
-            const data = await getListeningHistory();
-            setHistory(data);
-        };
-        fetchHistory();
-    }, []);
-    //localStorage.removeItem("anonymousId");
+        getListeningHistory().then((data) => {
+            console.log("History data:", data);
+            setHistory(data)
+        });
+    }, [token]);
+    // localStorage.removeItem("anonymousId");
+    // localStorage.removeItem("userId");
 
     return (
         <div className="history-page">
