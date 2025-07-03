@@ -11,6 +11,8 @@ import AlbumPage from "./pages/AlbumPage"
 import UploadPage from "./pages/UploadPage"
 import RecentlyAddedPage from "./pages/RecentlyAddedPage"
 import HistoryPage from "./pages/HistoryPage"
+import PlaylistPage from "./pages/PlaylistPage"
+import SongInPlaylistPage from "./pages/SongInPlaylistPage"
 
 function App() {
   return (
@@ -28,6 +30,9 @@ function App() {
         <Route path="albums" element={<AlbumPage />} />
         <Route path="recently-added" element={<RecentlyAddedPage />} />
         <Route path="history" element={<HistoryPage />} />
+        <Route path="playlist" element={<PlaylistPage />} />
+        <Route path="playlist/:id" element={<SongInPlaylistPage />} />
+
       </Route>
     </Routes>
   )

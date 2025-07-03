@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import SongCard from "../ui/SongCard"
 import axios from "axios"
 import { useOutletContext } from "react-router-dom"
+import { useAuthStore } from "@/stores/authStore"
+import type { AuthState } from "@/stores/authStore"
 
 interface AlbumSectionProps {
   albumId: number
@@ -19,15 +21,16 @@ const AlbumSection = ({ albumId }: AlbumSectionProps) => {
   const [albumTitle, setAlbumTitle] = useState<string>("")
   const { setSongs } = useOutletContext<LayoutContext>()
   const album4songs = localSongs.slice(0, 4)
+  const token = useAuthStore((state: AuthState) => state.token)
   useEffect(() => {
     axios.get<{ code: number, result: Album }>(
       `http://localhost:8080/identity/api/albums/${albumId}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjaGluaC5jb20iLCJzdWIiOiJodXkyIiwiZXhwIjoxNzU0MzM5MTIwLCJpYXQiOjE3NTEwOTkxMjAsImp0aSI6IjI1ZWNiOTBmLWI1NGQtNDE4OC04OWVjLWI2MDkxMzMyM2NkOSIsInNjb3BlIjoiIn0.Gma3ok8K54kAc9UJLm94PIpxDX_qCkr7lyEBo60rKT7cMoFsAHVBXD1kQGiq2FW18VUojn5zxmRVylSW2wAarw`
-        },
-      }
+      // {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${token}`
+      //   },
+      // }
     )
       .then((res) => {
         const fetchedSongs = res.data.result.songs || []

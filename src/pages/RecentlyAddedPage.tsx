@@ -9,6 +9,7 @@ import "./RecentlyAddedPage.css"
 
 const RecentlyAddedPage = () => {
   const token = useAuthStore((state: AuthState) => state.token)
+  console.log(token)
   const [songs, setSongs] = useState<Song[]>([])
 
   useEffect(() => {
@@ -32,17 +33,27 @@ const RecentlyAddedPage = () => {
     fetchRecentlyAdded()
   }, [token])
 
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="recently-page">
+        <h1 className="recently-heading">BÀI HÁT CỦA BẠN</h1>
+        <p className="recently-message">
+          Bạn cần đăng nhập để đăng tải các bài hát của bạn.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <h1 className="section-title">Recently Added</h1>
+      <h1 className="section-title">BÀI HÁT CỦA BẠN</h1>
 
       <div className="song-list">
         {songs.map((song) => (
           <div key={song.id} style={{ marginBottom: "20px" }}>
             <SongCard song={song} showArtist={false} />
-            <p className="uploaded-by">
-              Uploaded by: {song.createdBy || "Unknown"}
-            </p>
           </div>
         ))}
       </div>

@@ -27,6 +27,10 @@ export interface User {
   name: string
   email: string
   avatar: string
+  playlists: {
+    id: number
+    name: string
+  }[]
 }
 
 export interface Album {

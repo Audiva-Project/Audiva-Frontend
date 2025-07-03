@@ -5,12 +5,13 @@ import type { User } from "@/types"
 
 const TOKEN_KEY = "auth_token"
 
-interface AuthState {
+export interface AuthState {
   user: User | null
   isAuthenticated: boolean
   isLoading: boolean
   error: string | null
   token: string | null
+
 
   login: (identifier: string, password: string) => Promise<void>
   register: (data: {
@@ -47,9 +48,9 @@ export const useAuthStore = create<AuthState>()(
 
             const data = response.data as { result: { token: string } }
             const token = data.result.token
-            console.log("Token received:", token)
+            // console.log("Token received:", token)
 
-            localStorage.setItem(TOKEN_KEY, token)
+            // localStorage.setItem(TOKEN_KEY, token)
 
             set({
               token,
@@ -69,6 +70,7 @@ export const useAuthStore = create<AuthState>()(
               name: `${userData.firstName} ${userData.lastName}`.trim(),
               email: userData.username,
               avatar: userData.avatar || `https://greekherald.com.au/wp-content/uploads/2020/07/default-avatar.png`,
+              playlists: userData.playlists
             }
 
             set({ user,
@@ -120,13 +122,13 @@ export const useAuthStore = create<AuthState>()(
 
         logout: async() => {
           try {
-            const token = useAuthStore.getState().token
+            // const token = useAuthStore.getState().token
 
-            if (token) {
-              await api.post("/identity/auth/logout", { token })
-            }
+            // if (token) {
+            //   await api.post("/identity/auth/logout", { token })
+            // }
 
-            localStorage.removeItem(TOKEN_KEY)
+            // localStorage.removeItem(TOKEN_KEY)
 
             set({
               user: null,
@@ -137,7 +139,7 @@ export const useAuthStore = create<AuthState>()(
           } catch (error) {
             console.error("Logout failed:", error)
 
-            localStorage.removeItem(TOKEN_KEY)
+            // localStorage.removeItem(TOKEN_KEY)
 
             set({
               user: null,
@@ -150,11 +152,11 @@ export const useAuthStore = create<AuthState>()(
 
         setUser: (user) => set(() => ({ user, isAuthenticated: true })),
         setToken: (token) => {
-          localStorage.setItem(TOKEN_KEY, token)
+          // localStorage.setItem(TOKEN_KEY, token)
           set(() => ({ token }))
         },
         clearUser: () => {
-          localStorage.removeItem(TOKEN_KEY)
+          // localStorage.removeItem(TOKEN_KEY)
           set(() => ({
             user: null,
             token: null,

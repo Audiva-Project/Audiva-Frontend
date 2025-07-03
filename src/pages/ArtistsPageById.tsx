@@ -7,22 +7,25 @@ import PopularSong from '@/components/sections/PopularSong'
 import TopAlbums from '@/components/sections/TopAlbums'
 import { artist, playlists } from '@/data/mockData'
 import { Artist } from '@/types'
+import { useAuthStore } from '@/stores/authStore'
+import type { AuthState } from "@/stores/authStore"
 
 
 
 
 export default function ArtistsPageById() {
   const { id } = useParams<{ id: string }>()
-  const [artistData, setArtistData] = useState<Artist | null>(null)
+  const [artistData, setArtistData] = useState<Artist | null>(null)      
+  const token = useAuthStore((state: AuthState) => state.token)
 
   useEffect(() => {
     const fetchArtist = async () => {
       try {
         const response = await fetch(`http://localhost:8080/identity/artists/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjaGluaC5jb20iLCJzdWIiOiJodXkyIiwiZXhwIjoxNzU0MzM5MTIwLCJpYXQiOjE3NTEwOTkxMjAsImp0aSI6IjI1ZWNiOTBmLWI1NGQtNDE4OC04OWVjLWI2MDkxMzMyM2NkOSIsInNjb3BlIjoiIn0.Gma3ok8K54kAc9UJLm94PIpxDX_qCkr7lyEBo60rKT7cMoFsAHVBXD1kQGiq2FW18VUojn5zxmRVylSW2wAarw`
-          }
+          // headers: {
+          //   "Content-Type": "application/json",
+          //   Authorization: `Bearer ${token}`
+          // }
         })
         if (!response.ok) throw new Error('Network response was not ok')
 
@@ -53,7 +56,7 @@ export default function ArtistsPageById() {
           }))
         )}
       />
-      <PlaylistSection title={{ main: "Artist's ", highlight: "Playlist" }} playlists={playlists} />
+      <PlaylistSection />
       <TopAlbums albums={artistData.albums} />
       <PopularArtist
         title={{

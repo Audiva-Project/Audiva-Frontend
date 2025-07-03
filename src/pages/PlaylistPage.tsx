@@ -1,10 +1,27 @@
-const PlaylistPage = () => {
-  return (
-    <div>
-      <h1>Playlist</h1>
-      <p>Playlist details</p>
-    </div>
-  )
-}
+import PlaylistlistSection from "@/components/sections/PlaylistSection";
+import { useAuthStore } from "@/stores/authStore";
+import "@/pages/PlaylistPage.css"
 
-export default PlaylistPage
+const PlaylistPage = () => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="playlist-page">
+        <h1 className="playlist-heading">PLAYLIST CỦA BẠN</h1>
+        <p className="playlist-message">
+          Bạn cần đăng nhập để thêm vào danh sách phát và tạo danh sách phát của riêng bạn.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <h1>PLAYLIST CỦA BẠN</h1>
+      <PlaylistlistSection />
+    </>
+  );
+};
+
+export default PlaylistPage;
