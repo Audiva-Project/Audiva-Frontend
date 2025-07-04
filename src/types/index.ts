@@ -11,6 +11,7 @@ export interface Song {
     id: number;
     name: string;
   }[];
+  premium: boolean
 }
 
 export interface Playlist {
@@ -20,6 +21,7 @@ export interface Playlist {
   coverUrl: string
   songs: Song[]
   createdAt: string
+  premium: boolean
 }
 
 export interface User {
@@ -27,6 +29,7 @@ export interface User {
   name: string
   email: string
   avatar: string
+  premium?: boolean
   playlists: {
     id: number
     name: string

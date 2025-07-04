@@ -1,18 +1,21 @@
-import { Routes, Route } from "react-router-dom"
-import Layout from "@/components/layout/Layout"
-import HomePage from "@/pages/HomePage"
-import DiscoverPage from "@/pages/DiscoverPage"
-import ArtistsPageById from "@/pages/ArtistsPageById"
-import LoginPage from "@/pages/LoginPage"
-import SignupPage from "@/pages/SignupPage"
-import ArtistPage from "./pages/ArtistPage"
-import AboutPage from "./pages/AboutPage"
-import AlbumPage from "./pages/AlbumPage"
-import UploadPage from "./pages/UploadPage"
-import RecentlyAddedPage from "./pages/RecentlyAddedPage"
-import HistoryPage from "./pages/HistoryPage"
-import PlaylistPage from "./pages/PlaylistPage"
-import SongInPlaylistPage from "./pages/SongInPlaylistPage"
+import { Routes, Route } from "react-router-dom";
+import Layout from "@/components/layout/Layout";
+import HomePage from "@/pages/HomePage";
+import DiscoverPage from "@/pages/DiscoverPage";
+import ArtistsPageById from "@/pages/ArtistsPageById";
+import LoginPage from "@/pages/LoginPage";
+import SignupPage from "@/pages/SignupPage";
+import ArtistPage from "./pages/ArtistPage";
+import AboutPage from "./pages/AboutPage";
+import AlbumPage from "./pages/AlbumPage";
+import UploadPage from "./pages/UploadPage";
+import RecentlyAddedPage from "./pages/RecentlyAddedPage";
+import HistoryPage from "./pages/HistoryPage";
+import PlaylistPage from "./pages/PlaylistPage";
+import SongInPlaylistPage from "./pages/SongInPlaylistPage";
+import PremiumPage from "./pages/PremiumPage";
+import ThanksPage from "./pages/thanks-page";
+import UserProfile from "./components/UserProfile";
 
 function App() {
   return (
@@ -32,10 +35,14 @@ function App() {
         <Route path="history" element={<HistoryPage />} />
         <Route path="playlist" element={<PlaylistPage />} />
         <Route path="playlist/:id" element={<SongInPlaylistPage />} />
+        <Route path="/premium" element={<PremiumPage />} />
+        <Route path="/thanks" element={<ThanksPage />} />
+        <Route path="/profile" element={<UserProfile />} />
 
       </Route>
+      <Route path="*" element={<div>404 Not Found</div>} />
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,48 +1,48 @@
-import { Play, Pause, MoreHorizontal } from "lucide-react"
-import type { Song } from "@/types"
-import { Link, useOutletContext } from "react-router-dom"
-import { useRef, useState, useEffect } from "react"
-import "./SongCard.css"
-import { useAuthStore } from "@/stores/authStore"
-import type { AuthState } from "@/stores/authStore"
+import { Play, Pause, MoreHorizontal } from "lucide-react";
+import type { Song } from "@/types";
+import { Link, useOutletContext } from "react-router-dom";
+import { useRef, useState, useEffect } from "react";
+import "./SongCard.css";
+import { useAuthStore } from "@/stores/authStore";
+import type { AuthState } from "@/stores/authStore";
 
 interface OutletContextType {
-  currentSong: Song | null
-  setCurrentSong: (song: Song) => void
-  isPlaying: boolean
-  setIsPlaying: (playing: boolean) => void
+  currentSong: Song | null;
+  setCurrentSong: (song: Song) => void;
+  isPlaying: boolean;
+  setIsPlaying: (playing: boolean) => void;
 }
 
-const SongCard = ({ song, showArtist = true }: { song: Song, showArtist?: boolean }) => {
-  const { setCurrentSong, setIsPlaying, currentSong, isPlaying } = useOutletContext<OutletContextType>()
-  const [showMenu, setShowMenu] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
-  const token = useAuthStore((state: AuthState) => state.token)
-  console.log("Token: " + token);
+const SongCard = ({
+  song,
+  showArtist = true,
+}: {
+  song: Song;
+  showArtist?: boolean;
+}) => {
+  const { setCurrentSong, setIsPlaying, currentSong, isPlaying } =
+    useOutletContext<OutletContextType>();
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const token = useAuthStore((state: AuthState) => state.token);
+  const user = useAuthStore((state) => state.user);
 
-  const user = useAuthStore((state) => state.user)
-
-  const playlistId = user?.playlists?.find(p => p.name?.toLocaleLowerCase() === "playlist")?.id
-  const favoriteId = user?.playlists?.find(p => p.name?.toLocaleLowerCase() === "favoritelist")?.id
-
-
-  // console.log("playlistId:", playlistId)
-  // console.log("favoriteId:", favoriteId)
-
-
+  const playlistId = user?.playlists?.find(
+    (p) => p.name?.toLocaleLowerCase() === "playlist"
+  )?.id;
+  const favoriteId = user?.playlists?.find(
+    (p) => p.name?.toLocaleLowerCase() === "favoritelist"
+  )?.id;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target as Node)
-      ) {
-        setShowMenu(false)
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false);
       }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleAddTo = async (playlistId: number | undefined) => {
     if (!token) {
@@ -54,13 +54,16 @@ const SongCard = ({ song, showArtist = true }: { song: Song, showArtist?: boolea
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8080/identity/api/playlists/${playlistId}/add/${song.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8080/identity/api/playlists/${playlistId}/add/${song.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         alert("Song added successfully!");
       } else {
@@ -75,24 +78,24 @@ const SongCard = ({ song, showArtist = true }: { song: Song, showArtist?: boolea
   };
 
   const toggleMenu = () => {
-    setShowMenu(!showMenu)
-  }
+    setShowMenu(!showMenu);
+  };
 
-  const isCurrent = currentSong?.id === song.id
-  const isThisPlaying = isCurrent && isPlaying
+  const isCurrent = currentSong?.id === song.id;
+  const isThisPlaying = isCurrent && isPlaying;
 
   const handlePlayClick = () => {
     if (isCurrent) {
-      setIsPlaying(!isPlaying)
+      setIsPlaying(!isPlaying);
     } else {
-      setCurrentSong(song)
-      setIsPlaying(true)
+      setCurrentSong(song);
+      setIsPlaying(true);
     }
-  }
+  };
 
   const thumbnailUrl = song.thumbnailUrl
     ? `http://localhost:8080/identity/audio/${song.thumbnailUrl}`
-    : "/placeholder.svg"
+    : "/placeholder.svg";
 
   return (
     <div className="song-card">
@@ -106,18 +109,13 @@ const SongCard = ({ song, showArtist = true }: { song: Song, showArtist?: boolea
               <Play size={20} fill="currentColor" />
             )}
           </button>
-          <button
-            className="more-options-button"
-            onClick={toggleMenu}
-          >
+          <button className="more-options-button" onClick={toggleMenu}>
             <MoreHorizontal size={20} fill="currentColor" />
           </button>
           {showMenu && (
             <div className="options-popup">
               <ul>
-                <li onClick={() => handleAddTo(playlistId)}>
-                  Add to Playlist
-                </li>
+                <li onClick={() => handleAddTo(playlistId)}>Add to Playlist</li>
                 <li onClick={() => handleAddTo(favoriteId)}>
                   Add to Favorites list
                 </li>
@@ -132,21 +130,21 @@ const SongCard = ({ song, showArtist = true }: { song: Song, showArtist?: boolea
           <p className="song-artist">
             {song.artists && song.artists.length > 0
               ? song.artists.map((artist, index) => (
-                <Link
-                  key={artist.id}
-                  to={`/artists/${artist.id}`}
-                  className="artist-link"
-                >
-                  {artist.name}
-                  {index < song.artists.length - 1 ? ", " : ""}
-                </Link>
-              ))
+                  <Link
+                    key={artist.id}
+                    to={`/artists/${artist.id}`}
+                    className="artist-link"
+                  >
+                    {artist.name}
+                    {index < song.artists.length - 1 ? ", " : ""}
+                  </Link>
+                ))
               : "Unknown Artist"}
           </p>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SongCard
+export default SongCard;

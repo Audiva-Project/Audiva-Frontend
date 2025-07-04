@@ -1,0 +1,155 @@
+.thanks-container {
+  padding-top: var(--space-6, 1.5rem);
+  margin: calc(-1 * var(--space-6, 1.5rem));
+  background: transparent;
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.thanks-background-elements {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.thanks-bg-element {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+}
+
+.thanks-bg-element-2 {
+  top: 160px;
+  right: 80px;
+  width: 96px;
+  height: 96px;
+  background: rgba(107, 114, 128, 0.1);
+}
+
+.thanks-bg-element-3 {
+  bottom: 128px;
+  left: 25%;
+  width: 160px;
+  height: 160px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.thanks-bg-element-4 {
+  bottom: 80px;
+  right: 33%;
+  width: 112px;
+  height: 112px;
+  background: rgba(107, 114, 128, 0.08);
+}
+
+.thanks-main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.thanks-success-icon-container {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 1s ease;
+  margin-bottom: 32px;
+}
+
+.thanks-success-icon {
+  position: relative;
+}
+
+.thanks-success-circle {
+  width: 128px;
+  height: 128px;
+  background: linear-gradient(135deg, #374151 0%, #000000 100%);
+  border: 2px solid #10b981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.thanks-check-icon {
+  width: 64px;
+  height: 64px;
+  color: #10b981;
+}
+
+.thanks-crown-icon {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 48px;
+  height: 48px;
+  color: #fbbf24;
+}
+
+.thanks-text-content {
+  text-align: center;
+  max-width: 896px;
+  transform: translateY(0);
+  opacity: 1;
+  transition: all 1s ease 0.3s;
+}
+
+.thanks-main-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #ffffff 0%, #d1d5db 50%, #9ca3af 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+}
+
+.thanks-welcome-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.thanks-gift-icon {
+  width: 32px;
+  height: 32px;
+  color: #fbbf24;
+}
+
+.thanks-welcome-text {
+  font-size: 1.5rem;
+  color: #e5e7eb;
+}
+
+.thanks-premium-text {
+  color: #fbbf24;
+  font-weight: bold;
+}
+
+.thanks-description {
+  font-size: 1.125rem;
+  color: #d1d5db;
+  margin-bottom: 48px;
+  line-height: 1.75;
+}
+
+@media (min-width: 768px) {
+  .thanks-main-title {
+    font-size: 5rem;
+  }
+
+  .thanks-welcome-text {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .thanks-main-title {
+    font-size: 6rem;
+  }
+}
