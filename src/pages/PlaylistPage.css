@@ -1,0 +1,15 @@
+.playlist-page {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.playlist-heading {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.playlist-message {
+  margin-top: 20px;
+  color: #d9534f; /* Màu đỏ cảnh báo */
+  font-size: 16px;
+}

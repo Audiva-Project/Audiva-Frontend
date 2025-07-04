@@ -1,12 +1,12 @@
 export interface Song {
-  id: string
+  id: number
   title: string
   artist: string
   album: string
   thumbnailUrl: string
   audioUrl: string
-  duration: string
   releaseDate: string
+  createdBy?: string
   artists: {
     id: number;
     name: string;
@@ -30,6 +30,10 @@ export interface User {
   email: string
   avatar: string
   premium?: boolean
+  playlists: {
+    id: number
+    name: string
+  }[]
 }
 
 export interface Album {

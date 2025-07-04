@@ -25,15 +25,15 @@ const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists }) => {
       </div>
       <div className="artist-list">
         {artists.map((artist) => (
-          <div key={artist.id} className="artist-card">
-            <Link
-              key={artist.id}
-              to={`/artists/${artist.id}`}
-              className="artist-link"
-            >
+          <div className="artist-card">
+            <Link to={`/artists/${artist.id}`} className="artist-link">
               <div className="artist-image-container">
                 <img
-                  src={`http://localhost:8080/identity/audio/${artist.avatar}`}
+                  src={
+                    artist.avatar
+                      ? `http://localhost:8080/identity/audio/${artist.avatar}`
+                      : "/default-avatar.png"
+                  }
                   alt={artist.name}
                   className="artist-image"
                 />

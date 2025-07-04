@@ -1,0 +1,29 @@
+.song-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.uploaded-by {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.3rem;
+}
+
+.recently-page {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.recently-heading {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.recently-message {
+  margin-top: 20px;
+  color: #d9534f;
+  /* Màu đỏ cảnh báo */
+  font-size: 16px;
+}
