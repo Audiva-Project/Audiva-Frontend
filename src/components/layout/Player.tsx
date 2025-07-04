@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react";
 import {
   Play,
   Pause,
@@ -14,63 +14,70 @@ import {
   Download,
   Mic,
   Upload,
-  ListMusic
-} from "lucide-react"
-import type { Song } from "@/types"
-import "./Player.css"
-import { logListening } from "@/utils/listeningHistory"
-import { AuthState, useAuthStore } from "@/stores/authStore"
+  ListMusic,
+} from "lucide-react";
+import type { Song } from "@/types";
+import "./Player.css";
+import { logListening } from "@/utils/listeningHistory";
+import { AuthState, useAuthStore } from "@/stores/authStore";
 
 interface PlayerProps {
-  currentSong: Song | null
-  isPlaying: boolean
-  setIsPlaying: (playing: boolean) => void
-  setCurrentSong: (song: Song) => void
-  songs: Song[]
+  currentSong: Song | null;
+  isPlaying: boolean;
+  setIsPlaying: (playing: boolean) => void;
+  setCurrentSong: (song: Song) => void;
+  songs: Song[];
 }
 
-const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }: PlayerProps) => {
-  const audioRef = useRef<HTMLAudioElement>(null)
-  const progressBarRef = useRef<HTMLDivElement>(null)
+const Player = ({
+  currentSong,
+  isPlaying,
+  setIsPlaying,
+  setCurrentSong,
+  songs,
+}: PlayerProps) => {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
-  const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(0)
-  const [volume, setVolume] = useState(70)
-  const [isMuted, setIsMuted] = useState(false)
-  const [isSeeking, setIsSeeking] = useState(false)
-  const [isShuffling, setIsShuffling] = useState(false)
-  const [isLiked, setIsLiked] = useState(false)
-  const [isAddedToPlaylist, setIsAddedToPlaylist] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(70);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isSeeking, setIsSeeking] = useState(false);
+  const [isShuffling, setIsShuffling] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isAddedToPlaylist, setIsAddedToPlaylist] = useState(false);
 
-  type RepeatMode = "off" | "repeat-one" | "repeat-all"
-  const [repeatMode, setRepeatMode] = useState<RepeatMode>("off")
-  const token = useAuthStore((state: AuthState) => state.token)
-  const user = useAuthStore((state) => state.user)
+  type RepeatMode = "off" | "repeat-one" | "repeat-all";
+  const [repeatMode, setRepeatMode] = useState<RepeatMode>("off");
+  const token = useAuthStore((state: AuthState) => state.token);
+  const user = useAuthStore((state) => state.user);
+  const isPremiumUser = useAuthStore((state) => state.premium);
 
-  const favoriteId = user?.playlists?.find(p => p.name?.toLocaleLowerCase() === "favoritelist")?.id
-  const playlistId = user?.playlists?.find(p => p.name?.toLocaleLowerCase() === "playlist")?.id
+  const favoriteId = user?.playlists?.find(
+    (p) => p.name?.toLowerCase() === "favoritelist"
+  )?.id;
+  const playlistId = user?.playlists?.find(
+    (p) => p.name?.toLowerCase() === "playlist"
+  )?.id;
 
   const handleAddToFavorites = async () => {
-    if (!token) {
-      alert("Bạn cần đăng nhập để sử dụng tính năng này!");
-      return;
-    }
-    if (!favoriteId) {
-      alert("Favorite Playlist ID không tồn tại!");
-      return;
-    }
-    if (!currentSong) {
-      alert("Không có bài hát nào được chọn!");
-      return;
-    }
+    if (!token) return alert("Bạn cần đăng nhập để sử dụng tính năng này!");
+    if (!favoriteId) return alert("Favorite Playlist ID không tồn tại!");
+    if (!currentSong) return alert("Không có bài hát nào được chọn!");
+
     try {
-      const response = await fetch(`http://localhost:8080/identity/api/playlists/${favoriteId}/add/${currentSong.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8080/identity/api/playlists/${favoriteId}/add/${currentSong.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       if (response.ok) {
         alert("Đã thêm bài hát vào Favorites!");
         setIsLiked(true);
@@ -84,26 +91,21 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
   };
 
   const handleAddToPlaylist = async () => {
-    if (!token) {
-      alert("Bạn cần đăng nhập để sử dụng tính năng này!");
-      return;
-    }
-    if (!playlistId) {
-      alert("Playlist ID không tồn tại!");
-      return;
-    }
-    if (!currentSong) {
-      alert("Không có bài hát nào được chọn!");
-      return;
-    }
+    if (!token) return alert("Bạn cần đăng nhập để sử dụng tính năng này!");
+    if (!playlistId) return alert("Playlist ID không tồn tại!");
+    if (!currentSong) return alert("Không có bài hát nào được chọn!");
+
     try {
-      const response = await fetch(`http://localhost:8080/identity/api/playlists/${playlistId}/add/${currentSong.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8080/identity/api/playlists/${playlistId}/add/${currentSong.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         alert("Đã thêm bài hát vào Playlist!");
         setIsAddedToPlaylist(true);
@@ -120,160 +122,147 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
     setRepeatMode((prev) => {
       switch (prev) {
         case "off":
-          return "repeat-one"
+          return "repeat-one";
         case "repeat-one":
-          return "repeat-all"
+          return "repeat-all";
         case "repeat-all":
-          return "off"
+          return "off";
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    if (!audioRef.current) return
+    if (!audioRef.current) return;
     if (isPlaying) {
-      audioRef.current.play().then(() => {
-        if (currentSong?.id) {
-          logListening(currentSong.id)
-        }
-      }).catch((error) => {
-        console.error("Error playing audio:", error)
-      })
+      audioRef.current
+        .play()
+        .then(() => {
+          if (currentSong?.id) logListening(currentSong.id, token || "");
+        })
+        .catch((error) => console.error("Error playing audio:", error));
     } else {
-      audioRef.current.pause()
+      audioRef.current.pause();
     }
-  }, [isPlaying, currentSong])
+  }, [isPlaying, currentSong]);
 
   const handleTimeUpdate = () => {
-    if (audioRef.current && !isSeeking) {
-      setCurrentTime(audioRef.current.currentTime)
-    }
-  }
+    if (audioRef.current && !isSeeking)
+      setCurrentTime(audioRef.current.currentTime);
+  };
 
   const handleLoadedMetadata = () => {
-    if (audioRef.current) {
-      setDuration(audioRef.current.duration)
-    }
-  }
+    if (audioRef.current) setDuration(audioRef.current.duration);
+  };
 
   const handleEnded = () => {
     if (repeatMode === "repeat-one") {
       if (audioRef.current) {
-        audioRef.current.currentTime = 0
-        audioRef.current.play()
+        audioRef.current.currentTime = 0;
+        audioRef.current.play();
       }
     } else {
-      handleSkipForward()
+      handleSkipForward();
     }
-  }
+  };
 
   const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60)
-    const seconds = Math.floor(time % 60)
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`
-  }
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
 
-  const handleSeekClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    seek(e.clientX)
-  }
-
-  const handleSeekStart = () => {
-    setIsSeeking(true)
-  }
-
-  const handleSeekMove = (e: MouseEvent) => {
-    if (isSeeking) {
-      seek(e.clientX)
-    }
-  }
-
-  const handleSeekEnd = () => {
-    setIsSeeking(false)
-  }
+  const handleSeekClick = (e: React.MouseEvent<HTMLDivElement>) =>
+    seek(e.clientX);
+  const handleSeekStart = () => setIsSeeking(true);
+  const handleSeekMove = (e: MouseEvent) => isSeeking && seek(e.clientX);
+  const handleSeekEnd = () => setIsSeeking(false);
 
   useEffect(() => {
     if (isSeeking) {
-      document.addEventListener("mousemove", handleSeekMove)
-      document.addEventListener("mouseup", handleSeekEnd)
+      document.addEventListener("mousemove", handleSeekMove);
+      document.addEventListener("mouseup", handleSeekEnd);
     }
     return () => {
-      document.removeEventListener("mousemove", handleSeekMove)
-      document.removeEventListener("mouseup", handleSeekEnd)
-    }
-  }, [isSeeking])
+      document.removeEventListener("mousemove", handleSeekMove);
+      document.removeEventListener("mouseup", handleSeekEnd);
+    };
+  }, [isSeeking]);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.loop = repeatMode === "repeat-one"
-    }
-  }, [repeatMode])
+    if (audioRef.current) audioRef.current.loop = repeatMode === "repeat-one";
+  }, [repeatMode]);
 
   const seek = (clientX: number) => {
-    if (!audioRef.current || !progressBarRef.current || !duration) return
-    const rect = progressBarRef.current.getBoundingClientRect()
-    const offsetX = clientX - rect.left
-    const clampedX = Math.max(0, Math.min(offsetX, rect.width))
-    const seekTime = (clampedX / rect.width) * duration
-    audioRef.current.currentTime = seekTime
-    setCurrentTime(seekTime)
-  }
+    if (!audioRef.current || !progressBarRef.current || !duration) return;
+    const rect = progressBarRef.current.getBoundingClientRect();
+    const offsetX = clientX - rect.left;
+    const clampedX = Math.max(0, Math.min(offsetX, rect.width));
+    const seekTime = (clampedX / rect.width) * duration;
+    audioRef.current.currentTime = seekTime;
+    setCurrentTime(seekTime);
+  };
 
-  const toggleShuffle = () => {
-    setIsShuffling(!isShuffling)
-  }
+  const toggleShuffle = () => setIsShuffling(!isShuffling);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume / 100
-    }
-  }, [volume])
+    if (audioRef.current) audioRef.current.volume = volume / 100;
+  }, [volume]);
 
   const toggleMute = () => {
     if (audioRef.current) {
-      const newMuted = !isMuted
-      audioRef.current.muted = newMuted
-      setIsMuted(newMuted)
+      const newMuted = !isMuted;
+      audioRef.current.muted = newMuted;
+      setIsMuted(newMuted);
     }
-  }
+  };
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = volume / 100
+      audioRef.current.volume = volume / 100;
       if (volume > 0 && isMuted) {
-        audioRef.current.muted = false
-        setIsMuted(false)
+        audioRef.current.muted = false;
+        setIsMuted(false);
       }
     }
-  }, [volume])
+  }, [volume]);
 
   const handleSkipForward = () => {
-    if (!currentSong || songs.length === 0) return
-    if (isShuffling) {
-      let randomIndex = Math.floor(Math.random() * songs.length)
-      if (songs.length > 1) {
-        randomIndex = Math.floor(Math.random() * songs.length)
-      }
-      setCurrentSong(songs[randomIndex])
-      setIsPlaying(true)
-    } else {
-      const currentIndex = songs.findIndex(
-        (s) => Number(s.id) === Number(currentSong.id)
-      )
-      if (currentIndex === -1) return
-      const nextIndex = (currentIndex + 1) % songs.length
-      setCurrentSong(songs[nextIndex])
-      setIsPlaying(true)
-    }
-  }
+    if (!currentSong || songs.length === 0) return;
+    const currentIndex = songs.findIndex(
+      (s) => Number(s.id) === Number(currentSong.id)
+    );
+    if (currentIndex === -1) return;
+    const nextIndex = (currentIndex + 1) % songs.length;
+    setCurrentSong(songs[nextIndex]);
+    setIsPlaying(true);
+  };
 
   const handleSkipBack = () => {
-    if (!currentSong || songs.length === 0) return
-    const currentIndex = songs.findIndex((s) => s.id === currentSong.id)
-    if (currentIndex === -1) return
-    const prevIndex = (currentIndex - 1 + songs.length) % songs.length
-    setCurrentSong(songs[prevIndex])
-    setIsPlaying(true)
-  }
+    if (!currentSong || songs.length === 0) return;
+    const currentIndex = songs.findIndex((s) => s.id === currentSong.id);
+    if (currentIndex === -1) return;
+    const prevIndex = (currentIndex - 1 + songs.length) % songs.length;
+    setCurrentSong(songs[prevIndex]);
+    setIsPlaying(true);
+  };
+
+  useEffect(() => {
+    setIsLiked(false);
+    setIsAddedToPlaylist(false);
+  }, [currentSong]);
+
+  useEffect(() => {
+    console.log("Current song changed:", currentSong);
+    if (!audioRef.current || isPremiumUser || !currentSong?.premium) return;
+    const checkTime = () => {
+      if (audioRef.current && audioRef.current.currentTime >= 30) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
+    const interval = setInterval(checkTime, 500);
+    return () => clearInterval(interval);
+  }, [isPremiumUser, currentSong?.premium, isPlaying]);
 
   // reset trạng thái khi đổi bài
   useEffect(() => {
@@ -283,6 +272,7 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
 
   return (
     <div className="player">
+      {/* Left */}
       <div className="player-left">
         <div className="current-track">
           <div className="track-image">
@@ -294,14 +284,21 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
             )}
           </div>
           <div className="track-info">
-            <div className="track-title">{currentSong?.title || "No song selected"}</div>
+            <div className="track-title">
+              {currentSong?.title || "No song selected"}
+            </div>
             <div className="track-artist">
-              {currentSong?.artists?.map(artist => artist.name).join(", ") || "Unknown Artist"}
+              {currentSong &&
+              currentSong.artists &&
+              currentSong.artists.length > 0
+                ? currentSong.artists.map((a) => a.name).join(", ")
+                : "Unknown Artist"}
             </div>
           </div>
         </div>
       </div>
 
+      {/* Center */}
       <div className="player-center">
         <div className="player-controls">
           <button className="control-btn" onClick={toggleShuffle}>
@@ -320,6 +317,11 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
             <Repeat
               size={16}
               color={repeatMode !== "off" ? "#1db954" : "white"}
+              style={{
+                transform:
+                  repeatMode === "repeat-one" ? "rotate(360deg)" : "none",
+                transition: "transform 0.3s",
+              }}
               onClick={toggleRepeat}
             />
           </button>
@@ -333,21 +335,42 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
             onClick={handleSeekClick}
             onMouseDown={handleSeekStart}
           >
-            <div className="progress-fill" style={{ width: `${(currentTime / duration) * 100}%` }} />
+            <div
+              className="progress-fill"
+              style={{ width: `${(currentTime / duration) * 100}%` }}
+            />
+            {!isPremiumUser && currentSong?.premium && duration > 0 && (
+              <div
+                className="premium-marker"
+                style={{ left: `${(30 / duration) * 100}%` }}
+              />
+            )}
           </div>
           <span className="time-text">{formatTime(duration)}</span>
         </div>
       </div>
 
+      {/* Right */}
       <div className="player-right">
         <button className="like-btn" onClick={handleAddToFavorites}>
-          <Heart size={16} color={isLiked ? "#1db954" : "white"} fill={isLiked ? "#1db954" : "none"} />
+          <Heart
+            size={16}
+            color={isLiked ? "#1db954" : "white"}
+            fill={isLiked ? "#1db954" : "none"}
+          />
         </button>
         <button className="upload-btn" onClick={handleAddToPlaylist}>
-          <ListMusic size={18} color={isAddedToPlaylist ? "#1db954" : "white"} fill={isAddedToPlaylist ? "#1db954" : "none"} />
+          <ListMusic
+            size={18}
+            color={isAddedToPlaylist ? "#1db954" : "white"}
+            fill={isAddedToPlaylist ? "#1db954" : "none"}
+          />
         </button>
         <button className="download-btn">
-          <a href={`http://localhost:8080/identity/api/songs/${currentSong?.id}/download`} download>
+          <a
+            href={`http://localhost:8080/identity/api/songs/${currentSong?.id}/download`}
+            download
+          >
             <Download size={18} />
           </a>
         </button>
@@ -356,7 +379,11 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
         </button>
         <div className="volume-container">
           <button onClick={toggleMute} className="volume-icon">
-            {isMuted ? <VolumeX size={25} color="#a855f7" /> : <Volume2 size={25} color="white" />}
+            {isMuted ? (
+              <VolumeX size={25} color="#a855f7" />
+            ) : (
+              <Volume2 size={25} color="white" />
+            )}
           </button>
           <input
             type="range"
@@ -380,7 +407,7 @@ const Player = ({ currentSong, isPlaying, setIsPlaying, setCurrentSong, songs }:
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Player
+export default Player;

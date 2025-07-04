@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import "./PopularArtist.css";
 
 interface ArtistSectionProps {
-    title: {
-        main: string;
-        highlight: string;
-    };
-    artists: Array<any>;
+  title: {
+    main: string;
+    highlight: string;
+  };
+  artists: Array<any>;
 }
 
 const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists }) => {

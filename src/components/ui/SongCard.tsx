@@ -21,7 +21,7 @@ const SongCard = ({ song, showArtist = true, playlistId }: { song: Song; showArt
   const menuRef = useRef<HTMLDivElement>(null);
   const token = useAuthStore((state: AuthState) => state.token);
   const user = useAuthStore((state) => state.user);
-
+  
   const defaultPlaylistId = user?.playlists?.find((p) => p.name?.toLowerCase() === "playlist")?.id;
   const defaultFavoriteId = user?.playlists?.find((p) => p.name?.toLowerCase() === "favoritelist")?.id;
 

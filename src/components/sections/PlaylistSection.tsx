@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
-import '@/components/sections/PlaylistSection.css';
+import "@/components/sections/PlaylistSection.css";
 import { useAuthStore } from "@/stores/authStore";
-import type { AuthState } from "@/stores/authStore"
+import type { AuthState } from "@/stores/authStore";
 import { useNavigate } from "react-router-dom";
 import { Recycle, Trash } from "lucide-react";
 
 const PlaylistSection = () => {
   const [playlists, setPlaylists] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const token = useAuthStore((state: AuthState) => state.token)
-  // console.log("Token", token)
+  const token = useAuthStore((state: AuthState) => state.token);
   const navigate = useNavigate();
   const handleAddNewPlaylist = async () => {
     const name = prompt("Enter new playlist name:");
@@ -19,22 +18,28 @@ const PlaylistSection = () => {
       // const token = localStorage.getItem("access_token");
       const formData = new FormData();
       formData.append("name", name);
-      const response = await fetch("http://localhost:8080/identity/api/playlists", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:8080/identity/api/playlists",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         alert("Playlist created!");
         // Gọi lại GET để refresh list
-        const newPlaylists = await fetch("http://localhost:8080/identity/api/playlists", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }).then((res) => res.json());
+        const newPlaylists = await fetch(
+          "http://localhost:8080/identity/api/playlists",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ).then((res) => res.json());
         setPlaylists(newPlaylists);
       } else {
         alert("Failed to create playlist.");
@@ -75,13 +80,12 @@ const PlaylistSection = () => {
   };
 
 
-
   useEffect(() => {
     // const token = localStorage.getItem('access_token');
     fetch("http://localhost:8080/identity/api/playlists", {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -108,7 +112,8 @@ const PlaylistSection = () => {
             <section
               key={playlist.id}
               className="playlist-section"
-              onClick={() => navigate(`/playlist/${playlist.id}`)}>
+              onClick={() => navigate(`/playlist/${playlist.id}`)}
+            >
               <div className="playlist-card">
                 <div className="playlist-image-container">
                   <img
