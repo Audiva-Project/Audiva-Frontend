@@ -15,7 +15,15 @@ const TrendingRow = ({ song, rank }: TrendingRowProps) => {
       </div>
 
       <div className="row-cell song-info">
-        <img src={song.coverUrl || "/placeholder.svg"} alt={song.title} className="song-thumbnail" />
+        <img
+          src={
+            song.thumbnailUrl
+              ? `http://localhost:8080/identity/audio/${song.thumbnailUrl}`
+              : "/placeholder.svg"
+          }
+          alt={song.title}
+          className="song-thumbnail"
+        />
         <div className="song-details">
           <div className="song-title">{song.title}</div>
           <div className="song-artist">{song.artist}</div>

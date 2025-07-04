@@ -1,11 +1,12 @@
-import "./SongsSection.css"
-import AlbumSection from "./AlbumSection"
+import "./SongsSection.css";
+import AlbumSection from "./AlbumSection";
 
 const WeeklyTopSongs = () => {
-  const albumIds = [1]
+  const albumIds = [1];
+  // const albumIds = [1, 2, 3]
   return (
     <div>
-      {albumIds.map(id => (
+      {albumIds.map((id) => (
         <AlbumSection key={id} albumId={id} />
       ))}
     </div>

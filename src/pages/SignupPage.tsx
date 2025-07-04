@@ -1,29 +1,29 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { useAuthStore } from "@/stores/authStore"
-import "./AuthPages.css"
+import type React from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/stores/authStore";
+import "./AuthPages.css";
 
 const SignupPage = () => {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [dob, setDob] = useState("") // YYYY-MM-DD format
-  const [localError, setLocalError] = useState("")
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [dob, setDob] = useState(""); // YYYY-MM-DD format
+  const [localError, setLocalError] = useState("");
 
-  const { register, isLoading, error } = useAuthStore()
-  const navigate = useNavigate()
+  const { register, isLoading, error } = useAuthStore();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLocalError("")
+    e.preventDefault();
+    setLocalError("");
 
     if (password.length < 6) {
-      setLocalError("Password must be at least 6 characters")
-      return
+      setLocalError("Mật khẩu phải có ít nhất 6 ký tự.");
+      return;
     }
 
     try {
@@ -33,71 +33,70 @@ const SignupPage = () => {
         firstName,
         lastName,
         dob,
-      })
-      navigate("/")
+      });
+      navigate("/");
     } catch (err) {
-      console.error("Registration failed:", err)
+      console.error("Đăng ký thất bại:", err);
     }
-  }
+  };
 
-  const displayError = localError || error
+  const displayError = localError || error;
 
   return (
     <div className="auth-page">
       <div className="auth-container">
         <div className="auth-header">
-          <h1 className="auth-logo">Melodies</h1>
-          <h2 className="auth-title">Create account</h2>
-          <p className="auth-subtitle">Join the music community</p>
+          <h1 className="auth-logo">Audiva</h1>
+          <h2 className="auth-title">Tạo tài khoản</h2>
+          <p className="auth-subtitle">Tham gia cộng đồng âm nhạc</p>
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           {displayError && <div className="error-message">{displayError}</div>}
 
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Tên đăng nhập</label>
             <input
               type="text"
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your username"
+              placeholder="Nhập tên đăng nhập"
               className="form-input"
               required
             />
           </div>
 
           <div className="form-row">
-  <div className="form-group half-width">
-    <label htmlFor="firstName">First Name</label>
-    <input
-      type="text"
-      id="firstName"
-      value={firstName}
-      onChange={(e) => setFirstName(e.target.value)}
-      placeholder="Enter your first name"
-      className="form-input"
-      required
-    />
-  </div>
+            <div className="form-group half-width">
+              <label htmlFor="firstName">Họ</label>
+              <input
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Nhập họ của bạn"
+                className="form-input"
+                required
+              />
+            </div>
 
-  <div className="form-group half-width">
-    <label htmlFor="lastName">Last Name</label>
-    <input
-      type="text"
-      id="lastName"
-      value={lastName}
-      onChange={(e) => setLastName(e.target.value)}
-      placeholder="Enter your last name"
-      className="form-input"
-      required
-    />
-  </div>
-</div>
-
+            <div className="form-group half-width">
+              <label htmlFor="lastName">Tên</label>
+              <input
+                type="text"
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Nhập tên của bạn"
+                className="form-input"
+                required
+              />
+            </div>
+          </div>
 
           <div className="form-group">
-            <label htmlFor="dob">Date of Birth</label>
+            <label htmlFor="dob">Ngày sinh</label>
             <input
               type="date"
               id="dob"
@@ -109,34 +108,38 @@ const SignupPage = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Mật khẩu</label>
             <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
+              placeholder="Nhập mật khẩu"
               className="form-input"
               required
             />
           </div>
 
-          <button type="submit" className="btn btn-primary auth-submit" disabled={isLoading}>
-            {isLoading ? "Creating account..." : "Create Account"}
+          <button
+            type="submit"
+            className="btn btn-primary auth-submit"
+            disabled={isLoading}
+          >
+            {isLoading ? "Đang tạo tài khoản..." : "Tạo tài khoản"}
           </button>
         </form>
 
         <div className="auth-footer">
           <p>
-            Already have an account?{" "}
+            Đã có tài khoản?{" "}
             <Link to="/login" className="auth-link">
-              Sign in
+              Đăng nhập
             </Link>
           </p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignupPage
+export default SignupPage;

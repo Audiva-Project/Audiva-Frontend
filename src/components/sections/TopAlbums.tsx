@@ -1,9 +1,12 @@
 import { ChevronRight } from "lucide-react";
 import GenreCard from "@/components/ui/GenreCard";
-import { albums } from "@/data/mockData";
 import "./PlaylistSection.css";
 
-const TopAlbums = () => {
+interface TopAlbumsProps {
+    albums: { id: number; title: string; thumbnailUrl: string }[];
+}
+
+const TopAlbums: React.FC<TopAlbumsProps> = ({ albums }) => {
     return (
         <section className="music-genres-section">
             <div className="section-header">
@@ -17,7 +20,14 @@ const TopAlbums = () => {
             </div>
             <div className="genres-grid">
                 {albums.map((album) => (
-                    <GenreCard key={album.id} genre={album} />
+                    <GenreCard
+                        key={album.id}
+                        genre={{
+                            id: album.id.toString(),
+                            name: album.title,
+                            thumbnailUrl: album.thumbnailUrl,
+                        }}
+                    />
                 ))}
             </div>
         </section>

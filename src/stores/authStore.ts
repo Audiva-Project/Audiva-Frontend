@@ -12,6 +12,10 @@ interface AuthState {
   error: string | null
   token: string | null
 
+  premium?: boolean | null;
+  premiumStartDate?: string | null;
+  premiumEndDate?: string | null;
+
   login: (identifier: string, password: string) => Promise<void>
   register: (data: {
     username: string
@@ -24,6 +28,12 @@ interface AuthState {
   setUser: (user: User) => void
   setToken: (token: string) => void
   clearUser: () => void
+}
+
+type PremiumData = {
+  status: string
+  startDate?: string
+  endDate?: string
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -72,9 +82,29 @@ export const useAuthStore = create<AuthState>()(
               premium: userData.premium ?? false,
             }
 
-            set({ user,
+            set({ user})
+
+            const premiumRes = await api.get("/identity/user-premium/me", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+
+            const premiumData = premiumRes.data as PremiumData
+
+            const isPremium =
+              !!(premiumData &&
+              premiumData.status === "SUCCESS" &&
+              premiumData.endDate &&
+              new Date(premiumData.endDate) > new Date())
+
+            set((state : any) => ({
+              user: state.user,
+              premium: isPremium,
+              premiumStartDate: premiumData?.startDate ?? null,
+              premiumEndDate: premiumData?.endDate ?? null,
               isLoading: false,
-             })
+            }));
           } catch (error: any) {
             let message = "Đăng nhập không thành công"
             if (error.response?.status === 401) {
@@ -169,6 +199,9 @@ export const useAuthStore = create<AuthState>()(
           user: state.user,
           token: state.token,
           isAuthenticated: state.isAuthenticated,
+          premium: state.premium,
+          premiumStartDate: state.premiumStartDate,
+          premiumEndDate: state.premiumEndDate,
         }),
       }
     ),

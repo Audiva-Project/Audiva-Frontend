@@ -11,7 +11,7 @@ export interface Song {
     id: number;
     name: string;
   }[];
-  premium?: boolean;
+  premium: boolean
 }
 
 export interface Playlist {
@@ -21,6 +21,7 @@ export interface Playlist {
   coverUrl: string
   songs: Song[]
   createdAt: string
+  premium: boolean
 }
 
 export interface User {
@@ -28,7 +29,7 @@ export interface User {
   name: string
   email: string
   avatar: string
-  premium: boolean
+  premium?: boolean
 }
 
 export interface Album {
@@ -39,5 +40,12 @@ export interface Album {
   artistId: number;
   artistName: string;
   songIds: number[];
-  songs: Song[]; // nếu mapper trả về đầy đủ
+  songs: Song[];
+}
+
+export interface Artist {
+  id: number;
+  name: string;
+  avatar: string;
+  albums: Album[];
 }

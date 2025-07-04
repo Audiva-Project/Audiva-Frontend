@@ -1,0 +1,40 @@
+.artist-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.artist-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* border: 1px solid #ddd; */
+  border-radius: 8px;
+  padding: 16px;
+  width: 200px;
+  transition: transform 0.3s ease;
+}
+
+.artist-card:hover {
+  transform: translateY(-4px);
+}
+
+.artist-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.artist-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.artist-bio {
+  font-size: 14px;
+  color: #666;
+  margin-top: 8px;
+}

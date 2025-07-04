@@ -1,7 +1,7 @@
 import { Play, Pause } from "lucide-react"
 import type { Song } from "@/types"
 // import { usePlayerStore } from "@/stores/usePlayerStore"
-import { useOutletContext } from "react-router-dom"
+import { Link, useOutletContext } from "react-router-dom"
 import "./SongCard.css"
 
 interface OutletContextType {
@@ -47,9 +47,19 @@ const SongCard = ({ song }: { song: Song }) => {
       <div className="song-info">
         <h3 className="song-title">{song.title}</h3>
         <p className="song-artist">
-          {song.artists && song.artists.length > 0
-            ? song.artists.map(artist => artist.name).join(", ")
-            : "Unknown Artist"}
+          {song.artists && song.artists.length > 0 ? (
+            song.artists.map((artist, index) => (
+              <Link
+                key={artist.id}
+                to={`/artists/${artist.id}`}
+                className="artist-link"
+              >
+                {artist.name}{index < song.artists.length - 1 ? ', ' : ''}
+              </Link>
+            ))
+          ) : (
+            "Unknown Artist"
+          )}
         </p>
       </div>
     </div>

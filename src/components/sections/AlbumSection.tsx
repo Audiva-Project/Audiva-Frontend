@@ -18,7 +18,7 @@ const AlbumSection = ({ albumId }: AlbumSectionProps) => {
   const [localSongs, setLocalSongs] = useState<Song[]>([])
   const [albumTitle, setAlbumTitle] = useState<string>("")
   const { setSongs } = useOutletContext<LayoutContext>()
-
+  const album4songs = localSongs.slice(0, 4)
   useEffect(() => {
     axios.get<{ code: number, result: Album }>(
       `http://localhost:8080/identity/api/albums/${albumId}`,
@@ -33,7 +33,7 @@ const AlbumSection = ({ albumId }: AlbumSectionProps) => {
         const fetchedSongs = res.data.result.songs || []
         setLocalSongs(fetchedSongs)
         setAlbumTitle(res.data.result.title || "Untitled Album")
-        setSongs(prev => [...prev, ...fetchedSongs]) 
+        setSongs(prev => [...prev, ...fetchedSongs])
       })
       .catch((err) => console.error("Error loading songs:", err))
   }, [albumId])
@@ -48,7 +48,7 @@ const AlbumSection = ({ albumId }: AlbumSectionProps) => {
         </button>
       </div>
       <div className="songs-grid">
-        {localSongs.map((song) => (
+        {album4songs.map((song) => (
           <SongCard key={song.id} song={song} />
         ))}
       </div>
