@@ -11,17 +11,18 @@
 
 .trending-header {
   display: grid;
-  grid-template-columns: 60px 2fr 1fr 1fr 80px;
+  grid-template-columns: 60px 1.5fr 1fr 0.5fr;
   padding: var(--space-4);
   background-color: var(--bg-tertiary);
   border-bottom: 1px solid var(--border-color);
-}
+  text-align: center;
+}            
 
 .header-cell {
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--text-muted);
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   letter-spacing: 0.5px;
 }
 

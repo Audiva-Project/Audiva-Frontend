@@ -15,17 +15,17 @@ import type { AuthState } from "@/stores/authStore"
 
 export default function ArtistsPageById() {
   const { id } = useParams<{ id: string }>()
-  const [artistData, setArtistData] = useState<Artist | null>(null)      
+  const [artistData, setArtistData] = useState<Artist | null>(null)
   const token = useAuthStore((state: AuthState) => state.token)
 
   useEffect(() => {
     const fetchArtist = async () => {
       try {
         const response = await fetch(`http://localhost:8080/identity/artists/${id}`, {
-          // headers: {
-          //   "Content-Type": "application/json",
-          //   Authorization: `Bearer ${token}`
-          // }
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          }
         })
         if (!response.ok) throw new Error('Network response was not ok')
 
@@ -42,6 +42,13 @@ export default function ArtistsPageById() {
 
   if (!artistData) return <p>Loading artist...</p>
 
+  const popularSongs = artistData.albums.flatMap(album =>
+    album.songs.map(song => ({
+      ...song,
+      albumTitle: album.title // 👈 THÊM albumTitle
+    }))
+  ).sort((a, b) => (b.playCount ?? 0) - (a.playCount ?? 0))
+
   return (
     <div className="page-container">
       <ArtistImageSection
@@ -49,13 +56,7 @@ export default function ArtistsPageById() {
         name={artistData.name}
       />
       <PopularSong
-        songs={artistData.albums.flatMap(album =>
-          album.songs.map(song => ({
-            ...song,
-            album: album.title, // Gán tên album
-          }))
-        )}
-      />
+        songs={popularSongs} />
       <PlaylistSection />
       <TopAlbums albums={artistData.albums} />
       <PopularArtist

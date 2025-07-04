@@ -1,4 +1,3 @@
-import { artistSongs } from "@/data/mockData";
 import { ChevronRight } from "lucide-react";
 import TrendingRow from "../ui/TrendingRow";
 import { Song } from "@/types";
@@ -24,9 +23,8 @@ const PopularSong: React.FC<PopularSongProps> = ({ songs }) => {
                 <div className="trending-header">
                     <div className="header-cell rank">#</div>
                     <div className="header-cell song">Song</div>
-                    <div className="header-cell date">Release Date</div>
                     <div className="header-cell album">Album</div>
-                    <div className="header-cell time">Time</div>
+                    <div className="header-cell play">Số người nghe</div>
                 </div>
 
                 <div className="trending-body">

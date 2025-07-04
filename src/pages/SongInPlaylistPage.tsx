@@ -54,7 +54,7 @@ const SongInPlaylistPage = () => {
       ) : (
         <div className="songs-grid">
           {songs.map((song) => (
-            <SongCard key={song.id} song={song} />
+            <SongCard key={song.id} song={song} playlistId = {Number(id)} />
           ))}
         </div>
       )}
