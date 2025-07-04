@@ -12,7 +12,7 @@ const TrendingSongRow = ({ song, index }: TrendingSongRowProps) => {
     <div className="trending-row">
       <div className="trending-cell index">{index}</div>
       <div className="trending-cell song-details">
-        <img src={song.coverUrl || "/placeholder.svg"} alt={song.title} className="song-thumbnail" />
+        <img src={song.thumbnailUrl || "/placeholder.svg"} alt={song.title} className="song-thumbnail" />
         <div className="song-text">
           <div className="song-title">{song.title}</div>
           <div className="song-artist">{song.artist}</div>
@@ -22,8 +22,8 @@ const TrendingSongRow = ({ song, index }: TrendingSongRowProps) => {
         </button>
       </div>
       <div className="trending-cell release-date">{song.releaseDate}</div>
-      <div className="trending-cell album">{song.album}</div>
-      <div className="trending-cell duration">{song.duration}</div>
+      <div className="trending-cell album">{song.album?.title}</div>
+      <div className="trending-cell duration">{song.playCount}</div>
     </div>
   )
 }

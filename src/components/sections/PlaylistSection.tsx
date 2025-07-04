@@ -3,6 +3,7 @@ import '@/components/sections/PlaylistSection.css';
 import { useAuthStore } from "@/stores/authStore";
 import type { AuthState } from "@/stores/authStore"
 import { useNavigate } from "react-router-dom";
+import { Recycle, Trash } from "lucide-react";
 
 const PlaylistSection = () => {
   const [playlists, setPlaylists] = useState<any[]>([]);
@@ -43,6 +44,36 @@ const PlaylistSection = () => {
       alert("An error occurred while creating playlist.");
     }
   };
+  const handleDelete = async (playlistId: number) => {
+    if (!token) {
+      alert("Bạn cần đăng nhập để thực hiện thao tác này!");
+      return;
+    }
+
+    if (!window.confirm("Bạn chắc chắn muốn xoá playlist này?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/identity/api/playlists/${playlistId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        alert("Xoá playlist thành công!");
+        window.location.reload();
+      } else {
+        alert("Xoá playlist thất bại!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Đã xảy ra lỗi!");
+    }
+  };
+
 
 
   useEffect(() => {
@@ -75,7 +106,7 @@ const PlaylistSection = () => {
 
           return (
             <section
-              key={playlist.id} 
+              key={playlist.id}
               className="playlist-section"
               onClick={() => navigate(`/playlist/${playlist.id}`)}>
               <div className="playlist-card">
@@ -85,6 +116,15 @@ const PlaylistSection = () => {
                     alt={name}
                     className="playlist-image"
                   />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(playlist.id);
+                    }}
+                    className="delete-btn"
+                  >
+                    <Trash size={18} />
+                  </button>
                 </div>
                 <span className="font-medium">{name}</span>
               </div>

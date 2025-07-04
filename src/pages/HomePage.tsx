@@ -38,7 +38,7 @@ const HomePage = () => {
       <WeeklyTopSongs />
       {/* <NewReleaseSongs /> */}
       <TrendingSongs />
-      {/* <PopularArtist title={{ main: "Popular", highlight: "Artists" }} artists={artists} /> */}
+      <PopularArtist title={{ main: "Popular", highlight: "Artists" }} artists={artists} />
     </div>
   )
 }

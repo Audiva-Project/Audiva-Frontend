@@ -3,6 +3,7 @@ import { getListeningHistory } from "@/utils/listeningHistory";
 import SongCard from "@/components/ui/SongCard";
 import "@/pages/HistoryPage.css";
 import { useAuthStore } from "@/stores/authStore";
+import { Album } from "@/types";
 
 type HistoryItem = {
     song: {
@@ -12,8 +13,9 @@ type HistoryItem = {
         thumbnailUrl: string;
         artists: { id: number; name: string }[];
         artist: string;
-        album: string;
         releaseDate: string;
+        album?: Album
+        playCount: number
     };
     listenedAt: string;
 };
@@ -23,6 +25,10 @@ const HistoryPage: React.FC = () => {
     const token = useAuthStore((state) => state.token);
 
     useEffect(() => {
+        if (!token) {
+            localStorage.removeItem("anonymousId");
+            localStorage.removeItem("userId");
+        }
         getListeningHistory().then((data) => {
             console.log("History data:", data);
             setHistory(data)
@@ -45,10 +51,8 @@ const HistoryPage: React.FC = () => {
                                 ...item.song,
                                 artist:
                                     item.song.artist ??
-                                    (item.song.artists && item.song.artists.length > 0
-                                        ? item.song.artists[0].name
-                                        : ""),
-                                album: item.song.album ?? "",
+                                    (item.song.artists?.length > 0 ? item.song.artists[0].name : ""),
+                                albumTitle: item.song.album?.title ?? "",
                                 releaseDate: item.song.releaseDate ?? "",
                             }}
                         />

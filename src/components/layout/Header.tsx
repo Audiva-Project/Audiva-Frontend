@@ -32,7 +32,7 @@ const Header = () => {
 
       <nav className="header-nav">
         <Link to="/about" className="nav-link">
-          About Us
+          Về chúng tôi
         </Link>
         <Link to="/premium" className="nav-link">
           Premium

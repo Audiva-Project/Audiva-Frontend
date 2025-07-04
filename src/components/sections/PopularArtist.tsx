@@ -17,14 +17,14 @@ const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists }) => {
                 <h2 className="section-title">
                     {title.main} <span className="title-highlight">{title.highlight}</span>
                 </h2>
-                <button className="view-all-btn">
+                {/* <button className="view-all-btn">
                     View All
                     <ChevronRight size={16} />
-                </button>
+                </button> */}
             </div>
             <div className="artist-list">
                 {artists.map((artist) => (
-                    <div className="artist-card">
+                    <div className="artist-card" key={artist.id}>
                         <Link to={`/artists/${artist.id}`} className="artist-link">
                             <div className="artist-image-container">
                                 <img
