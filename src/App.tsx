@@ -35,12 +35,10 @@ function App() {
         <Route path="history" element={<HistoryPage />} />
         <Route path="playlist" element={<PlaylistPage />} />
         <Route path="playlist/:id" element={<SongInPlaylistPage />} />
-
-        <Route path="artists" element={<ArtistPage />} />
-        <Route path="/about" element={<AboutPage />} />
         <Route path="/premium" element={<PremiumPage />} />
         <Route path="/thanks" element={<ThanksPage />} />
         <Route path="/profile" element={<UserProfile />} />
+
       </Route>
       <Route path="*" element={<div>404 Not Found</div>} />
     </Routes>

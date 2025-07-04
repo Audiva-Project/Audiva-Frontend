@@ -77,6 +77,7 @@ const Player = ({
           },
         }
       );
+
       if (response.ok) {
         alert("Đã thêm bài hát vào Favorites!");
         setIsLiked(true);
@@ -262,6 +263,12 @@ const Player = ({
     const interval = setInterval(checkTime, 500);
     return () => clearInterval(interval);
   }, [isPremiumUser, currentSong?.premium, isPlaying]);
+
+  // reset trạng thái khi đổi bài
+  useEffect(() => {
+    setIsLiked(false)
+    setIsAddedToPlaylist(false)
+  }, [currentSong])
 
   return (
     <div className="player">

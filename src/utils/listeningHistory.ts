@@ -25,7 +25,6 @@ export async function logListening(songId: number, token: String) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      // ...(token && { Authorization: `Bearer ${token}` }),
     },
     body: JSON.stringify(body),
   });
@@ -34,7 +33,6 @@ export async function logListening(songId: number, token: String) {
 export const getListeningHistory = async (token?: string) => {
   if (token) {
     const res = await fetch("http://localhost:8080/identity/api/history", {
-      // headers: { Authorization: `Bearer ${token}` },
     });
     return await res.json();
   } else {

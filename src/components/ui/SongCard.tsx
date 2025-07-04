@@ -25,7 +25,6 @@ const SongCard = ({
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const token = useAuthStore((state: AuthState) => state.token);
-
   const user = useAuthStore((state) => state.user);
 
   const playlistId = user?.playlists?.find(
@@ -34,9 +33,6 @@ const SongCard = ({
   const favoriteId = user?.playlists?.find(
     (p) => p.name?.toLocaleLowerCase() === "favoritelist"
   )?.id;
-
-  // console.log("playlistId:", playlistId)
-  // console.log("favoriteId:", favoriteId)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

@@ -16,7 +16,6 @@ export interface AuthState {
   premiumStartDate?: string | null;
   premiumEndDate?: string | null;
 
-
   login: (identifier: string, password: string) => Promise<void>
   register: (data: {
     username: string
