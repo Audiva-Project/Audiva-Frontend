@@ -25,7 +25,7 @@ const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists }) => {
       </div>
       <div className="artist-list">
         {artists.map((artist) => (
-          <div className="artist-card">
+          <div key={artist.name} className="artist-card">
             <Link to={`/artists/${artist.id}`} className="artist-link">
               <div className="artist-image-container">
                 <img

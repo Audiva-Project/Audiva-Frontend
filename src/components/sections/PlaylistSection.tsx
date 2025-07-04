@@ -65,7 +65,7 @@ const PlaylistSection = () => {
   }, []);
 
   if (loading) return <p>Loading playlists...</p>;
-  if (!playlists.length) return <p>No playlists found.</p>;
+  // if (!playlists.length) return <p>No playlists found.</p>;
 
   return (
     <div className="playlist-list-section">

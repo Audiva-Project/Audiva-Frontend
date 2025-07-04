@@ -1,5 +1,3 @@
-import { useAuthStore } from "@/stores/authStore";
-
 export function getOrCreateAnonymousId() {
   let id = localStorage.getItem("anonymousId");
   if (!id) {
@@ -13,7 +11,6 @@ export function getOrCreateAnonymousId() {
   return id;
 }
 
-
 export async function logListening(songId: number, token: String) {
   const body: any = { songId };
 
@@ -25,6 +22,7 @@ export async function logListening(songId: number, token: String) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
     },
     body: JSON.stringify(body),
   });
@@ -33,6 +31,7 @@ export async function logListening(songId: number, token: String) {
 export const getListeningHistory = async (token?: string) => {
   if (token) {
     const res = await fetch("http://localhost:8080/identity/api/history", {
+      headers: { Authorization: `Bearer ${token}` },
     });
     return await res.json();
   } else {
