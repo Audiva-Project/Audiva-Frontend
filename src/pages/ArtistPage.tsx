@@ -3,6 +3,7 @@ import "./ArtistPage.css";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import type { AuthState } from "@/stores/authStore";
+import PopularArtist from "@/components/sections/PopularArtist";
 
 type Artist = {
   id: number;
@@ -34,34 +35,7 @@ const ArtistPage: React.FC = () => {
   if (loading) return <div>Loading artists...</div>;
 
   return (
-    <div className="artist-page">
-      <h1 className="section-title">Artists List</h1>
-      <div className="artist-list">
-        {artists.map((artist) => (
-          <div className="artist-card" key={artist.id}>
-            <Link
-              key={artist.id}
-              to={`/artists/${artist.id}`}
-              className="artist-link"
-            >
-              <div className="artist-image-container">
-                <img
-                  src={
-                    artist.avatar
-                      ? `http://localhost:8080/identity/audio/${artist.avatar}`
-                      : "/default-avatar.png"
-                  }
-                  alt={artist.name}
-                  className="artist-image"
-                />
-              </div>
-              <h2 className="artist-name">{artist.name}</h2>
-              <p className="artist-bio">{artist.bio}</p>
-            </Link>
-          </div>
-        ))}
-      </div>
-    </div>
+    <PopularArtist title={{ main: "", highlight: "" }} artists={artists} />
   );
 };
 

@@ -19,13 +19,13 @@ export default function ArtistsPageById() {
     const fetchArtist = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/identity/artists/${id}`,
-          {
-            // headers: {
-            //   "Content-Type": "application/json",
-            //   Authorization: `Bearer ${token}`
-            // }
-          }
+          `http://localhost:8080/identity/artists/${id}`
+          // {
+          //   headers: {
+          //     "Content-Type": "application/json",
+          //     Authorization: `Bearer ${token}`,
+          //   },
+          // }
         );
         if (!response.ok) throw new Error("Network response was not ok");
 
@@ -41,21 +41,23 @@ export default function ArtistsPageById() {
 
   if (!artistData) return <p>Loading artist...</p>;
 
+  const popularSongs = artistData.albums
+    .flatMap((album) =>
+      album.songs.map((song) => ({
+        ...song,
+        albumTitle: album.title, // 👈 THÊM albumTitle
+      }))
+    )
+    .sort((a, b) => (b.playCount ?? 0) - (a.playCount ?? 0));
+
   return (
     <div className="page-container">
       <ArtistImageSection
         imgUrl={`http://localhost:8080/identity/audio/${artistData.avatar}`}
         name={artistData.name}
       />
-      <PopularSong
-        songs={artistData.albums.flatMap((album) =>
-          album.songs.map((song) => ({
-            ...song,
-            album: album.title, // Gán tên album
-          }))
-        )}
-      />
-      <PlaylistSection />
+      <PopularSong songs={popularSongs} />
+      {/* <PlaylistSection /> */}
       <TopAlbums albums={artistData.albums} />
       <PopularArtist
         title={{

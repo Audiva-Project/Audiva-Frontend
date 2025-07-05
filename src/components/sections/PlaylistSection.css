@@ -16,6 +16,7 @@
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
+  position: relative;
 }
 
 .playlist-card:hover {
@@ -45,7 +46,8 @@
 
 .add-playlist-button {
   padding: 8px 16px;
-  background-color: #1db954; /* Spotify green style */
+  background-color: #1db954;
+  /* Spotify green style */
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -55,4 +57,19 @@
 
 .add-playlist-button:hover {
   background-color: #17a74a;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: rgba(255, 0, 0, 0.8);
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./UploadPage.css"; 
+import "./UploadPage.css";
 import { useAuthStore } from "@/stores/authStore";
 import type { AuthState } from "@/stores/authStore"
 
@@ -27,7 +27,7 @@ const UploadPage: React.FC = () => {
       const response = await fetch("http://localhost:8080/identity/api/songs", {
         method: "POST",
         headers: {
-          "Authorization" : `Bearer ${token}`
+          "Authorization": `Bearer ${token}`
         },
         body: formData,
       });
@@ -42,6 +42,19 @@ const UploadPage: React.FC = () => {
       setMessage("An error occurred while uploading.");
     }
   };
+
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="playlist-page">
+        <h1 className="playlist-heading">BÀI HÁT CỦA BẠN</h1>
+        <p className="playlist-message">
+          Bạn cần đăng nhập để đăng tải bài hát của riêng mình
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="upload-container">
@@ -80,10 +93,10 @@ const UploadPage: React.FC = () => {
               type="file"
               accept="image/*"
               onChange={(e) => {
-            if (e.target.files && e.target.files[0]) {
-              // @ts-ignore
-              setThumbnail(e.target.files[0]);
-            }
+                if (e.target.files && e.target.files[0]) {
+                  // @ts-ignore
+                  setThumbnail(e.target.files[0]);
+                }
               }}
             />
           </label>

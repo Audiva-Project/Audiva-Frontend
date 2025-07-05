@@ -37,13 +37,13 @@ const Sidebar = () => {
             <Heart size={20} />
             <span>Playlist</span>
           </Link>
-          <Link to="recently-added" className="nav-item">
-            <Upload size={20} />
-            <span>Bài hát của bạn</span>
-          </Link>
           <Link to="/history" className="nav-item">
             <Clock size={20} />
             <span>Bài hát đã nghe</span>
+          </Link>
+          <Link to="recently-added" className="nav-item">
+            <Upload size={20} />
+            <span>Bài hát của bạn</span>
           </Link>
         </div>
       </nav>
