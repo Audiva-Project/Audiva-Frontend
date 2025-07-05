@@ -55,3 +55,12 @@ export interface Artist {
   avatar: string;
   albums: Album[];
 }
+
+export type Notification = {
+  id: number
+  title: string
+  message: string
+  isRead: boolean
+  readAt: string | null
+  createdDate: string
+}
