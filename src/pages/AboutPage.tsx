@@ -1,97 +1,108 @@
-import Card from "@/components/ui/Card"
-import { Users, Target, Award } from "lucide-react"
-import "./AboutPage.css"
+import { Music, Users, Heart } from "lucide-react";
+import "./AboutPage.css";
 
 const AboutPage = () => {
   const values = [
     {
-      icon: <Target className="value-icon" />,
+      icon: <Music className="about-value-icon" />,
       title: "Sứ mệnh",
-      description: "Cung cấp giải pháp công nghệ tốt nhất để giúp doanh nghiệp phát triển bền vững.",
+      description:
+        "Kết nối mọi người thông qua âm nhạc và tạo ra những trải nghiệm âm nhạc tuyệt vời nhất.",
     },
     {
-      icon: <Users className="value-icon" />,
+      icon: <Users className="about-value-icon" />,
       title: "Tầm nhìn",
-      description: "Trở thành đối tác công nghệ đáng tin cậy hàng đầu trong khu vực.",
+      description:
+        "Trở thành nền tảng âm nhạc hàng đầu, nơi nghệ sĩ và người yêu nhạc gặp gỡ.",
     },
     {
-      icon: <Award className="value-icon" />,
+      icon: <Heart className="about-value-icon" />,
       title: "Giá trị",
-      description: "Chất lượng, đổi mới và cam kết phục vụ khách hàng tốt nhất.",
+      description:
+        "Đam mê âm nhạc, sáng tạo không giới hạn và kết nối cộng đồng âm nhạc.",
     },
-  ]
+  ];
 
   return (
     <div className="about-page">
-      <div className="container">
+      <div className="about-container">
         {/* Header */}
-        <div className="page-header">
-          <h1 className="page-title">Về chúng tôi</h1>
-          <p className="page-description">Tìm hiểu thêm về Audiva và hành trình phát triển của chúng tôi</p>
+        <div className="about-page-header">
+          <h1 className="about-page-title">Về Audiva</h1>
+          <p className="about-page-description">
+            Khám phá câu chuyện đằng sau nền tảng âm nhạc kết nối triệu trái tim
+          </p>
         </div>
 
         {/* Story Section */}
-        <section className="story-section">
-          <div className="story-content">
-            <div className="story-text">
-              <h2 className="story-title">Câu chuyện của chúng tôi</h2>
-              <p className="story-paragraph">
-                Audiva được thành lập với mục tiêu mang đến những giải pháp công nghệ hiện đại và hiệu quả cho các doanh
-                nghiệp. Chúng tôi tin rằng công nghệ có thể thay đổi cách thức hoạt động và phát triển của mọi tổ chức.
+        <section className="about-story-section">
+          <div className="about-story-content">
+            <div className="about-story-text">
+              <h2 className="about-story-title">Câu chuyện của chúng tôi</h2>
+              <p className="about-story-paragraph">
+                Audiva ra đời từ niềm đam mê âm nhạc và mong muốn tạo ra một
+                không gian nơi mọi người có thể khám phá, chia sẻ và tận hưởng
+                âm nhạc một cách trọn vẹn nhất.
               </p>
-              <p className="story-paragraph">
-                Với đội ngũ chuyên gia giàu kinh nghiệm và đam mê công nghệ, chúng tôi cam kết cung cấp những sản phẩm
-                và dịch vụ chất lượng cao, đáp ứng nhu cầu đa dạng của khách hàng.
+              <p className="about-story-paragraph">
+                Chúng tôi tin rằng âm nhạc có sức mạnh kết nối con người, vượt
+                qua mọi rào cản về ngôn ngữ, văn hóa và khoảng cách. Với Audiva,
+                chúng tôi mong muốn mang đến trải nghiệm âm nhạc tuyệt vời nhất
+                cho mọi người.
               </p>
             </div>
-            <div className="story-image">
-              <img src="/placeholder.svg?height=400&width=500" alt="Our story" className="story-img" />
+            <div className="about-story-image">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0657/3100/2634/files/papierpeintmusique-casqueaudio.png?v=1715586351"
+                alt="Audiva music story"
+                className="about-story-img"
+              />
             </div>
           </div>
         </section>
 
         {/* Values Section */}
-        <section className="values-section">
-          <h2 className="section-title">Giá trị cốt lõi</h2>
-          <div className="values-grid">
+        <section className="about-values-section">
+          <h2 className="about-section-title">Giá trị cốt lõi</h2>
+          <div className="about-values-grid">
             {values.map((value, index) => (
-              <Card key={index} className="value-card">
-                <div className="value-content">
+              <div key={index} className="about-value-card">
+                <div className="about-value-content">
                   {value.icon}
-                  <h3 className="value-title">{value.title}</h3>
-                  <p className="value-description">{value.description}</p>
+                  <h3 className="about-value-title">{value.title}</h3>
+                  <p className="about-value-description">{value.description}</p>
                 </div>
-              </Card>
+              </div>
             ))}
           </div>
         </section>
 
         {/* Stats Section */}
-        <section className="stats-section">
-          <Card className="stats-card">
-            <div className="stats-grid">
-              <div className="stat-item">
-                <div className="stat-number">100+</div>
-                <div className="stat-label">Khách hàng</div>
+        <section className="about-stats-section">
+          <div className="about-stats-card">
+            <div className="about-stats-grid">
+              <div className="about-stat-item">
+                <div className="about-stat-number">1M+</div>
+                <div className="about-stat-label">Người dùng</div>
               </div>
-              <div className="stat-item">
-                <div className="stat-number">50+</div>
-                <div className="stat-label">Dự án</div>
+              <div className="about-stat-item">
+                <div className="about-stat-number">50K+</div>
+                <div className="about-stat-label">Bài hát</div>
               </div>
-              <div className="stat-item">
-                <div className="stat-number">5+</div>
-                <div className="stat-label">Năm kinh nghiệm</div>
+              <div className="about-stat-item">
+                <div className="about-stat-number">1K+</div>
+                <div className="about-stat-label">Nghệ sĩ</div>
               </div>
-              <div className="stat-item">
-                <div className="stat-number">24/7</div>
-                <div className="stat-label">Hỗ trợ</div>
+              <div className="about-stat-item">
+                <div className="about-stat-number">24/7</div>
+                <div className="about-stat-label">Âm nhạc</div>
               </div>
             </div>
-          </Card>
+          </div>
         </section>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AboutPage
+export default AboutPage;

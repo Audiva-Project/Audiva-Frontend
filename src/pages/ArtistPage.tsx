@@ -7,7 +7,7 @@ import type { AuthState } from "@/stores/authStore";
 type Artist = {
   id: number;
   name: string;
-  avatarUrl?: string;
+  avatar?: string;
   bio?: string;
 };
 
@@ -47,7 +47,9 @@ const ArtistPage: React.FC = () => {
               <div className="artist-image-container">
                 <img
                   src={
-                    artist.avatarUrl ? artist.avatarUrl : "/default-avatar.png"
+                    artist.avatar
+                      ? `http://localhost:8080/identity/audio/${artist.avatar}`
+                      : "/default-avatar.png"
                   }
                   alt={artist.name}
                   className="artist-image"

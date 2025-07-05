@@ -8,6 +8,8 @@ const PlaylistSection = () => {
   const [playlists, setPlaylists] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const token = useAuthStore((state: AuthState) => state.token);
+  console.log("Token in PlaylistSection:", token);
+
   const navigate = useNavigate();
   const handleAddNewPlaylist = async () => {
     const name = prompt("Enter new playlist name:");

@@ -28,8 +28,8 @@ const HistoryPage: React.FC = () => {
       setHistory(data);
     });
   }, [token]);
-  localStorage.removeItem("anonymousId");
-  localStorage.removeItem("userId");
+  //   localStorage.removeItem("anonymousId");
+  //   localStorage.removeItem("userId");
 
   return (
     <div className="history-page">

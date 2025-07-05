@@ -24,11 +24,14 @@ const SongInPlaylistPage = () => {
 
     const fetchSongsInPlaylist = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/identity/api/playlists/${id}/songs`, {
-          headers: {
-            Authorization: `Bearer ${token}`
+        const response = await fetch(
+          `http://localhost:8080/identity/api/playlists/${id}/songs`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        });
+        );
         if (!response.ok) throw new Error("Failed to fetch songs");
 
         const data = await response.json();

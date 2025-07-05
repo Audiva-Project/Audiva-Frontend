@@ -35,6 +35,7 @@ export const getListeningHistory = async (token?: string) => {
     });
     return await res.json();
   } else {
+    console.log("Fetching history for anonymous user");
     const anonymousId = localStorage.getItem("anonymousId");
     if (!anonymousId) return [];
     const res = await fetch(`http://localhost:8080/identity/api/history?anonymousId=${anonymousId}`);
