@@ -57,9 +57,9 @@ export const useAuthStore = create<AuthState>()(
 
             const data = response.data as { result: { token: string } }
             const token = data.result.token
-            // console.log("Token received:", token)
+            console.log("Token received:", token)
 
-            // localStorage.setItem(TOKEN_KEY, token)
+            localStorage.setItem(TOKEN_KEY, token)
 
             set({
               token,
@@ -152,13 +152,13 @@ export const useAuthStore = create<AuthState>()(
 
         logout: async() => {
           try {
-            // const token = useAuthStore.getState().token
+            const token = useAuthStore.getState().token
 
-            // if (token) {
-            //   await api.post("/identity/auth/logout", { token })
-            // }
+            if (token) {
+              await api.post("/identity/auth/logout", { token })
+            }
 
-            // localStorage.removeItem(TOKEN_KEY)
+            localStorage.removeItem(TOKEN_KEY)
 
             set({
               user: null,
@@ -168,8 +168,6 @@ export const useAuthStore = create<AuthState>()(
             })
           } catch (error) {
             console.error("Logout failed:", error)
-
-            // localStorage.removeItem(TOKEN_KEY)
 
             set({
               user: null,

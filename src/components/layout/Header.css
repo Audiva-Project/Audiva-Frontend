@@ -184,6 +184,28 @@
   margin: 0;
 }
 
+.header-modal-title-with-back {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.header-back-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+  font-size: var(--font-size-lg);
+}
+
+.header-back-btn:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-hover);
+}
+
 .header-modal-close {
   background: none;
   border: none;
@@ -219,6 +241,7 @@
   border-radius: var(--radius-md);
   transition: background-color var(--transition);
   cursor: pointer;
+  position: relative;
 }
 
 .header-notification-item:hover {
@@ -231,6 +254,7 @@
 
 .header-notification-content {
   flex: 1;
+  min-width: 0;
 }
 
 .header-notification-title {
@@ -250,6 +274,40 @@
 .header-notification-time {
   font-size: var(--font-size-xs);
   color: var(--text-muted);
+}
+
+.header-notification-actions {
+  display: flex;
+  gap: var(--space-1);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.header-notification-item:hover .header-notification-actions {
+  opacity: 1;
+}
+
+.header-notification-action-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-notification-action-btn:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-hover);
+}
+
+.header-notification-delete-btn:hover {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
 }
 
 .header-notification-dot {
@@ -272,6 +330,38 @@
   border-top: 1px solid var(--border-color);
 }
 
+/* Notification Details Styles */
+.header-notification-details {
+  padding: var(--space-4);
+}
+
+.header-notification-details-header {
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-notification-details-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.header-notification-details-time {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.header-notification-details-content {
+  line-height: 1.6;
+}
+
+.header-notification-details-content p {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .header-nav {
     display: none;
@@ -284,5 +374,9 @@
   .header-modal-content {
     margin: var(--space-4);
     max-width: calc(100vw - 2rem);
+  }
+
+  .header-notification-actions {
+    opacity: 1;
   }
 }
