@@ -17,6 +17,13 @@ const Header = () => {
     navigate("/login") // hoặc "/" tuỳ theo UX
   }
 
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchQuery.trim() !== "") {
+      navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`)
+      setSearchQuery("")
+    }
+  }
+
   return (
     <header className="header">
       <div className="search-container">
@@ -27,6 +34,7 @@ const Header = () => {
           className="search-input"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleSearch}
         />
       </div>
 

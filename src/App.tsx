@@ -16,6 +16,7 @@ import SongInPlaylistPage from "./pages/SongInPlaylistPage";
 import PremiumPage from "./pages/PremiumPage";
 import ThanksPage from "./pages/thanks-page";
 import UserProfile from "./components/UserProfile";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
         <Route path="/premium" element={<PremiumPage />} />
         <Route path="/thanks" element={<ThanksPage />} />
         <Route path="/profile" element={<UserProfile />} />
-
+        <Route path="/search" element={<SearchPage />} />
       </Route>
       <Route path="*" element={<div>404 Not Found</div>} />
     </Routes>

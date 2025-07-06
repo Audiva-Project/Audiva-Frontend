@@ -57,7 +57,7 @@ export default function ArtistsPageById() {
       />
       <PopularSong
         songs={popularSongs} />
-      <PlaylistSection />
+      {/* <PlaylistSection /> */}
       <TopAlbums albums={artistData.albums} />
       <PopularArtist
         title={{

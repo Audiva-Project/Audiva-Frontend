@@ -26,8 +26,8 @@ const HistoryPage: React.FC = () => {
 
     useEffect(() => {
         if (!token) {
-            localStorage.removeItem("anonymousId");
-            localStorage.removeItem("userId");
+            // localStorage.removeItem("anonymousId");
+            // localStorage.removeItem("userId");
         }
         getListeningHistory().then((data) => {
             console.log("History data:", data);
