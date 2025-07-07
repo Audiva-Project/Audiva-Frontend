@@ -25,17 +25,11 @@ const HistoryPage: React.FC = () => {
   const token = useAuthStore((state) => state.token);
 
   useEffect(() => {
-    if (!token) {
-      localStorage.removeItem("anonymousId");
-      localStorage.removeItem("userId");
-    }
-    getListeningHistory().then((data) => {
+    getListeningHistory(token ?? undefined).then((data) => {
       console.log("History data:", data);
       setHistory(data);
     });
   }, [token]);
-  // localStorage.removeItem("anonymousId");
-  // localStorage.removeItem("userId");
 
   return (
     <div className="history-page">

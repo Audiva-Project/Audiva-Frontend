@@ -1,12 +1,13 @@
 export function getOrCreateAnonymousId() {
   let id = localStorage.getItem("anonymousId");
+  console.log("Anonymous ID:", id);
   if (!id) {
     id = crypto.randomUUID();
     localStorage.setItem("anonymousId", id);
     document.cookie = `anonymousId=${id}; path=/;`;
-    console.log("Created new anonymousId:", id);
+    // console.log("Created new anonymousId:", id);
   } else {
-    console.log("Found existing anonymousId:", id);
+    // console.log("Found existing anonymousId:", id);
   }
   return id;
 }
@@ -29,6 +30,7 @@ export async function logListening(songId: number, token: String) {
 }
 
 export const getListeningHistory = async (token?: string) => {
+  console.log("Fetching listening history", token);
   if (token) {
     const res = await fetch("http://localhost:8080/identity/api/history", {
       headers: { Authorization: `Bearer ${token}` },
@@ -38,7 +40,9 @@ export const getListeningHistory = async (token?: string) => {
     console.log("Fetching history for anonymous user");
     const anonymousId = localStorage.getItem("anonymousId");
     if (!anonymousId) return [];
-    const res = await fetch(`http://localhost:8080/identity/api/history?anonymousId=${anonymousId}`);
+    const res = await fetch(
+      `http://localhost:8080/identity/api/history?anonymousId=${anonymousId}`
+    );
     return await res.json();
   }
 };

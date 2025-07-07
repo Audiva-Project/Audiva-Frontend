@@ -9,7 +9,6 @@ const PlaylistSection = () => {
   const [playlists, setPlaylists] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const token = useAuthStore((state: AuthState) => state.token);
-  console.log("Token in PlaylistSection:", token);
 
   const navigate = useNavigate();
   const handleAddNewPlaylist = async () => {
@@ -62,12 +61,15 @@ const PlaylistSection = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/identity/api/playlists/${playlistId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8080/identity/api/playlists/${playlistId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         alert("Xoá playlist thành công!");
@@ -80,7 +82,6 @@ const PlaylistSection = () => {
       alert("Đã xảy ra lỗi!");
     }
   };
-
 
   useEffect(() => {
     // const token = localStorage.getItem('access_token');
