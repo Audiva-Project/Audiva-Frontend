@@ -85,6 +85,8 @@ const Header = () => {
   };
 
   useEffect(() => {
+    // if user exists, fetch notifications
+    if (!user) return;
     const fetchNotifications = async () => {
       try {
         const res = await api.get("/identity/api/notifications/me");
