@@ -55,7 +55,9 @@ const TrendingRow = ({ song, rank }: TrendingRowProps) => {
         />
         <div className="song-details">
           <div className="song-title">{song.title}</div>
-          <div className="song-artist">{song.artist}</div>
+          <div className="song-artist">
+            {song.artist || song.artists?.map(a => a.name).join(", ") || "Unknown Artist"}
+          </div>
         </div>
         <button className="play-btn-small" onClick={handlePlayClick}>
           {isThisPlaying ? (

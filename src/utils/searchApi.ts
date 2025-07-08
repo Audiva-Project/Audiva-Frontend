@@ -23,7 +23,6 @@ export const searchArtists = async (keyword: string) => {
   return response.data
 }
 
-// ✅ Chỉ tìm ALBUM
 export const searchAlbums = async (keyword: string) => {
   const response = await axios.get(`${BASE_URL}/albums`, {
     params: { title: keyword }

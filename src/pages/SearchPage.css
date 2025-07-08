@@ -22,6 +22,7 @@
   font-weight: bold;
   cursor: pointer;
   border-bottom: 2px solid transparent;
+  color: #f9f9f9;
 }
 
 .tabs button.active {

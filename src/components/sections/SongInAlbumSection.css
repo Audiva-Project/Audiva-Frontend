@@ -1,0 +1,15 @@
+.song-in-album-section {
+  margin: 0 auto;
+}
+
+.album-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.song-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

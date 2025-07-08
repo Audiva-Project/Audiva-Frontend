@@ -73,3 +73,12 @@
 .delete-btn:hover {
   background: rgba(255, 0, 0, 0.8);
 }
+
+.album-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.album-link:hover {
+  text-decoration: none;
+}

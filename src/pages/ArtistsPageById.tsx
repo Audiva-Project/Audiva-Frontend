@@ -45,7 +45,7 @@ export default function ArtistsPageById() {
   const popularSongs = artistData.albums.flatMap(album =>
     album.songs.map(song => ({
       ...song,
-      albumTitle: album.title // 👈 THÊM albumTitle
+      albumTitle: album.title
     }))
   ).sort((a, b) => (b.playCount ?? 0) - (a.playCount ?? 0))
 
@@ -57,7 +57,6 @@ export default function ArtistsPageById() {
       />
       <PopularSong
         songs={popularSongs} />
-      {/* <PlaylistSection /> */}
       <TopAlbums albums={artistData.albums} />
       <PopularArtist
         title={{
