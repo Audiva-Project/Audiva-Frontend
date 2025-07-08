@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { MoreHorizontal} from "lucide-react";
 import type { Song } from "@/types";
 import api from "@/utils/api";
 import { useOutletContext } from "react-router-dom";
-import "./SuggestSongSection.css";
+import { useAuthStore } from "@/stores/authStore";
+import "@/components/sections/SuggestSongSection.css";
 
 interface OutletContextType {
   currentSong: Song | null;
@@ -13,19 +15,19 @@ interface OutletContextType {
   setIsPlaying: (playing: boolean) => void;
 }
 
-const SuggetSongSection = () => {
+const SuggestSongSection = () => {
   const [allSongs, setAllSongs] = useState<Song[]>([]);
   const [suggestedSongs, setSuggestedSongs] = useState<Song[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showMenuId, setShowMenuId] = useState<number | null>(null);
 
   const { currentSong, setCurrentSong, isPlaying, setIsPlaying } =
     useOutletContext<OutletContextType>();
 
-  const getRandomSongs = (songs: Song[]) => {
-    const shuffled = [...songs].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 9);
-  };
+  const user = useAuthStore((state) => state.user);
+  const token = useAuthStore((state) => state.token);
 
+  // Fetch all songs
   const fetchAllSongs = async () => {
     let all: Song[] = [];
     let page = 0;
@@ -34,15 +36,14 @@ const SuggetSongSection = () => {
     while (hasMore) {
       const response = await api.get(`/identity/api/songs?page=${page}&size=50`);
       const data = response.data as { content: Song[]; last: boolean };
-      const pageSongs: Song[] = Array.isArray(data.content) ? data.content : [];
-      all = all.concat(pageSongs);
+      all = all.concat(data.content || []);
       hasMore = !data.last;
       page++;
     }
-
     return all;
   };
 
+  // Load all songs once
   useEffect(() => {
     const loadSongs = async () => {
       try {
@@ -55,9 +56,21 @@ const SuggetSongSection = () => {
         setLoading(false);
       }
     };
-
     loadSongs();
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setShowMenuId(null);
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  const getRandomSongs = (songs: Song[]) => {
+    const shuffled = [...songs].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 9);
+  };
 
   const handleRefresh = () => {
     if (allSongs.length > 0) {
@@ -81,6 +94,35 @@ const SuggetSongSection = () => {
     }
   };
 
+  const handleAddTo = async (playlistId: number, songId: number) => {
+    console.log("Add to:", playlistId, songId);
+    if (!token) {
+      alert("Bạn cần đăng nhập để sử dụng tính năng này!");
+      return;
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:8080/identity/api/playlists/${playlistId}/add/${songId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.ok) {
+        alert("Bài hát được thêm thành công!");
+      } else {
+        alert("Bài hát đã tồn tại trong playlist.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred.");
+    } finally {
+      setShowMenuId(null);
+    }
+  };
 
   return (
     <section className="suggest-section">
@@ -97,30 +139,67 @@ const SuggetSongSection = () => {
         <p>Không có bài hát gợi ý.</p>
       ) : (
         <div className="suggest-list">
-          {suggestedSongs.map((song) => (
-            <div
-              key={song.id}
-              className={`suggest-item ${currentSong?.id === song.id ? "playing" : ""
-                }`}
-              onClick={() => handlePlay(song)}
-            >
-              <img
-                className="suggest-thumb"
-                src={`http://localhost:8080/identity/audio/${song.thumbnailUrl}`}
-                alt={song.title}
-              />
-              <div className="suggest-info">
-                <div className="suggest-song-title">{song.title}</div>
-                <div className="suggest-song-artist">
-                  {song.artists.map((a) => a.name).join(", ")}
+          {suggestedSongs.map((song) => {
+            const isCurrent = currentSong?.id === song.id;
+            const isThisPlaying = isCurrent && isPlaying;
+
+            return (
+              <div key={song.id} className="suggest-item">
+                <img
+                  className="suggest-thumb"
+                  src={`http://localhost:8080/identity/audio/${song.thumbnailUrl}`}
+                  alt={song.title}
+                  onClick={() => handlePlay(song)}
+                />
+                <div className="suggest-info" onClick={() => handlePlay(song)}>
+                  <div className="suggest-song-title">{song.title}</div>
+                  <div className="suggest-song-artist">
+                    {song.artists.map((a) => a.name).join(", ")}
+                  </div>
+                </div>
+
+                <div className="suggest-actions">
+                  <button
+                    className="more-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowMenuId(showMenuId === song.id ? null : song.id);
+                    }}
+                  >
+                    <MoreHorizontal size={18} />
+                  </button>
+
+                  {showMenuId === song.id && (
+                    <div
+                      className="options-popup"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <ul>
+                        {(user?.playlists || []).map((playlist) => (
+                          <li
+                            key={playlist.id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddTo(playlist.id, song.id);
+                            }}
+                          >
+                            Add to {playlist.name}
+                          </li>
+                        ))}
+                        {(!user?.playlists || user.playlists.length === 0) && (
+                          <li>(Chưa có playlist)</li>
+                        )}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>
   );
 };
 
-export default SuggetSongSection;
+export default SuggestSongSection;

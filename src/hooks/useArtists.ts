@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react"
 import api from "@/utils/api"
-
-export type Artist = {
-  id: string
-  name: string
-}
+import { Artist } from "@/types";
 
 export function useArtists() {
-  const [artists, setArtists] = useState<Artist[]>([])
+  const [artists, setArtists] = useState<Artist[]>([]);
 
   useEffect(() => {
     const fetchArtists = async () => {

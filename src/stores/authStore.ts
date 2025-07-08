@@ -24,8 +24,8 @@ export interface AuthState {
     lastName: string;
     dob: string;
   }) => Promise<void>;
-  logout: () => void;
   refreshUser: () => Promise<void>;
+  logout: () => Promise<void>;
 
   setUser: (user: User) => void;
   setToken: (token: string) => void;
@@ -60,10 +60,30 @@ export const useAuthStore = create<AuthState>()(
             const data = response.data as { result: { token: string } };
             const token = data.result.token;
 
+            localStorage.setItem(TOKEN_KEY, token);
+
             set({
               token,
               isAuthenticated: true,
             });
+
+            const anonymousId = localStorage.getItem("anonymousId");
+            if (anonymousId) {
+              try {
+                await api.post(
+                  "/identity/api/history/merge",
+                  { anonymousId },
+                  {
+                    headers: { Authorization: `Bearer ${token}` },
+                  }
+                );
+                localStorage.removeItem("anonymousId");
+                document.cookie = "anonymousId=; Max-Age=0; path=/";
+                console.log("Merged anonymous history into user account");
+              } catch (err) {
+                console.warn("Failed to merge anonymous history", err);
+              }
+            }
 
             await get().refreshUser();
             set({ isLoading: false });
@@ -137,113 +157,60 @@ export const useAuthStore = create<AuthState>()(
 
             const premiumData = premiumRes.data as PremiumData;
 
-            const isPremium = !!(
-              premiumData &&
-              premiumData.status === "SUCCESS" &&
-              premiumData.endDate &&
-              new Date(premiumData.endDate) > new Date()
-            );
+            const isPremium =
+              !!(
+                premiumData &&
+                premiumData.status === "SUCCESS" &&
+                premiumData.endDate &&
+                new Date(premiumData.endDate) > new Date()
+              );
 
-            set((state: any) => ({
-              user: state.user,
+            set({
+              user,
               premium: isPremium,
               premiumStartDate: premiumData?.startDate ?? null,
               premiumEndDate: premiumData?.endDate ?? null,
-              isLoading: false,
-            }));
-          } catch (error: any) {
-            let message = "Đăng nhập không thành công";
-            if (error.response?.status === 401) {
-              message = "Sai tên đăng nhập hoặc mật khẩu";
-            } else if (error.response?.data?.message) {
-              message = error.response.data.message;
-            }
-
-            set({
-              error: message,
-              isLoading: false,
+              isAuthenticated: true,
             });
-            throw new Error(message);
-          }
-        },
-
-        register: async ({ username, password, firstName, lastName, dob }) => {
-          set({ isLoading: true, error: null });
-          try {
-            await api.post("identity/users", {
-              username,
-              password,
-              firstName,
-              lastName,
-              dob,
-            });
-
-            await useAuthStore.getState().login(username, password);
-            set({ isLoading: false });
-          } catch (error: any) {
-            let message = "Registration failed";
-            if (error.response?.data?.message) {
-              message = error.response.data.message;
-            }
-
-            set({
-              error: message,
-              isLoading: false,
-            });
-            throw new Error(message);
+          } catch (error) {
+            console.error("Failed to refresh user:", error);
+            set({ user: null, token: null, isAuthenticated: false });
           }
         },
 
         logout: async () => {
           try {
-            const token = useAuthStore.getState().token;
-
+            const token = get().token;
             if (token) {
               await api.post("/identity/auth/logout", { token });
             }
-
-            localStorage.removeItem(TOKEN_KEY);
-
-            set({
-              user: null,
-              token: null,
-              isAuthenticated: false,
-              isLoading: false,
-            });
           } catch (error) {
-            console.error("Logout failed:", error);
-
-            set({
-              user: null,
-              token: null,
-              isAuthenticated: false,
-              isLoading: false,
-            });
+            console.warn("Logout API call failed", error);
           }
-        },
 
-        setUser: (user) => set(() => ({ user, isAuthenticated: true })),
-        setToken: (token) => {
-          // localStorage.setItem(TOKEN_KEY, token)
-          set(() => ({ token }));
-        },
-        clearUser: () => {
-          // localStorage.removeItem(TOKEN_KEY)
-          set(() => ({
-            user: null,
-            token: null,
-            isAuthenticated: false,
-          }));
-        },
+          localStorage.removeItem(TOKEN_KEY);
 
-        setUser: (user) => set({ user, isAuthenticated: true }),
-        setToken: (token) => set({ token }),
-        clearUser: () =>
           set({
             user: null,
             token: null,
             isAuthenticated: false,
-          }),
+            isLoading: false,
+          });
+        },
+
+        setUser: (user) => set({ user, isAuthenticated: true }),
+        setToken: (token) => {
+          localStorage.setItem(TOKEN_KEY, token);
+          set({ token });
+        },
+        clearUser: () => {
+          localStorage.removeItem(TOKEN_KEY);
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+          });
+        },
       }),
       {
         name: "auth-storage",

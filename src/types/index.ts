@@ -13,7 +13,7 @@ export interface Song {
     id: number;
     name: string;
   }[];
-  premium: boolean
+  premium?: boolean
 }
 
 export interface Playlist {

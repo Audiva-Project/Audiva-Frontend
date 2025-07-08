@@ -1,9 +1,7 @@
 import TrendingSongs from "@/components/sections/TrendingSongs"
 import "./HomePage.css"
 import PopularArtist from "@/components/sections/PopularArtist"
-import api from "@/utils/api"
-import { useState, useEffect } from "react"
-import SuggetSongSection from "@/components/sections/SuggestSongSection"
+import SuggestSongSection from "@/components/sections/SuggestSongSection"
 import TopAlbums from "@/components/sections/TopAlbums"
 import { useArtists } from "@/hooks/useArtists"
 import { useAlbums } from "@/hooks/useAlbums"
@@ -15,7 +13,7 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
-      <SuggetSongSection />
+      <SuggestSongSection />
       <TopAlbums
         albums={albums}
         title="Nhạc Việt" />
@@ -23,7 +21,8 @@ const HomePage = () => {
         albums={albums}
         title="Top 100" />
       <TrendingSongs />
-      <PopularArtist title={{ main: "Popular", highlight: "Artists" }} artists={artists} />
+      {/* <PopularArtist title={{ main: "Popular", highlight: "Artists" }}
+        artists={artists} /> */}
     </div>
   )
 }
