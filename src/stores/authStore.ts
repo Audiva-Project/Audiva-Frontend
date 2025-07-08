@@ -137,34 +137,103 @@ export const useAuthStore = create<AuthState>()(
 
             const premiumData = premiumRes.data as PremiumData;
 
-            const isPremium =
-              !!(
-                premiumData &&
-                premiumData.status === "SUCCESS" &&
-                premiumData.endDate &&
-                new Date(premiumData.endDate) > new Date()
-              );
+            const isPremium = !!(
+              premiumData &&
+              premiumData.status === "SUCCESS" &&
+              premiumData.endDate &&
+              new Date(premiumData.endDate) > new Date()
+            );
 
-            set({
-              user,
+            set((state: any) => ({
+              user: state.user,
               premium: isPremium,
               premiumStartDate: premiumData?.startDate ?? null,
               premiumEndDate: premiumData?.endDate ?? null,
-              isAuthenticated: true,
+              isLoading: false,
+            }));
+          } catch (error: any) {
+            let message = "Đăng nhập không thành công";
+            if (error.response?.status === 401) {
+              message = "Sai tên đăng nhập hoặc mật khẩu";
+            } else if (error.response?.data?.message) {
+              message = error.response.data.message;
+            }
+
+            set({
+              error: message,
+              isLoading: false,
             });
-          } catch (error) {
-            console.error("Failed to refresh user:", error);
-            set({ user: null, token: null, isAuthenticated: false });
+            throw new Error(message);
           }
         },
 
-        logout: () => {
-          set({
+        register: async ({ username, password, firstName, lastName, dob }) => {
+          set({ isLoading: true, error: null });
+          try {
+            await api.post("identity/users", {
+              username,
+              password,
+              firstName,
+              lastName,
+              dob,
+            });
+
+            await useAuthStore.getState().login(username, password);
+            set({ isLoading: false });
+          } catch (error: any) {
+            let message = "Registration failed";
+            if (error.response?.data?.message) {
+              message = error.response.data.message;
+            }
+
+            set({
+              error: message,
+              isLoading: false,
+            });
+            throw new Error(message);
+          }
+        },
+
+        logout: async () => {
+          try {
+            const token = useAuthStore.getState().token;
+
+            if (token) {
+              await api.post("/identity/auth/logout", { token });
+            }
+
+            localStorage.removeItem(TOKEN_KEY);
+
+            set({
+              user: null,
+              token: null,
+              isAuthenticated: false,
+              isLoading: false,
+            });
+          } catch (error) {
+            console.error("Logout failed:", error);
+
+            set({
+              user: null,
+              token: null,
+              isAuthenticated: false,
+              isLoading: false,
+            });
+          }
+        },
+
+        setUser: (user) => set(() => ({ user, isAuthenticated: true })),
+        setToken: (token) => {
+          // localStorage.setItem(TOKEN_KEY, token)
+          set(() => ({ token }));
+        },
+        clearUser: () => {
+          // localStorage.removeItem(TOKEN_KEY)
+          set(() => ({
             user: null,
             token: null,
             isAuthenticated: false,
-            isLoading: false,
-          });
+          }));
         },
 
         setUser: (user) => set({ user, isAuthenticated: true }),

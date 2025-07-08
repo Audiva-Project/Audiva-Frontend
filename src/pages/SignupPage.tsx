@@ -95,7 +95,7 @@ const SignupPage = () => {
             </div>
           </div>
 
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="dob">Ngày sinh</label>
             <input
               type="date"
@@ -105,7 +105,7 @@ const SignupPage = () => {
               className="form-input"
               required
             />
-          </div>
+          </div> */}
 
           <div className="form-group">
             <label htmlFor="password">Mật khẩu</label>
