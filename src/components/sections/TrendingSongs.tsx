@@ -5,9 +5,15 @@ import api from "@/utils/api"
 
 import type { Song } from "@/types"
 import { useEffect, useState } from "react"
+import { useOutletContext } from "react-router-dom"
+
+interface LayoutContext {
+  songs: Song[]
+  setSongs: React.Dispatch<React.SetStateAction<Song[]>>
+}
 
 const TrendingSongs = () => {
-  const [songs, setSongs] = useState<Song[]>([])
+  const { songs, setSongs } = useOutletContext<LayoutContext>();
 
   useEffect(() => {
     const fetchTrendingSongs = async () => {
@@ -27,7 +33,7 @@ const TrendingSongs = () => {
     }
 
     fetchTrendingSongs()
-  }, [])
+  }, [setSongs])
 
   return (
     <section className="trending-section">

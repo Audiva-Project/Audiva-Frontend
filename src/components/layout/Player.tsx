@@ -255,7 +255,7 @@ const Player = ({
   }, [currentSong]);
 
   useEffect(() => {
-    console.log("Current song changed:", currentSong);
+    // console.log("Current song changed:", currentSong);
     if (!audioRef.current || isPremiumUser || !currentSong?.premium) return;
     const checkTime = () => {
       if (audioRef.current && audioRef.current.currentTime >= 30) {
