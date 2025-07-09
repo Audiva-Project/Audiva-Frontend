@@ -255,7 +255,7 @@ const Player = ({
   }, [currentSong]);
 
   useEffect(() => {
-    console.log("Current song changed:", currentSong);
+    // console.log("Current song changed:", currentSong);
     if (!audioRef.current || isPremiumUser || !currentSong?.premium) return;
     const checkTime = () => {
       if (audioRef.current && audioRef.current.currentTime >= 30) {
@@ -380,12 +380,13 @@ const Player = ({
         <button className="karaoke-btn" onClick={() => setShowLyrics(!showLyrics)}>
           <Mic size={18} color={showLyrics ? "#1db954" : "white"} />
         </button>
-        {showLyrics && (
+        {showLyrics && currentSong && lyrics.length > 0 && (
           <KaraokeOverlay
             song={currentSong}
             lyrics={lyrics}
             activeIndex={activeIndex}
             onClose={() => setShowLyrics(false)}
+            audioRef={audioRef}
           />
         )}
 

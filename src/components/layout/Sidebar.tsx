@@ -6,7 +6,9 @@ const Sidebar = () => {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <h1 className="logo">Audiva</h1>
+        <Link to="/" style={{textDecoration: "none"}} >
+          <h1 className="logo">Audiva</h1>
+        </Link>
       </div>
 
       <nav className="sidebar-nav">
