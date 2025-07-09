@@ -57,7 +57,7 @@ const TrendingSongs = () => {
 
         <div className="trending-body">
           {songs.map((song, index) => (
-            <TrendingRow key={song.id} song={song} rank={index + 1} />
+            <TrendingRow key={`${song.id}-${index}`} song={song} rank={index + 1} />
           ))}
         </div>
       </div>

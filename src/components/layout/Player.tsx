@@ -380,12 +380,13 @@ const Player = ({
         <button className="karaoke-btn" onClick={() => setShowLyrics(!showLyrics)}>
           <Mic size={18} color={showLyrics ? "#1db954" : "white"} />
         </button>
-        {showLyrics && (
+        {showLyrics && currentSong && lyrics.length > 0 && (
           <KaraokeOverlay
             song={currentSong}
             lyrics={lyrics}
             activeIndex={activeIndex}
             onClose={() => setShowLyrics(false)}
+            audioRef={audioRef}
           />
         )}
 
