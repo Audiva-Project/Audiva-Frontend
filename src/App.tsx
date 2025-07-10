@@ -16,7 +16,8 @@ import SongInPlaylistPage from "./pages/SongInPlaylistPage";
 import PremiumPage from "./pages/PremiumPage";
 import ThanksPage from "./pages/thanks-page";
 import UserProfile from "./components/UserProfile";
-import NotFoundPage from "./pages/NotFoundPage";
+import SearchPage from "./pages/SearchPage";
+import SongInAlbumPage from "./pages/SongInAlbumPage";
 
 function App() {
   return (
@@ -36,10 +37,11 @@ function App() {
         <Route path="history" element={<HistoryPage />} />
         <Route path="playlist" element={<PlaylistPage />} />
         <Route path="playlist/:id" element={<SongInPlaylistPage />} />
+        <Route path="albums/:id" element={<SongInAlbumPage />} />
         <Route path="/premium" element={<PremiumPage />} />
         <Route path="/thanks" element={<ThanksPage />} />
         <Route path="/profile" element={<UserProfile />} />
-        <Route path="/not-found" element={<NotFoundPage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Route>
       <Route path="*" element={<div>404 Not Found</div>} />
     </Routes>

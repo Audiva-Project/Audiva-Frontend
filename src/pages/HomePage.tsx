@@ -1,44 +1,28 @@
-import HeroSection from "@/components/sections/HeroSection"
-import WeeklyTopSongs from "@/components/sections/WeeklyTopSongs"
-import NewReleaseSongs from "@/components/sections/NewReleaseSongs"
 import TrendingSongs from "@/components/sections/TrendingSongs"
 import "./HomePage.css"
 import PopularArtist from "@/components/sections/PopularArtist"
-import api from "@/utils/api"
-import { useState, useEffect } from "react"
-import { useAuthStore } from "@/stores/authStore"
-import type { AuthState } from "@/stores/authStore"
+import SuggestSongSection from "@/components/sections/SuggestSongSection"
+import TopAlbums from "@/components/sections/TopAlbums"
+import { useArtists } from "@/hooks/useArtists"
+import { useAlbums } from "@/hooks/useAlbums"
 
-type Artist = {
-  id: string
-  name: string
-  // add other relevant fields based on your API response
-}
 
 const HomePage = () => {
-  const [artists, setArtists] = useState<Artist[]>([])
-  // const token = useAuthStore((state: AuthState) => state.token)
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await api.get("/identity/artists")
-        setArtists(response.data as Artist[])
-      } catch (error) {
-        console.error("Error fetching artists:", error)
-      }
-    }
-
-    fetchUsers()
-  }, [])
+  const artists = useArtists();
+  const albums = useAlbums();
 
   return (
     <div className="home-page">
-      {/* <HeroSection /> */}
-      <WeeklyTopSongs />
-      {/* <NewReleaseSongs /> */}
+      <SuggestSongSection />
+      <TopAlbums
+        albums={albums}
+        title="Nhạc Việt" />
+      <TopAlbums
+        albums={albums}
+        title="Top 100" />
       <TrendingSongs />
-      <PopularArtist title={{ main: "Popular", highlight: "Artists" }} artists={artists} />
+      {/* <PopularArtist title={{ main: "Popular", highlight: "Artists" }}
+        artists={artists} /> */}
     </div>
   )
 }

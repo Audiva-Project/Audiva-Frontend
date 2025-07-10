@@ -1,0 +1,66 @@
+.search-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.search-page h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  color: #f9f9f9;
+}
+
+.tabs button.active {
+  border-color: #cfe3fa;
+  color: #90caf9;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 0.5rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 4px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.card h3 {
+  font-size: 1rem;
+  margin: 0.5rem 0 0.25rem 0;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: #555;
+}

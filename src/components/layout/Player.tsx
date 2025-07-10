@@ -13,13 +13,14 @@ import {
   VolumeX,
   Download,
   Mic,
-  Upload,
   ListMusic,
 } from "lucide-react";
 import type { Song } from "@/types";
 import "./Player.css";
 import { logListening } from "@/utils/listeningHistory";
 import { AuthState, useAuthStore } from "@/stores/authStore";
+import { useKaraoke } from "@/hooks/useKaraoke";
+import KaraokeOverlay from "../sections/KaraokeOverlay";
 
 interface PlayerProps {
   currentSong: Song | null;
@@ -47,6 +48,8 @@ const Player = ({
   const [isShuffling, setIsShuffling] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isAddedToPlaylist, setIsAddedToPlaylist] = useState(false);
+  const [showLyrics, setShowLyrics] = useState(false);
+  const { lyrics, activeIndex } = useKaraoke(currentSong?.id, audioRef);
 
   type RepeatMode = "off" | "repeat-one" | "repeat-all";
   const [repeatMode, setRepeatMode] = useState<RepeatMode>("off");
@@ -261,6 +264,10 @@ const Player = ({
   }, [currentSong]);
 
   useEffect(() => {
+<<<<<<< HEAD
+=======
+    // console.log("Current song changed:", currentSong);
+>>>>>>> 82a593e3d756a6cf00e95ec2491754267f2e5f47
     if (!audioRef.current || isPremiumUser || !currentSong?.premium) return;
 
     const checkTime = () => {
@@ -304,8 +311,8 @@ const Player = ({
             </div>
             <div className="track-artist">
               {currentSong &&
-              currentSong.artists &&
-              currentSong.artists.length > 0
+                currentSong.artists &&
+                currentSong.artists.length > 0
                 ? currentSong.artists.map((a) => a.name).join(", ")
                 : "Unknown Artist"}
             </div>
@@ -389,9 +396,19 @@ const Player = ({
             <Download size={18} />
           </a>
         </button>
-        <button className="karaoke-btn">
-          <Mic size={18} />
+        <button className="karaoke-btn" onClick={() => setShowLyrics(!showLyrics)}>
+          <Mic size={18} color={showLyrics ? "#1db954" : "white"} />
         </button>
+        {showLyrics && currentSong && lyrics.length > 0 && (
+          <KaraokeOverlay
+            song={currentSong}
+            lyrics={lyrics}
+            activeIndex={activeIndex}
+            onClose={() => setShowLyrics(false)}
+            audioRef={audioRef}
+          />
+        )}
+
         <div className="volume-container">
           <button onClick={toggleMute} className="volume-icon">
             {isMuted ? (

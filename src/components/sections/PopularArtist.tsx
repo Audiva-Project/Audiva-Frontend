@@ -1,13 +1,13 @@
-import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./PopularArtist.css";
+import { Artist } from "@/types";
 
 interface ArtistSectionProps {
   title: {
     main: string;
     highlight: string;
   };
-  artists: Array<any>;
+  artists: Artist[];
 }
 
 const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists }) => {

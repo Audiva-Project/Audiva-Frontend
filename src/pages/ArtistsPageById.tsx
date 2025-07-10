@@ -41,14 +41,12 @@ export default function ArtistsPageById() {
 
   if (!artistData) return <p>Loading artist...</p>;
 
-  const popularSongs = artistData.albums
-    .flatMap((album) =>
-      album.songs.map((song) => ({
-        ...song,
-        albumTitle: album.title, // 👈 THÊM albumTitle
-      }))
-    )
-    .sort((a, b) => (b.playCount ?? 0) - (a.playCount ?? 0));
+  const popularSongs = artistData.albums.flatMap(album =>
+    album.songs.map(song => ({
+      ...song,
+      albumTitle: album.title
+    }))
+  ).sort((a, b) => (b.playCount ?? 0) - (a.playCount ?? 0))
 
   return (
     <div className="page-container">
@@ -56,8 +54,8 @@ export default function ArtistsPageById() {
         imgUrl={`http://localhost:8080/identity/audio/${artistData.avatar}`}
         name={artistData.name}
       />
-      <PopularSong songs={popularSongs} />
-      {/* <PlaylistSection /> */}
+      <PopularSong
+        songs={popularSongs} />
       <TopAlbums albums={artistData.albums} />
       <PopularArtist
         title={{

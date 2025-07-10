@@ -24,7 +24,9 @@ export interface AuthState {
     lastName: string;
     dob: string;
   }) => Promise<void>;
-  logout: () => void;
+  refreshUser: () => Promise<void>;
+  logout: () => Promise<void>;
+
   setUser: (user: User) => void;
   setToken: (token: string) => void;
   clearUser: () => void;
@@ -39,7 +41,7 @@ type PremiumData = {
 export const useAuthStore = create<AuthState>()(
   devtools(
     persist(
-      (set) => ({
+      (set, get) => ({
         user: null,
         isAuthenticated: false,
         isLoading: false,
@@ -57,7 +59,6 @@ export const useAuthStore = create<AuthState>()(
 
             const data = response.data as { result: { token: string } };
             const token = data.result.token;
-            console.log("Token received:", token);
 
             localStorage.setItem(TOKEN_KEY, token);
 
@@ -65,7 +66,6 @@ export const useAuthStore = create<AuthState>()(
               token,
               isAuthenticated: true,
             });
-
             // const anonymousId = localStorage.getItem("anonymousId");
             // if (anonymousId) {
             //   try {
@@ -161,7 +161,7 @@ export const useAuthStore = create<AuthState>()(
               dob,
             });
 
-            await useAuthStore.getState().login(username, password);
+            await get().login(username, password);
             set({ isLoading: false });
           } catch (error: any) {
             let message = "Registration failed";
@@ -177,15 +177,42 @@ export const useAuthStore = create<AuthState>()(
           }
         },
 
-        logout: async () => {
+        refreshUser: async () => {
+          const token = get().token;
+          if (!token) return;
+
           try {
-            const token = useAuthStore.getState().token;
+            const userRes = await api.get<{ result: any }>(
+              "/identity/users/me",
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+            const userData = userRes.data?.result;
 
-            if (token) {
-              await api.post("/identity/auth/logout", { token });
-            }
+            const user: User = {
+              id: userData.id,
+              name: `${userData.firstName} ${userData.lastName}`.trim(),
+              email: userData.username,
+              avatar:
+                userData.avatar ||
+                "https://greekherald.com.au/wp-content/uploads/2020/07/default-avatar.png",
+              playlists: userData.playlists,
+              premium: userData.premium ?? false,
+            };
 
-            localStorage.removeItem(TOKEN_KEY);
+            const premiumRes = await api.get("/identity/user-premium/me", {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+
+            const premiumData = premiumRes.data as PremiumData;
+
+            const isPremium = !!(
+              premiumData &&
+              premiumData.status === "SUCCESS" &&
+              premiumData.endDate &&
+              new Date(premiumData.endDate) > new Date()
+            );
 
             set({
               user: null,
@@ -211,18 +238,38 @@ export const useAuthStore = create<AuthState>()(
           }
         },
 
-        setUser: (user) => set(() => ({ user, isAuthenticated: true })),
-        setToken: (token) => {
-          // localStorage.setItem(TOKEN_KEY, token)
-          set(() => ({ token }));
-        },
-        clearUser: () => {
-          // localStorage.removeItem(TOKEN_KEY)
-          set(() => ({
+        logout: async () => {
+          try {
+            const token = get().token;
+            if (token) {
+              await api.post("/identity/auth/logout", { token });
+            }
+          } catch (error) {
+            console.warn("Logout API call failed", error);
+          }
+
+          localStorage.removeItem(TOKEN_KEY);
+
+          set({
             user: null,
             token: null,
             isAuthenticated: false,
-          }));
+            isLoading: false,
+          });
+        },
+
+        setUser: (user) => set({ user, isAuthenticated: true }),
+        setToken: (token) => {
+          localStorage.setItem(TOKEN_KEY, token);
+          set({ token });
+        },
+        clearUser: () => {
+          localStorage.removeItem(TOKEN_KEY);
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+          });
         },
       }),
       {
