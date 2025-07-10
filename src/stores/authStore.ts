@@ -66,27 +66,27 @@ export const useAuthStore = create<AuthState>()(
               isAuthenticated: true,
             });
 
-            const anonymousId = localStorage.getItem("anonymousId");
-            if (anonymousId) {
-              try {
-                await api.post(
-                  "/identity/api/history/merge",
-                  { anonymousId },
-                  {
-                    headers: {
-                      Authorization: `Bearer ${token}`,
-                    },
-                  }
-                );
-                // Xóa anonymousId sau khi merge thành công
-                localStorage.removeItem("anonymousId");
-                document.cookie = "anonymousId=; Max-Age=0; path=/";
-                console.log("Merged anonymous history into user account");
-              } catch (err) {
-                console.warn("Failed to merge anonymous history", err);
-              }
-              console.log("Anonymous ID found:", anonymousId);
-            }
+            // const anonymousId = localStorage.getItem("anonymousId");
+            // if (anonymousId) {
+            //   try {
+            //     await api.post(
+            //       "/identity/api/history/merge",
+            //       { anonymousId },
+            //       {
+            //         headers: {
+            //           Authorization: `Bearer ${token}`,
+            //         },
+            //       }
+            //     );
+            //     // Xóa anonymousId sau khi merge thành công
+            //     localStorage.removeItem("anonymousId");
+            //     document.cookie = "anonymousId=; Max-Age=0; path=/";
+            //     console.log("Merged anonymous history into user account");
+            //   } catch (err) {
+            //     console.warn("Failed to merge anonymous history", err);
+            //   }
+            //   console.log("Anonymous ID found:", anonymousId);
+            // }
 
             // Fetch user data
             const userResponse = await api.get("/identity/users/me", {
@@ -99,7 +99,9 @@ export const useAuthStore = create<AuthState>()(
 
             const user: User = {
               id: userData.id,
-              name: `${userData.firstName} ${userData.lastName}`.trim(),
+              name: userData.lastName
+                ? `${userData.firstName} ${userData.lastName}`.trim()
+                : userData.firstName,
               email: userData.username,
               avatar:
                 userData.avatar ||
@@ -190,6 +192,9 @@ export const useAuthStore = create<AuthState>()(
               token: null,
               isAuthenticated: false,
               isLoading: false,
+              premium: null,
+              premiumStartDate: null,
+              premiumEndDate: null,
             });
           } catch (error) {
             console.error("Logout failed:", error);
@@ -199,6 +204,9 @@ export const useAuthStore = create<AuthState>()(
               token: null,
               isAuthenticated: false,
               isLoading: false,
+              premium: null,
+              premiumStartDate: null,
+              premiumEndDate: null,
             });
           }
         },

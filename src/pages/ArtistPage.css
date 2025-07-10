@@ -1,7 +1,7 @@
 .artist-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: clamp(10px, 2vw, 24px);
 }
 
 .artist-card {
