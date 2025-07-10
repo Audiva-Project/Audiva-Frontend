@@ -14,14 +14,15 @@ const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists }) => {
   return (
     <section className="music-genres-section">
       <div className="section-header">
-        <h2 className="section-title">
+        <h1 className="artist-heading">TOP NGHỆ SĨ</h1>
+        {/* <h2 className="section-title">
           {title.main}{" "}
           <span className="title-highlight">{title.highlight}</span>
-        </h2>
-        {/* <button className="view-all-btn">
-                    View All
-                    <ChevronRight size={16} />
-                </button> */}
+        </h2> */}
+        {/* // <button className="view-all-btn">
+        //   View All
+        //   <ChevronRight size={16} />
+        // </button> */}
       </div>
       <div className="artist-list">
         {artists.map((artist) => (

@@ -201,6 +201,15 @@ const Player = ({
     const offsetX = clientX - rect.left;
     const clampedX = Math.max(0, Math.min(offsetX, rect.width));
     const seekTime = (clampedX / rect.width) * duration;
+
+    // Nếu là bài premium mà người dùng không phải premium => không được seek quá 30s
+    if (currentSong?.premium && !isPremiumUser && seekTime > 30) {
+      audioRef.current.currentTime = 30;
+      setCurrentTime(30);
+      setIsPlaying(false); // dừng phát nếu cố tình tua quá
+      return;
+    }
+
     audioRef.current.currentTime = seekTime;
     setCurrentTime(seekTime);
   };
@@ -255,23 +264,33 @@ const Player = ({
   }, [currentSong]);
 
   useEffect(() => {
-    // console.log("Current song changed:", currentSong);
     if (!audioRef.current || isPremiumUser || !currentSong?.premium) return;
+
     const checkTime = () => {
-      if (audioRef.current && audioRef.current.currentTime >= 30) {
+      if (
+        audioRef.current &&
+        !isNaN(audioRef.current.currentTime) &&
+        audioRef.current.currentTime >= 30
+      ) {
         audioRef.current.pause();
         setIsPlaying(false);
+
+        // Tự động chuyển sang bài tiếp theo sau 500ms
+        setTimeout(() => {
+          handleSkipForward();
+        }, 500);
       }
     };
+
     const interval = setInterval(checkTime, 500);
     return () => clearInterval(interval);
   }, [isPremiumUser, currentSong?.premium, isPlaying]);
 
   // reset trạng thái khi đổi bài
   useEffect(() => {
-    setIsLiked(false)
-    setIsAddedToPlaylist(false)
-  }, [currentSong])
+    setIsLiked(false);
+    setIsAddedToPlaylist(false);
+  }, [currentSong]);
 
   return (
     <div className="player">
@@ -292,8 +311,8 @@ const Player = ({
             </div>
             <div className="track-artist">
               {currentSong &&
-                currentSong.artists &&
-                currentSong.artists.length > 0
+              currentSong.artists &&
+              currentSong.artists.length > 0
                 ? currentSong.artists.map((a) => a.name).join(", ")
                 : "Unknown Artist"}
             </div>
@@ -377,7 +396,10 @@ const Player = ({
             <Download size={18} />
           </a>
         </button>
-        <button className="karaoke-btn" onClick={() => setShowLyrics(!showLyrics)}>
+        <button
+          className="karaoke-btn"
+          onClick={() => setShowLyrics(!showLyrics)}
+        >
           <Mic size={18} color={showLyrics ? "#1db954" : "white"} />
         </button>
         {showLyrics && currentSong && lyrics.length > 0 && (

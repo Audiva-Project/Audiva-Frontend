@@ -66,27 +66,74 @@ export const useAuthStore = create<AuthState>()(
               token,
               isAuthenticated: true,
             });
+            // const anonymousId = localStorage.getItem("anonymousId");
+            // if (anonymousId) {
+            //   try {
+            //     await api.post(
+            //       "/identity/api/history/merge",
+            //       { anonymousId },
+            //       {
+            //         headers: {
+            //           Authorization: `Bearer ${token}`,
+            //         },
+            //       }
+            //     );
+            //     // Xóa anonymousId sau khi merge thành công
+            //     localStorage.removeItem("anonymousId");
+            //     document.cookie = "anonymousId=; Max-Age=0; path=/";
+            //     console.log("Merged anonymous history into user account");
+            //   } catch (err) {
+            //     console.warn("Failed to merge anonymous history", err);
+            //   }
+            //   console.log("Anonymous ID found:", anonymousId);
+            // }
 
-            const anonymousId = localStorage.getItem("anonymousId");
-            if (anonymousId) {
-              try {
-                await api.post(
-                  "/identity/api/history/merge",
-                  { anonymousId },
-                  {
-                    headers: { Authorization: `Bearer ${token}` },
-                  }
-                );
-                localStorage.removeItem("anonymousId");
-                document.cookie = "anonymousId=; Max-Age=0; path=/";
-                console.log("Merged anonymous history into user account");
-              } catch (err) {
-                console.warn("Failed to merge anonymous history", err);
-              }
-            }
+            // Fetch user data
+            const userResponse = await api.get("/identity/users/me", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
 
-            await get().refreshUser();
-            set({ isLoading: false });
+            const userData = (userResponse.data as any).result;
+
+            const user: User = {
+              id: userData.id,
+              name: userData.lastName
+                ? `${userData.firstName} ${userData.lastName}`.trim()
+                : userData.firstName,
+              email: userData.username,
+              avatar:
+                userData.avatar ||
+                `https://greekherald.com.au/wp-content/uploads/2020/07/default-avatar.png`,
+              playlists: userData.playlists,
+              premium: userData.premium ?? false,
+            };
+
+            set({ user });
+
+            const premiumRes = await api.get("/identity/user-premium/me", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            const premiumData = premiumRes.data as PremiumData;
+
+            const isPremium = !!(
+              premiumData &&
+              premiumData.status === "SUCCESS" &&
+              premiumData.endDate &&
+              new Date(premiumData.endDate) > new Date()
+            );
+
+            set((state: any) => ({
+              user: state.user,
+              premium: isPremium,
+              premiumStartDate: premiumData?.startDate ?? null,
+              premiumEndDate: premiumData?.endDate ?? null,
+              isLoading: false,
+            }));
           } catch (error: any) {
             let message = "Đăng nhập không thành công";
             if (error.response?.status === 401) {
@@ -135,9 +182,12 @@ export const useAuthStore = create<AuthState>()(
           if (!token) return;
 
           try {
-            const userRes = await api.get<{ result: any }>("/identity/users/me", {
-              headers: { Authorization: `Bearer ${token}` },
-            });
+            const userRes = await api.get<{ result: any }>(
+              "/identity/users/me",
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
             const userData = userRes.data?.result;
 
             const user: User = {
@@ -157,24 +207,34 @@ export const useAuthStore = create<AuthState>()(
 
             const premiumData = premiumRes.data as PremiumData;
 
-            const isPremium =
-              !!(
-                premiumData &&
-                premiumData.status === "SUCCESS" &&
-                premiumData.endDate &&
-                new Date(premiumData.endDate) > new Date()
-              );
+            const isPremium = !!(
+              premiumData &&
+              premiumData.status === "SUCCESS" &&
+              premiumData.endDate &&
+              new Date(premiumData.endDate) > new Date()
+            );
 
             set({
-              user,
-              premium: isPremium,
-              premiumStartDate: premiumData?.startDate ?? null,
-              premiumEndDate: premiumData?.endDate ?? null,
-              isAuthenticated: true,
+              user: null,
+              token: null,
+              isAuthenticated: false,
+              isLoading: false,
+              premium: null,
+              premiumStartDate: null,
+              premiumEndDate: null,
             });
           } catch (error) {
-            console.error("Failed to refresh user:", error);
-            set({ user: null, token: null, isAuthenticated: false });
+            console.error("Logout failed:", error);
+
+            set({
+              user: null,
+              token: null,
+              isAuthenticated: false,
+              isLoading: false,
+              premium: null,
+              premiumStartDate: null,
+              premiumEndDate: null,
+            });
           }
         },
 

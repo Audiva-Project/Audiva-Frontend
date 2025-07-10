@@ -17,7 +17,7 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 0 1rem;
 }
 
 /* Header Styles */
@@ -341,4 +341,14 @@ body {
   .pricing-button {
     font-size: 1rem;
   }
+}
+
+.current-premium-info {
+  background: #fef3c7;
+  color: red;
+  padding: 1rem;
+  border: 1px solid #facc15;
+  border-radius: 12px;
+  margin: 1rem 0;
+  font-size: 0.95rem;
 }

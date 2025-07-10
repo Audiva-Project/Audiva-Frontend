@@ -22,27 +22,12 @@ A modern music streaming application built with React, Vite, TypeScript, and Zus
 - **Lucide React** - Beautiful icons
 - **CSS Custom Properties** - Modern styling with CSS variables
 
-## 📁 Project Structure
-
-\`\`\`
-src/
-├── components/
-│   ├── layout/          # Layout components (Sidebar, Header, Player)
-│   ├── sections/        # Page sections (Hero, WeeklyTop, etc.)
-│   └── ui/              # Reusable UI components
-├── pages/               # Page components
-├── stores/              # Zustand stores
-├── types/               # TypeScript type definitions
-├── data/                # Mock data
-└── styles/              # Global styles
-\`\`\`
-
 ## 🛠️ Installation
 
 1. **Clone the repository**
    \`\`\`bash
    git clone <repository-url>
-   cd melodies
+   cd audiva
    \`\`\`
 
 2. **Install dependencies**
@@ -61,23 +46,27 @@ src/
 ## 📱 Features Overview
 
 ### 🏠 Home Page
+
 - **Hero Section** - "All the Best Songs in One Place" with call-to-action buttons
 - **Weekly Top Songs** - Grid of popular tracks with hover effects
 - **New Release Songs** - Latest music releases
 - **Trending Songs** - Table view with rankings and detailed information
 
 ### 🎵 Music Player
+
 - **Play/Pause Controls** - Full playback control
 - **Progress Bar** - Visual progress tracking
 - **Volume Control** - Adjustable volume slider
 - **Track Information** - Current song details with album art
 
 ### 👤 User System
+
 - **Authentication** - Login and signup pages
 - **User Profiles** - Personal music preferences
 - **Playlists** - Create and manage custom playlists
 
 ### 📱 Responsive Design
+
 - **Mobile-First** - Optimized for mobile devices
 - **Adaptive Layout** - Sidebar collapses on smaller screens
 - **Touch-Friendly** - Large touch targets for mobile interaction
@@ -85,16 +74,19 @@ src/
 ## 🎨 Design System
 
 ### Colors
+
 - **Background**: Deep blacks and dark grays
 - **Accent**: Blue (#2e77d0) and Green (#1db954)
 - **Text**: White primary, gray secondary
 
 ### Typography
+
 - **Font**: Inter font family
 - **Sizes**: Responsive typography scale
 - **Weights**: 300-800 range for different emphasis
 
 ### Components
+
 - **Cards**: Rounded corners with hover effects
 - **Buttons**: Multiple variants (primary, secondary)
 - **Forms**: Consistent styling with focus states
@@ -109,16 +101,19 @@ src/
 ## 🌟 Key Components
 
 ### Layout Components
+
 - **Sidebar** - Navigation with music library sections
 - **Header** - Search bar and user authentication
 - **Player** - Bottom music player with full controls
 
 ### UI Components
+
 - **SongCard** - Individual song display with play button
 - **TrendingRow** - Table row for trending songs list
 - **Button** - Reusable button with multiple variants
 
 ### State Management
+
 - **Player Store** - Music playback state and controls
 - **User Store** - Authentication and user preferences
 
