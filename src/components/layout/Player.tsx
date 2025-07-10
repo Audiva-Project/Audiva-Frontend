@@ -264,14 +264,14 @@ const Player = ({
   }, [currentSong]);
 
   useEffect(() => {
-<<<<<<< HEAD
-=======
-    // console.log("Current song changed:", currentSong);
->>>>>>> 82a593e3d756a6cf00e95ec2491754267f2e5f47
     if (!audioRef.current || isPremiumUser || !currentSong?.premium) return;
 
     const checkTime = () => {
-      if (audioRef.current && audioRef.current.currentTime >= 30) {
+      if (
+        audioRef.current &&
+        !isNaN(audioRef.current.currentTime) &&
+        audioRef.current.currentTime >= 30
+      ) {
         audioRef.current.pause();
         setIsPlaying(false);
 
@@ -311,8 +311,8 @@ const Player = ({
             </div>
             <div className="track-artist">
               {currentSong &&
-                currentSong.artists &&
-                currentSong.artists.length > 0
+              currentSong.artists &&
+              currentSong.artists.length > 0
                 ? currentSong.artists.map((a) => a.name).join(", ")
                 : "Unknown Artist"}
             </div>
@@ -396,7 +396,10 @@ const Player = ({
             <Download size={18} />
           </a>
         </button>
-        <button className="karaoke-btn" onClick={() => setShowLyrics(!showLyrics)}>
+        <button
+          className="karaoke-btn"
+          onClick={() => setShowLyrics(!showLyrics)}
+        >
           <Mic size={18} color={showLyrics ? "#1db954" : "white"} />
         </button>
         {showLyrics && currentSong && lyrics.length > 0 && (
