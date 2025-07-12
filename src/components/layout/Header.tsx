@@ -123,6 +123,7 @@ const Header = () => {
             className="header-search-input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearch}
           />
         </div>
 

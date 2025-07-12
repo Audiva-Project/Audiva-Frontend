@@ -21,8 +21,8 @@ const HomePage = () => {
         albums={albums}
         title="Top 100" />
       <TrendingSongs />
-      {/* <PopularArtist title={{ main: "Popular", highlight: "Artists" }}
-        artists={artists} /> */}
+      <PopularArtist title={{ main: "Popular", highlight: "Artists" }}
+        artists={artists} />
     </div>
   )
 }
