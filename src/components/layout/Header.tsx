@@ -136,7 +136,7 @@ const Header = () => {
           <Search size={18} className="header-search-icon" />
           <input
             type="text"
-            placeholder="Search for Music, Artists..."
+            placeholder="Tìm kiếm theo bài hát, ca sĩ..."
             className="header-search-input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

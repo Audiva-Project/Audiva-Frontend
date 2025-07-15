@@ -1,61 +1,312 @@
 .upload-page {
-  height: 100%;
-  width: 100%;
+  min-height: 100vh;
+  background-color: transparent;
   display: flex;
+  align-items: flex-start;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .upload-container {
-  padding: 10px;
+  width: 100%;
   max-width: 500px;
-  background-color: #121212;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+  background-color: #1f2937;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  margin-top: 1rem;
 }
 
-.upload-container h2 {
-  color: #fff;
-  margin-bottom: 20px;
+.upload-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  color: #ffffff;
 }
 
-.upload-form label {
+.upload-icon {
+  font-size: 1.25rem;
+  margin-right: 0.75rem;
+}
+
+.upload-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.form-label {
   display: block;
-  color: #ddd;
-  margin-bottom: 8px;
+  color: #d1d5db;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
 }
 
-.upload-form input[type="text"],
-.upload-form input[type="file"] {
+.input-wrapper input {
   width: 100%;
-  padding: 10px 12px;
-  margin-bottom: 20px;
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 4px;
-  color: #fff;
+  padding: 0.75rem 1rem;
+  background-color: #374151;
+  border: 1px solid #4b5563;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-.upload-form input[type="file"] {
-  padding: 8px;
+.input-wrapper input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }
 
-.upload-form button {
+.input-wrapper input::placeholder {
+  color: #9ca3af;
+}
+
+/* Custom Dropdown Styles */
+.custom-dropdown {
+  position: relative;
+  user-select: none;
+}
+
+.dropdown-input {
   width: 100%;
-  padding: 12px;
-  background: #4f46e5; /* Indigo-600 */
-  border: none;
-  color: #fff;
-  font-weight: bold;
-  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  background-color: #374151;
+  border: 1px solid #4b5563;
+  border-radius: 0.5rem;
+  color: #ffffff;
   cursor: pointer;
-  transition: background 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-.upload-form button:hover {
-  background: #4338ca; /* Indigo-700 */
+.dropdown-input:hover {
+  border-color: #6b7280;
 }
 
-.upload-message {
-  margin-top: 16px;
-  color: #0f0; /* xanh lá báo thành công */
+.dropdown-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  font-size: 0.875rem;
+}
+
+.dropdown-arrow {
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  width: 100%;
+  max-height: 12rem;
+  overflow-y: auto;
+  background-color: #374151;
+  border: 1px solid #4b5563;
+  border-radius: 0.5rem;
+  z-index: 50;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-item {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 0.875rem;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #4b5563;
+}
+
+.dropdown-item.selected {
+  background-color: rgba(99, 102, 241, 0.2);
+}
+
+.checkbox {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #6b7280;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1f2937;
+  flex-shrink: 0;
+}
+
+.checkbox svg {
+  color: #818cf8;
+  font-size: 0.75rem;
+}
+
+/* File Upload Styles */
+.file-upload {
+  display: block;
+  cursor: pointer;
+}
+
+.file-upload-content {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #374151;
+  border: 1px dashed #4b5563;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.file-upload:hover .file-upload-content {
+  border-color: #6b7280;
+  background-color: rgba(75, 85, 99, 0.5);
+}
+
+.file-upload-inner {
+  display: flex;
+  align-items: center;
+  color: #9ca3af;
+}
+
+.file-icon {
+  margin-right: 0.75rem;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+}
+
+.file-upload-text {
+  font-size: 0.875rem;
+}
+
+.file-upload input {
+  display: none;
+}
+
+/* Upload Button */
+.upload-button {
+  width: 100%;
+  background: #6366f1;
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.upload-button:hover {
+  background: #4f46e5;
+}
+
+.upload-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Message Styles */
+.message {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.message.success {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.message.error {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+/* Unauthenticated State */
+.unauthenticated-container {
+  min-height: 100vh;
+  background-color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.unauthenticated-content {
+  text-align: center;
+}
+
+.unauthenticated-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.unauthenticated-message {
+  color: #9ca3af;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .upload-page {
+    padding: 1rem 0.5rem;
+  }
+
+  .upload-container {
+    padding: 1.5rem;
+  }
+
+  .upload-header h2 {
+    font-size: 1.125rem;
+  }
+
+  .dropdown-menu {
+    max-height: 10rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .upload-container {
+    padding: 1rem;
+  }
+
+  .form-group {
+    gap: 1rem;
+  }
 }

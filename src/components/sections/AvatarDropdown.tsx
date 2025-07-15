@@ -10,7 +10,7 @@ const DEFAULT_AVATAR =
 export default function AvatarDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { user, logout } = useAuthStore();
+  const { user, logout, premium } = useAuthStore();
   const navigate = useNavigate();
 
   const avatarUrl =

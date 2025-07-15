@@ -147,7 +147,6 @@ const SuggestSongSection = () => {
           {suggestedSongs.map((song) => {
             const isCurrent = currentSong?.id === song.id;
             const isThisPlaying = isCurrent && isPlaying;
-            console.log("---->", song.premium);
             return (
               <div key={song.id} className="suggest-item">
                 <img

@@ -1,27 +1,102 @@
-import React, { useState } from "react";
-import "./UploadPage.css";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
+import "@/pages/UploadPage.css";
 import { useAuthStore } from "@/stores/authStore";
 import type { AuthState } from "@/stores/authStore";
+import api from "@/utils/api";
+import {
+  FiUpload,
+  FiMusic,
+  FiImage,
+  FiChevronDown,
+  FiCheck,
+} from "react-icons/fi";
+
+type Artist = {
+  id: number;
+  name: string;
+};
 
 const UploadPage: React.FC = () => {
   const [songName, setSongName] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [message, setMessage] = useState("");
+  const [artists, setArtists] = useState<Artist[]>([]);
+  const [selectedArtistIds, setSelectedArtistIds] = useState<number[]>([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const token = useAuthStore((state: AuthState) => state.token);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const fetchArtists = async () => {
+      try {
+        const response = await api.get("/identity/artists", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status === 200) {
+          setArtists(response.data);
+        } else {
+          console.error("Không lấy được danh sách ca sĩ:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách ca sĩ:", error);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchArtists();
+    }
+  }, [token, isAuthenticated]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
+  const handleArtistSelect = (id: number) => {
+    setSelectedArtistIds((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
+
+  const selectedArtistNames = artists
+    .filter((artist) => selectedArtistIds.includes(artist.id))
+    .map((artist) => artist.name)
+    .join(", ");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!songName || !file) {
-      setMessage("Please input song name and select a file.");
+      setMessage("Vui lòng nhập tên bài hát và chọn tệp mp3.");
       return;
     }
+
+    setIsSubmitting(true);
     const formData = new FormData();
     formData.append("title", songName);
     formData.append("audioFile", file);
     if (thumbnail) {
       formData.append("thumbnailFile", thumbnail);
     }
+    selectedArtistIds.forEach((id) => {
+      formData.append("artistIds", id.toString());
+    });
 
     try {
       const response = await fetch("http://localhost:8080/identity/api/songs", {
@@ -31,27 +106,32 @@ const UploadPage: React.FC = () => {
         },
         body: formData,
       });
+
       if (response.ok) {
-        setMessage("Upload successful!");
+        setMessage("Tải bài hát thành công!");
         setSongName("");
         setFile(null);
+        setThumbnail(null);
+        setSelectedArtistIds([]);
       } else {
-        setMessage("Upload failed.");
+        setMessage("Tải bài hát thất bại.");
       }
     } catch (error) {
-      setMessage("An error occurred while uploading.");
+      setMessage("Đã xảy ra lỗi khi tải bài hát.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-
   if (!isAuthenticated) {
     return (
-      <div className="playlist-page">
-        <h1 className="playlist-heading">BÀI HÁT CỦA BẠN</h1>
-        <p className="playlist-message">
-          Bạn cần đăng nhập để đăng tải bài hát của riêng mình
-        </p>
+      <div className="unauthenticated-container">
+        <div className="unauthenticated-content">
+          <h1 className="unauthenticated-title">BÀI HÁT CỦA BẠN</h1>
+          <p className="unauthenticated-message">
+            Bạn cần đăng nhập để đăng tải bài hát của riêng mình
+          </p>
+        </div>
       </div>
     );
   }
@@ -59,22 +139,65 @@ const UploadPage: React.FC = () => {
   return (
     <div className="upload-page">
       <div className="upload-container">
-        <h2>Upload Song</h2>
+        <div className="upload-header">
+          <FiUpload className="upload-icon" />
+          <h2>Đăng tải bài hát</h2>
+        </div>
+
         <form onSubmit={handleSubmit} className="upload-form">
-          <div>
-            <label>
-              Song Name:
+          <div className="form-group">
+            <label className="form-label">Tên bài hát</label>
+            <div className="input-wrapper">
               <input
                 type="text"
                 value={songName}
                 onChange={(e) => setSongName(e.target.value)}
+                placeholder="Nhập tên bài hát"
                 required
               />
-            </label>
+            </div>
           </div>
-          <div>
-            <label>
-              File mp3:
+
+          <div className="form-group">
+            <label className="form-label">Ca sĩ</label>
+            <div className="custom-dropdown" ref={dropdownRef}>
+              <div className="dropdown-input" onClick={toggleDropdown}>
+                <span className="dropdown-value">
+                  {selectedArtistNames || "Chọn ca sĩ"}
+                </span>
+              </div>
+              {isDropdownOpen && (
+                <div className="dropdown-menu">
+                  {artists.map((artist) => (
+                    <div
+                      key={artist.id}
+                      className={`dropdown-item ${
+                        selectedArtistIds.includes(artist.id) ? "selected" : ""
+                      }`}
+                      onClick={() => handleArtistSelect(artist.id)}
+                    >
+                      <div className="checkbox">
+                        {selectedArtistIds.includes(artist.id) && <FiCheck />}
+                      </div>
+                      <span>{artist.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Tệp nhạc (.mp3)</label>
+            <label className="file-upload">
+              <div className="file-upload-content">
+                <div className="file-upload-inner">
+                  <FiMusic className="file-icon" />
+                  <span className="file-upload-text">
+                    {file ? file.name : "Chọn tệp nhạc"}
+                  </span>
+                </div>
+              </div>
               <input
                 type="file"
                 accept=".mp3,audio/mp3"
@@ -87,24 +210,49 @@ const UploadPage: React.FC = () => {
               />
             </label>
           </div>
-          <div>
-            <label>
-              Song Image:
+
+          <div className="form-group">
+            <label className="form-label">Ảnh bài hát</label>
+            <label className="file-upload">
+              <div className="file-upload-content">
+                <div className="file-upload-inner">
+                  <FiImage className="file-icon" />
+                  <span className="file-upload-text">
+                    {thumbnail ? thumbnail.name : "Chọn ảnh (tùy chọn)"}
+                  </span>
+                </div>
+              </div>
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => {
                   if (e.target.files && e.target.files[0]) {
-                    // @ts-ignore
                     setThumbnail(e.target.files[0]);
                   }
                 }}
               />
             </label>
           </div>
-          <button type="submit">Upload</button>
+
+          <button
+            type="submit"
+            className="upload-button"
+            disabled={isSubmitting}
+          >
+            <FiUpload />
+            {isSubmitting ? "Đang tải lên..." : "Tải lên"}
+          </button>
+
+          {message && (
+            <div
+              className={`message ${
+                message.includes("thành công") ? "success" : "error"
+              }`}
+            >
+              {message}
+            </div>
+          )}
         </form>
-        {message && <p className="upload-message">{message}</p>}
       </div>
     </div>
   );

@@ -30,11 +30,19 @@ export default function ThanksPage() {
           !!premiumData?.endDate &&
           new Date(premiumData.endDate) > new Date();
 
-        useAuthStore.setState({
+        console.log("Premium status:", isPremium);
+
+        useAuthStore.setState((state) => ({
           premium: isPremium,
           premiumStartDate: premiumData?.startDate ?? null,
           premiumEndDate: premiumData?.endDate ?? null,
-        });
+          user: state.user
+            ? {
+                ...state.user,
+                premium: isPremium,
+              }
+            : null,
+        }));
 
         console.log("Cập nhật premium sau khi thanh toán thành công");
       } catch (err) {
