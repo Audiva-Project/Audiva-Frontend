@@ -1,12 +1,23 @@
-import { Link, NavLink } from "react-router-dom"
-import { Home, Compass, Users, Clock, Play, Heart, ListMusic, Settings, LogOut, Upload } from "lucide-react"
-import "@/components/layout/Sidebar.css"
+import { Link, NavLink } from "react-router-dom";
+import {
+  Home,
+  Compass,
+  Users,
+  Clock,
+  Play,
+  Heart,
+  ListMusic,
+  Settings,
+  LogOut,
+  Upload,
+} from "lucide-react";
+import "@/components/layout/Sidebar.css";
 
 const Sidebar = () => {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <Link to="/" style={{textDecoration: "none"}} >
+        <Link to="/" style={{ textDecoration: "none" }}>
           <h1 className="logo">Audiva</h1>
         </Link>
       </div>
@@ -18,6 +29,14 @@ const Sidebar = () => {
             <span>Trang chủ</span>
           </NavLink>
 
+<<<<<<< HEAD
+=======
+          {/* <NavLink to="/discover" className="nav-item">
+            <Compass size={20} />
+            <span>Khám phá</span>
+          </NavLink> */}
+
+>>>>>>> c0e832ac768acf1ed0ac675b1767b24540ea0898
           <NavLink to="/artists" className="nav-item">
             <Users size={20} />
             <span>Nghệ sĩ</span>
@@ -46,7 +65,7 @@ const Sidebar = () => {
         </div>
       </nav>
     </aside>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

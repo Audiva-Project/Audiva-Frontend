@@ -16,7 +16,7 @@
   background-color: var(--bg-tertiary);
   border-bottom: 1px solid var(--border-color);
   text-align: center;
-}            
+}
 
 .header-cell {
   font-size: var(--font-size-sm);
@@ -24,6 +24,10 @@
   color: var(--text-muted);
   /* text-transform: uppercase; */
   letter-spacing: 0.5px;
+}
+
+.header-cell.song {
+  text-align: left;
 }
 
 .trending-body {

@@ -124,10 +124,10 @@ const Header = () => {
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchQuery.trim() !== "") {
-      navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`)
-      setSearchQuery("")
+      navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery("");
     }
-  }
+  };
 
   return (
     <>
@@ -136,7 +136,11 @@ const Header = () => {
           <Search size={18} className="header-search-icon" />
           <input
             type="text"
+<<<<<<< HEAD
             placeholder="Tìm kiếm bài hát, ca sĩ, album,..."
+=======
+            placeholder="Tìm kiếm theo bài hát, ca sĩ..."
+>>>>>>> c0e832ac768acf1ed0ac675b1767b24540ea0898
             className="header-search-input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
