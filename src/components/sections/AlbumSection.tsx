@@ -46,7 +46,7 @@ const AlbumSection = ({ albumId }: AlbumSectionProps) => {
       <div className="section-header">
         <h2 className="section-title">{albumTitle}</h2>
         <button className="view-all-btn">
-          View All
+          Xem thêm
           <ChevronRight size={16} />
         </button>
       </div>

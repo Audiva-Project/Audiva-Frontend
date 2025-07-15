@@ -14,7 +14,7 @@ const PopularSong: React.FC<PopularSongProps> = ({ songs }) => {
                     Popular <span className="title-highlight">Songs</span>
                 </h2>
                 <button className="view-all-btn">
-                    View All
+                    Xem thêm
                     <ChevronRight size={16} />
                 </button>
             </div>

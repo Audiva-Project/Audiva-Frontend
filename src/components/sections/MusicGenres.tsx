@@ -11,7 +11,7 @@ const MusicGenres = () => {
                     Music <span className="title-highlight">Genres</span>
                 </h2>
                 <button className="view-all-btn">
-                    View All
+                    Xem thêm
                     <ChevronRight size={16} />
                 </button>
             </div>

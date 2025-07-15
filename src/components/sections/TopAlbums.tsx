@@ -19,7 +19,7 @@ const TopAlbums: React.FC<TopAlbumsProps> = ({ albums, title }) => {
                 </h2>
                 <button className="view-all-btn">
                     <Link to="/albums" className="view-all-btn">
-                        View All
+                        Xem thêm
                         <ChevronRight size={16} />
                     </Link>
                 </button>

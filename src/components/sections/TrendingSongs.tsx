@@ -42,7 +42,7 @@ const TrendingSongs = () => {
           Trending <span className="title-highlight">Songs</span>
         </h2>
         <button className="view-all-btn">
-          View All
+          Xem thêm
           <ChevronRight size={16} />
         </button>
       </div>

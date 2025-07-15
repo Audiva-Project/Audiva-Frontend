@@ -179,6 +179,8 @@ const Player = ({
   const handleSeekStart = () => setIsSeeking(true);
   const handleSeekMove = (e: MouseEvent) => isSeeking && seek(e.clientX);
   const handleSeekEnd = () => setIsSeeking(false);
+  const [isDownloadModalOpen, setDownloadModalOpen] = useState(false);
+  const [selectedQuality, setSelectedQuality] = useState<string>("128kbps");
 
   useEffect(() => {
     if (isSeeking) {
@@ -201,6 +203,15 @@ const Player = ({
     const offsetX = clientX - rect.left;
     const clampedX = Math.max(0, Math.min(offsetX, rect.width));
     const seekTime = (clampedX / rect.width) * duration;
+
+    // Nếu là bài premium mà người dùng không phải premium => không được seek quá 30s
+    if (currentSong?.premium && !isPremiumUser && seekTime > 30) {
+      audioRef.current.currentTime = 30;
+      setCurrentTime(30);
+      setIsPlaying(false); // dừng phát nếu cố tình tua quá
+      return;
+    }
+
     audioRef.current.currentTime = seekTime;
     setCurrentTime(seekTime);
   };
@@ -255,23 +266,82 @@ const Player = ({
   }, [currentSong]);
 
   useEffect(() => {
-    // console.log("Current song changed:", currentSong);
     if (!audioRef.current || isPremiumUser || !currentSong?.premium) return;
+
     const checkTime = () => {
-      if (audioRef.current && audioRef.current.currentTime >= 30) {
+      if (
+        audioRef.current &&
+        !isNaN(audioRef.current.currentTime) &&
+        audioRef.current.currentTime >= 30
+      ) {
         audioRef.current.pause();
         setIsPlaying(false);
+
+        // Tự động chuyển sang bài tiếp theo sau 500ms
+        setTimeout(() => {
+          handleSkipForward();
+        }, 500);
       }
     };
+
     const interval = setInterval(checkTime, 500);
     return () => clearInterval(interval);
   }, [isPremiumUser, currentSong?.premium, isPlaying]);
 
   // reset trạng thái khi đổi bài
   useEffect(() => {
-    setIsLiked(false)
-    setIsAddedToPlaylist(false)
-  }, [currentSong])
+    setIsLiked(false);
+    setIsAddedToPlaylist(false);
+  }, [currentSong]);
+
+  const handleDownload = async (quality: string) => {
+    if (!token) {
+      alert("Bạn cần đăng nhập để tải bài hát!");
+      return;
+    }
+    if (!currentSong?.id) {
+      alert("Không tìm thấy bài hát!");
+      return;
+    }
+
+    try {
+      const downloadUrl = `http://localhost:8080/identity/api/songs/${currentSong.id}/download?quality=${quality}`;
+
+      const response = await fetch(downloadUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 403) {
+          alert("Bạn đã hết lượt tải cho hôm nay!");
+        } else {
+          alert("Không thể tải bài hát!");
+        }
+        return;
+      }
+
+      const blob = await response.blob();
+
+      // Tạo link ẩn
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.download = `${currentSong.title || "song"}.mp3`;
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      setDownloadModalOpen(false);
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("Tải bài hát thất bại!");
+    }
+  };
 
   return (
     <div className="player">
@@ -369,15 +439,41 @@ const Player = ({
             fill={isAddedToPlaylist ? "#1db954" : "none"}
           />
         </button>
-        <button className="download-btn">
-          <a
-            href={`http://localhost:8080/identity/api/songs/${currentSong?.id}/download`}
-            download
-          >
-            <Download size={18} />
-          </a>
+
+        <button className="download-btn" onClick={() => setDownloadModalOpen(true)}>
+          <Download size={18} />
         </button>
-        <button className="karaoke-btn" onClick={() => setShowLyrics(!showLyrics)}>
+        {/* Modal download */}
+        {isDownloadModalOpen && (
+          <div className="download-modal-overlay">
+            <div className="download-modal">
+              <button className="close-btn" onClick={() => setDownloadModalOpen(false)}>×</button>
+              <img
+                src="https://stc-id.nixcdn.com/v11/images/popup_bg_vip_music_v2.png"
+                alt="Download Illustration"
+                className="modal-illustration"
+              />
+              <h2 className="modal-title">TẢI NHẠC</h2>
+              <p className="modal-subtitle">Chọn chất lượng nhạc bạn muốn tải</p>
+              <div className="quality-options">
+                <button className="quality-btn free" onClick={() => handleDownload("128kbps")}>
+                  <span className="icon"><Download size={13}/></span> 128 kbps
+                </button>
+                <button className="quality-btn premium" onClick={() => handleDownload("320kbps")}>
+                  <span className="icon"><Download size={13}/></span> 320 kbps <span className="crown">👑</span>
+                </button>
+                <button className="quality-btn lossless" onClick={() => handleDownload("lossless")}>
+                  <span className="icon"><Download size={13}/></span> Lossless <span className="crown">👑</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <button
+          className="karaoke-btn"
+          onClick={() => setShowLyrics(!showLyrics)}
+        >
           <Mic size={18} color={showLyrics ? "#1db954" : "white"} />
         </button>
         {showLyrics && currentSong && lyrics.length > 0 && (

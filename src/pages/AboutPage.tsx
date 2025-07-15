@@ -1,4 +1,4 @@
-import { Music, Users, Heart } from "lucide-react";
+import { Music, Users, Heart, Globe } from "lucide-react";
 import "./AboutPage.css";
 
 const AboutPage = () => {
@@ -20,6 +20,12 @@ const AboutPage = () => {
       title: "Giá trị",
       description:
         "Đam mê âm nhạc, sáng tạo không giới hạn và kết nối cộng đồng âm nhạc.",
+    },
+    {
+      icon: <Globe className="about-value-icon" />,
+      title: "Cam kết",
+      description:
+        "Luôn đặt người dùng làm trung tâm, bảo vệ quyền lợi nghệ sĩ và thúc đẩy sự phát triển bền vững của âm nhạc.",
     },
   ];
 

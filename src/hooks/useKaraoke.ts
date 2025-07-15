@@ -37,7 +37,7 @@ export function useKaraoke(
         if (!songId) return;
 
         const fetchLyrics = async () => {
-            const res = await fetch(`http://localhost:8080/identity/api/songs/${1}/lyrics`);
+            const res = await fetch(`http://localhost:8080/identity/api/songs/1/lyrics`);
             if (res.ok) {
                 const json: LyricLine[] = await res.json(); // JSON, không phải text
                 setLyrics(json);

@@ -1,21 +1,20 @@
-import { Check, Download, Headphones, Zap, Music } from "lucide-react";
+import { Check, Download, Headphones, Zap } from "lucide-react";
 import "./PremiumPage.css";
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
 
 export default function Component() {
-  // const [orderInfo, setOrderInfo] = useState<any>(null)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
+  const [currentPremium, setCurrentPremium] = useState<null | {
+    startDate: string;
+    endDate: string;
+    premiumName: string;
+  }>(null);
   const token = localStorage.getItem("auth_token") || "";
 
   const features = [
-    // {
-    //   icon: <Music className="w-5 h-5" />,
-    //   title: "Không quảng cáo",
-    //   description: "Thưởng thức âm nhạc không bị gián đoạn",
-    // },
     {
       icon: <Headphones className="w-5 h-5" />,
       title: "Chất lượng cao",
@@ -83,7 +82,40 @@ export default function Component() {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchPremiumStatus = async () => {
+      try {
+        const res = await api.get("/identity/user-premium/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (res.data.status === "SUCCESS") {
+          setCurrentPremium({
+            startDate: res.data.startDate,
+            endDate: res.data.endDate,
+            premiumName: res.data.premiumName,
+          });
+        }
+      } catch (error) {
+        console.error("Không thể lấy thông tin premium:", error);
+      }
+    };
+
+    if (token) {
+      fetchPremiumStatus();
+    }
+  }, [token]);
+
   const handleBuyPremium = async (badge: string) => {
+    if (currentPremium) {
+      alert(
+        `Bạn đang sử dụng gói Audiva ${
+          currentPremium.premiumName
+        } đến ngày ${new Date(currentPremium.endDate).toLocaleDateString()}.`
+      );
+      return;
+    }
+
     try {
       setLoading(true);
       setError("");
@@ -102,9 +134,6 @@ export default function Component() {
       );
 
       const data = (response.data as { result: any }).result;
-      console.log("Order Info:", data);
-      // setOrderInfo(data)
-
       if (data) {
         window.location.href = data;
       }
@@ -124,7 +153,23 @@ export default function Component() {
           Trải nghiệm âm nhạc không giới hạn với Audiva Premium
         </p>
 
-        {/* Features Grid */}
+        {currentPremium && (
+          <div className="current-premium-info">
+            <p>
+              Bạn đang sử dụng gói{" "}
+              <strong>Audiva {currentPremium.premiumName}</strong> đến ngày{" "}
+              <strong>
+                {new Date(currentPremium.endDate).toLocaleDateString()}
+              </strong>
+              .
+            </p>
+            <p>
+              Nếu muốn đăng ký gói khác, vui lòng chờ đến khi gói hiện tại hết
+              hạn.
+            </p>
+          </div>
+        )}
+
         <div className="features-grid">
           {features.map((feature, index) => (
             <div key={index} className="feature-card">
@@ -135,7 +180,6 @@ export default function Component() {
           ))}
         </div>
 
-        {/* Pricing Plans */}
         <div className="pricing-grid">
           {plans.map((plan, index) => (
             <div key={index} className={`pricing-card ${plan.cardClass}`}>
@@ -173,7 +217,6 @@ export default function Component() {
           ))}
         </div>
 
-        {/* Bottom CTA */}
         <div className="bottom-cta">
           <div className="cta-card">
             <h3 className="cta-title">Bắt đầu dùng thử miễn phí</h3>
@@ -185,7 +228,6 @@ export default function Component() {
           </div>
         </div>
 
-        {/* Footer Info */}
         <div className="footer-info">
           <p>Có thể hủy bất cứ lúc nào • Không cam kết dài hạn • Hỗ trợ 24/7</p>
         </div>

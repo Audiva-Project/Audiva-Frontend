@@ -19,6 +19,8 @@
 }
 
 .main-content {
+  /* display: flex;
+  justify-content: center; */
   flex: 1;
   overflow-y: auto;
   padding: var(--space-6);

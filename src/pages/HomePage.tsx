@@ -22,7 +22,8 @@ const HomePage = () => {
         title="Top 100" />
       <TrendingSongs />
       <PopularArtist title={{ main: "Popular", highlight: "Artists" }}
-        artists={artists} />
+        artists={artists}
+        limit={4} />
     </div>
   )
 }

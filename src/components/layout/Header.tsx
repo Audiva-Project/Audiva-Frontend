@@ -41,7 +41,17 @@ const Header = () => {
     setSelectedNotification(null);
   };
 
-  const deleteNotification = (notificationId: number, e: React.MouseEvent) => {
+  const deleteNotification = async (
+    notificationId: number,
+    e: React.MouseEvent
+  ) => {
+    // request to delete notification /identity/api/notifications/{{id}}
+    await api
+      .delete(`/identity/api/notifications/${notificationId}`)
+      .catch((error) => {
+        console.error("Failed to delete notification", error);
+      });
+
     e.stopPropagation();
     setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
     if (selectedNotification?.id === notificationId) {
@@ -60,7 +70,14 @@ const Header = () => {
     }
   };
 
-  const markAsRead = (notificationId: number) => {
+  const markAsRead = async (notificationId: number) => {
+    // request to mark notification as read /identity/api/notifications/{{id}}/read
+    await api
+      .post(`/identity/api/notifications/${notificationId}/read`)
+      .catch((error) => {
+        console.error("Failed to mark notification as read", error);
+      });
+
     setNotifications((prev) =>
       prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
     );
@@ -119,7 +136,7 @@ const Header = () => {
           <Search size={18} className="header-search-icon" />
           <input
             type="text"
-            placeholder="Search for Music, Artists..."
+            placeholder="Tìm kiếm bài hát, ca sĩ, album,..."
             className="header-search-input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -129,7 +146,7 @@ const Header = () => {
 
         <nav className="header-nav">
           <Link to="/about" className="header-nav-link">
-            About Us
+            Về chúng tôi
           </Link>
           <Link to="/premium" className="header-nav-link">
             Premium
@@ -151,10 +168,10 @@ const Header = () => {
           ) : (
             <div className="header-auth-buttons">
               <Link to="/login" className="header-btn header-btn-secondary">
-                Login
+                Đăng nhập
               </Link>
               <Link to="/signup" className="header-btn header-btn-primary">
-                Sign Up
+                Đăng ký
               </Link>
             </div>
           )}
@@ -254,7 +271,7 @@ const Header = () => {
                 </div>
               ) : (
                 <div className="header-no-notifications">
-                  <p>No notifications yet</p>
+                  <p>Chưa có thông báo nào</p>
                 </div>
               )}
             </div>

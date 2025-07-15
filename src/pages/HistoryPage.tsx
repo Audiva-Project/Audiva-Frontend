@@ -33,7 +33,7 @@ const HistoryPage: React.FC = () => {
 
   return (
     <div className="history-page">
-      <h1 className="history-heading">History</h1>
+      <h1 className="history-heading">BÀI HÁT ĐÃ NGHE</h1>
       {history.length === 0 ? (
         <p className="history-empty">No listening history yet.</p>
       ) : (

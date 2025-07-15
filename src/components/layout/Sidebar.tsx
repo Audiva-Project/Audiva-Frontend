@@ -18,15 +18,11 @@ const Sidebar = () => {
             <span>Trang chủ</span>
           </NavLink>
 
-          <NavLink to="/discover" className="nav-item">
-            <Compass size={20} />
-            <span>Khám phá</span>
-          </NavLink>
-
           <NavLink to="/artists" className="nav-item">
             <Users size={20} />
             <span>Nghệ sĩ</span>
           </NavLink>
+          
           <NavLink to="/albums" className="nav-item">
             <ListMusic size={20} />
             <span>Albums</span>

@@ -1,9 +1,50 @@
-"use client";
-
 import { CheckCircle, Gift, Crown } from "lucide-react";
 import "./thanks-page.css";
+import api from "@/utils/api";
+import { useAuthStore } from "@/stores/authStore";
+import { useEffect } from "react";
 
 export default function ThanksPage() {
+  const token = useAuthStore((state) => state.token);
+
+  useEffect(() => {
+    type PremiumData = {
+      status?: string;
+      startDate?: string;
+      endDate?: string;
+      [key: string]: any;
+    };
+
+    const fetchPremium = async () => {
+      try {
+        if (!token) return;
+
+        const res = await api.get("/identity/user-premium/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const premiumData: PremiumData = res.data as PremiumData;
+
+        const isPremium =
+          premiumData?.status === "SUCCESS" &&
+          !!premiumData?.endDate &&
+          new Date(premiumData.endDate) > new Date();
+
+        useAuthStore.setState({
+          premium: isPremium,
+          premiumStartDate: premiumData?.startDate ?? null,
+          premiumEndDate: premiumData?.endDate ?? null,
+        });
+
+        console.log("Cập nhật premium sau khi thanh toán thành công");
+      } catch (err) {
+        console.error("Lỗi khi cập nhật premium sau thanh toán:", err);
+      }
+    };
+
+    fetchPremium();
+  }, [token]);
+
   return (
     <div className="thanks-container">
       {/* Background Elements */}

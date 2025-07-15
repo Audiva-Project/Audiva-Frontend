@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "./PopularArtist.css";
 import { Artist } from "@/types";
+import { ChevronRight } from "lucide-react";
 
 interface ArtistSectionProps {
   title: {
@@ -8,9 +9,12 @@ interface ArtistSectionProps {
     highlight: string;
   };
   artists: Artist[];
+  limit?: number;
 }
 
-const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists }) => {
+const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists, limit }) => {
+  const displayArtist = limit ? artists.slice(0, limit) : artists;
+
   return (
     <section className="music-genres-section">
       <div className="section-header">
@@ -18,13 +22,14 @@ const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists }) => {
           {title.main}{" "}
           <span className="title-highlight">{title.highlight}</span>
         </h2>
-        {/* <button className="view-all-btn">
-                    View All
-                    <ChevronRight size={16} />
-                </button> */}
+        {limit && (
+          <Link to="/artists" className="view-all-btn">
+            Xem thêm <ChevronRight size={16} />
+          </Link>
+        )}
       </div>
       <div className="artist-list">
-        {artists.map((artist) => (
+        {displayArtist.map((artist) => (
           <div className="artist-card" key={artist.id}>
             <Link to={`/artists/${artist.id}`} className="artist-link">
               <div className="artist-image-container">
