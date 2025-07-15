@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./ArtistPage.css";
-import { useAuthStore } from "@/stores/authStore";
-import type { AuthState } from "@/stores/authStore";
 import PopularArtist from "@/components/sections/PopularArtist";
 import Banner from "@/components/sections/Banner";
 
@@ -15,7 +13,6 @@ type Artist = {
 const ArtistPage: React.FC = () => {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const token = useAuthStore((state: AuthState) => state.token);
 
   useEffect(() => {
     fetch("http://localhost:8080/identity/artists", {
