@@ -37,6 +37,8 @@ const Player = ({
   setCurrentSong,
   songs,
 }: PlayerProps) => {
+  console.log("Current song in Player:", songs);
+
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
@@ -241,12 +243,23 @@ const Player = ({
   }, [volume]);
 
   const handleSkipForward = () => {
+    console.log("Skipping to next song");
+    console.log("songs:", songs);
+    // log current song before skipping
+    console.log("Current song before skipping:", currentSong);
+
     if (!currentSong || songs.length === 0) return;
     const currentIndex = songs.findIndex(
       (s) => Number(s.id) === Number(currentSong.id)
     );
-    if (currentIndex === -1) return;
+    console.log("Current index:", currentIndex);
+
+    if (currentIndex === -1) {
+      setCurrentSong(songs[0]);
+    }
+
     const nextIndex = (currentIndex + 1) % songs.length;
+    console.log("Skipping to next song:", songs[nextIndex]);
     setCurrentSong(songs[nextIndex]);
     setIsPlaying(true);
   };
@@ -362,8 +375,8 @@ const Player = ({
             </div>
             <div className="track-artist">
               {currentSong &&
-                currentSong.artists &&
-                currentSong.artists.length > 0
+              currentSong.artists &&
+              currentSong.artists.length > 0
                 ? currentSong.artists.map((a) => a.name).join(", ")
                 : "Unknown Artist"}
             </div>
@@ -440,30 +453,58 @@ const Player = ({
           />
         </button>
 
-        <button className="download-btn" onClick={() => setDownloadModalOpen(true)}>
+        <button
+          className="download-btn"
+          onClick={() => setDownloadModalOpen(true)}
+        >
           <Download size={18} />
         </button>
         {/* Modal download */}
         {isDownloadModalOpen && (
           <div className="download-modal-overlay">
             <div className="download-modal">
-              <button className="close-btn" onClick={() => setDownloadModalOpen(false)}>×</button>
+              <button
+                className="close-btn"
+                onClick={() => setDownloadModalOpen(false)}
+              >
+                ×
+              </button>
               <img
                 src="https://stc-id.nixcdn.com/v11/images/popup_bg_vip_music_v2.png"
                 alt="Download Illustration"
                 className="modal-illustration"
               />
               <h2 className="modal-title">TẢI NHẠC</h2>
-              <p className="modal-subtitle">Chọn chất lượng nhạc bạn muốn tải</p>
+              <p className="modal-subtitle">
+                Chọn chất lượng nhạc bạn muốn tải
+              </p>
               <div className="quality-options">
-                <button className="quality-btn free" onClick={() => handleDownload("128kbps")}>
-                  <span className="icon"><Download size={13}/></span> 128 kbps
+                <button
+                  className="quality-btn free"
+                  onClick={() => handleDownload("128kbps")}
+                >
+                  <span className="icon">
+                    <Download size={13} />
+                  </span>{" "}
+                  128 kbps
                 </button>
-                <button className="quality-btn premium" onClick={() => handleDownload("320kbps")}>
-                  <span className="icon"><Download size={13}/></span> 320 kbps <span className="crown">👑</span>
+                <button
+                  className="quality-btn premium"
+                  onClick={() => handleDownload("320kbps")}
+                >
+                  <span className="icon">
+                    <Download size={13} />
+                  </span>{" "}
+                  320 kbps <span className="crown">👑</span>
                 </button>
-                <button className="quality-btn lossless" onClick={() => handleDownload("lossless")}>
-                  <span className="icon"><Download size={13}/></span> Lossless <span className="crown">👑</span>
+                <button
+                  className="quality-btn lossless"
+                  onClick={() => handleDownload("lossless")}
+                >
+                  <span className="icon">
+                    <Download size={13} />
+                  </span>{" "}
+                  Lossless <span className="crown">👑</span>
                 </button>
               </div>
             </div>
