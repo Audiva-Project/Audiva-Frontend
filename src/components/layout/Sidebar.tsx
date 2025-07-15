@@ -29,19 +29,11 @@ const Sidebar = () => {
             <span>Trang chủ</span>
           </NavLink>
 
-<<<<<<< HEAD
-=======
-          {/* <NavLink to="/discover" className="nav-item">
-            <Compass size={20} />
-            <span>Khám phá</span>
-          </NavLink> */}
-
->>>>>>> c0e832ac768acf1ed0ac675b1767b24540ea0898
           <NavLink to="/artists" className="nav-item">
             <Users size={20} />
             <span>Nghệ sĩ</span>
           </NavLink>
-          
+
           <NavLink to="/albums" className="nav-item">
             <ListMusic size={20} />
             <span>Albums</span>

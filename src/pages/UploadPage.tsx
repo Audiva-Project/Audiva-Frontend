@@ -4,13 +4,7 @@ import "@/pages/UploadPage.css";
 import { useAuthStore } from "@/stores/authStore";
 import type { AuthState } from "@/stores/authStore";
 import api from "@/utils/api";
-import {
-  FiUpload,
-  FiMusic,
-  FiImage,
-  FiChevronDown,
-  FiCheck,
-} from "react-icons/fi";
+import { FiUpload, FiMusic, FiImage, FiCheck } from "react-icons/fi";
 
 type Artist = {
   id: number;
@@ -125,10 +119,10 @@ const UploadPage: React.FC = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="unauthenticated-container">
-        <div className="unauthenticated-content">
-          <h1 className="unauthenticated-title">BÀI HÁT CỦA BẠN</h1>
-          <p className="unauthenticated-message">
+      <div className="upload-unauth-container">
+        <div className="upload-unauth-content">
+          <h1 className="upload-unauth-title">BÀI HÁT CỦA BẠN</h1>
+          <p className="upload-unauth-message">
             Bạn cần đăng nhập để đăng tải bài hát của riêng mình
           </p>
         </div>
@@ -137,17 +131,17 @@ const UploadPage: React.FC = () => {
   }
 
   return (
-    <div className="upload-page">
-      <div className="upload-container">
-        <div className="upload-header">
-          <FiUpload className="upload-icon" />
+    <div className="upload-wrapper">
+      <div className="upload-box">
+        <div className="upload-box-header">
+          <FiUpload className="upload-box-icon" />
           <h2>Đăng tải bài hát</h2>
         </div>
 
-        <form onSubmit={handleSubmit} className="upload-form">
-          <div className="form-group">
-            <label className="form-label">Tên bài hát</label>
-            <div className="input-wrapper">
+        <form onSubmit={handleSubmit} className="upload-box-form">
+          <div className="upload-form-group">
+            <label className="upload-form-label">Tên bài hát</label>
+            <div className="upload-input-wrapper">
               <input
                 type="text"
                 value={songName}
@@ -158,25 +152,25 @@ const UploadPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Ca sĩ</label>
-            <div className="custom-dropdown" ref={dropdownRef}>
-              <div className="dropdown-input" onClick={toggleDropdown}>
-                <span className="dropdown-value">
+          <div className="upload-form-group">
+            <label className="upload-form-label">Ca sĩ</label>
+            <div className="upload-dropdown" ref={dropdownRef}>
+              <div className="upload-dropdown-input" onClick={toggleDropdown}>
+                <span className="upload-dropdown-value">
                   {selectedArtistNames || "Chọn ca sĩ"}
                 </span>
               </div>
               {isDropdownOpen && (
-                <div className="dropdown-menu">
+                <div className="upload-dropdown-menu">
                   {artists.map((artist) => (
                     <div
                       key={artist.id}
-                      className={`dropdown-item ${
+                      className={`upload-dropdown-item ${
                         selectedArtistIds.includes(artist.id) ? "selected" : ""
                       }`}
                       onClick={() => handleArtistSelect(artist.id)}
                     >
-                      <div className="checkbox">
+                      <div className="upload-checkbox">
                         {selectedArtistIds.includes(artist.id) && <FiCheck />}
                       </div>
                       <span>{artist.name}</span>
@@ -187,13 +181,13 @@ const UploadPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Tệp nhạc (.mp3)</label>
-            <label className="file-upload">
-              <div className="file-upload-content">
-                <div className="file-upload-inner">
-                  <FiMusic className="file-icon" />
-                  <span className="file-upload-text">
+          <div className="upload-form-group">
+            <label className="upload-form-label">Tệp nhạc (.mp3)</label>
+            <label className="upload-file-upload">
+              <div className="upload-file-content">
+                <div className="upload-file-inner">
+                  <FiMusic className="upload-file-icon" />
+                  <span className="upload-file-text">
                     {file ? file.name : "Chọn tệp nhạc"}
                   </span>
                 </div>
@@ -211,13 +205,13 @@ const UploadPage: React.FC = () => {
             </label>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Ảnh bài hát</label>
-            <label className="file-upload">
-              <div className="file-upload-content">
-                <div className="file-upload-inner">
-                  <FiImage className="file-icon" />
-                  <span className="file-upload-text">
+          <div className="upload-form-group">
+            <label className="upload-form-label">Ảnh bài hát</label>
+            <label className="upload-file-upload">
+              <div className="upload-file-content">
+                <div className="upload-file-inner">
+                  <FiImage className="upload-file-icon" />
+                  <span className="upload-file-text">
                     {thumbnail ? thumbnail.name : "Chọn ảnh (tùy chọn)"}
                   </span>
                 </div>
@@ -236,7 +230,7 @@ const UploadPage: React.FC = () => {
 
           <button
             type="submit"
-            className="upload-button"
+            className="upload-submit-button"
             disabled={isSubmitting}
           >
             <FiUpload />
@@ -245,8 +239,10 @@ const UploadPage: React.FC = () => {
 
           {message && (
             <div
-              className={`message ${
-                message.includes("thành công") ? "success" : "error"
+              className={`upload-message-box ${
+                message.includes("thành công")
+                  ? "upload-success"
+                  : "upload-error"
               }`}
             >
               {message}
