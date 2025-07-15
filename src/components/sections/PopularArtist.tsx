@@ -12,16 +12,20 @@ interface ArtistSectionProps {
   limit?: number;
 }
 
-const PopularArtist: React.FC<ArtistSectionProps> = ({ title, artists, limit }) => {
+const PopularArtist: React.FC<ArtistSectionProps> = ({
+  title,
+  artists,
+  limit,
+}) => {
   const displayArtist = limit ? artists.slice(0, limit) : artists;
 
   return (
     <section className="music-genres-section">
       <div className="section-header">
-        <h2 className="section-title">
+        {/* <h2 className="section-title">
           {title.main}{" "}
           <span className="title-highlight">{title.highlight}</span>
-        </h2>
+        </h2> */}
         {limit && (
           <Link to="/artists" className="view-all-btn">
             Xem thêm <ChevronRight size={16} />

@@ -51,8 +51,12 @@ export default function ArtistsPageById() {
         imgUrl={`http://localhost:8080/identity/audio/${artistData.avatar}`}
         name={artistData.name}
       />
-      <PopularSong songs={popularSongs} />
-      <TopAlbums albums={artistData.albums} />
+
+      {popularSongs.length > 0 && <PopularSong songs={popularSongs} />}
+
+      {artistData.albums && artistData.albums.length > 0 && (
+        <TopAlbums albums={artistData.albums} />
+      )}
     </div>
   );
 }

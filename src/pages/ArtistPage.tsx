@@ -3,6 +3,7 @@ import "./ArtistPage.css";
 import { useAuthStore } from "@/stores/authStore";
 import type { AuthState } from "@/stores/authStore";
 import PopularArtist from "@/components/sections/PopularArtist";
+import Banner from "@/components/sections/Banner";
 
 type Artist = {
   id: number;
@@ -34,7 +35,19 @@ const ArtistPage: React.FC = () => {
   if (loading) return <div>Loading artists...</div>;
 
   return (
-    <PopularArtist title={{ main: "", highlight: "" }} artists={artists} />
+    <div className="artist-page">
+      <Banner
+        title="Khám Phá Nghệ Sĩ"
+        subtitle="Tìm hiểu về những nghệ sĩ yêu thích của bạn và khám phá âm nhạc mới"
+      />
+
+      <div className="artist-content">
+        <PopularArtist
+          title={{ main: "Nghệ Sĩ", highlight: "Nổi Bật" }}
+          artists={artists}
+        />
+      </div>
+    </div>
   );
 };
 

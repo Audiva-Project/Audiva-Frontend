@@ -53,3 +53,8 @@
     font-size: var(--font-size-xl);
   }
 }
+
+.album-page {
+  min-height: 100vh;
+  background: transparent;
+}

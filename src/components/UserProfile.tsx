@@ -9,7 +9,6 @@ import { formatDate } from "@/utils/helpers";
 
 export default function ProfilePage() {
   const user = useAuthStore((state) => state.user);
-  console.log("User profile:", user);
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [userInfo, setUserInfo] = useState({
