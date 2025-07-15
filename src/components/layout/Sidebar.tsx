@@ -33,7 +33,7 @@ const Sidebar = () => {
             <Users size={20} />
             <span>Nghệ sĩ</span>
           </NavLink>
-          
+
           <NavLink to="/albums" className="nav-item">
             <ListMusic size={20} />
             <span>Albums</span>

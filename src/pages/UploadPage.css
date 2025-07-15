@@ -24,15 +24,9 @@
   color: #ffffff;
 }
 
-.upload-icon {
+.upload-header-icon {
   font-size: 1.25rem;
   margin-right: 0.75rem;
-}
-
-.upload-header h2 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
 }
 
 .upload-form {
@@ -41,13 +35,12 @@
   gap: 1.5rem;
 }
 
-.form-group {
+.upload-form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 0;
 }
 
-.form-label {
+.upload-label {
   display: block;
   color: #d1d5db;
   font-size: 0.875rem;
@@ -55,7 +48,7 @@
   margin-bottom: 0.5rem;
 }
 
-.input-wrapper input {
+.upload-input-wrapper input {
   width: 100%;
   padding: 0.75rem 1rem;
   background-color: #374151;
@@ -67,23 +60,22 @@
   box-sizing: border-box;
 }
 
-.input-wrapper input:focus {
+.upload-input-wrapper input:focus {
   outline: none;
   border-color: #6366f1;
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }
 
-.input-wrapper input::placeholder {
+.upload-input-wrapper input::placeholder {
   color: #9ca3af;
 }
 
-/* Custom Dropdown Styles */
-.custom-dropdown {
+.upload-dropdown {
   position: relative;
   user-select: none;
 }
 
-.dropdown-input {
+.upload-dropdown-input {
   width: 100%;
   padding: 0.75rem 1rem;
   background-color: #374151;
@@ -98,11 +90,11 @@
   box-sizing: border-box;
 }
 
-.dropdown-input:hover {
+.upload-dropdown-input:hover {
   border-color: #6b7280;
 }
 
-.dropdown-value {
+.upload-dropdown-value {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -110,17 +102,7 @@
   font-size: 0.875rem;
 }
 
-.dropdown-arrow {
-  margin-left: 0.5rem;
-  transition: transform 0.2s ease;
-  flex-shrink: 0;
-}
-
-.dropdown-arrow.open {
-  transform: rotate(180deg);
-}
-
-.dropdown-menu {
+.upload-dropdown-menu {
   position: absolute;
   top: calc(100% + 0.25rem);
   left: 0;
@@ -135,7 +117,7 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.dropdown-item {
+.upload-dropdown-item {
   padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
@@ -146,15 +128,15 @@
   transition: background-color 0.2s ease;
 }
 
-.dropdown-item:hover {
+.upload-dropdown-item:hover {
   background-color: #4b5563;
 }
 
-.dropdown-item.selected {
+.upload-dropdown-item.selected {
   background-color: rgba(99, 102, 241, 0.2);
 }
 
-.checkbox {
+.upload-checkbox {
   width: 1rem;
   height: 1rem;
   border: 1px solid #6b7280;
@@ -166,18 +148,18 @@
   flex-shrink: 0;
 }
 
-.checkbox svg {
+.upload-checkbox svg {
   color: #818cf8;
   font-size: 0.75rem;
 }
 
 /* File Upload Styles */
-.file-upload {
+.upload-file {
   display: block;
   cursor: pointer;
 }
 
-.file-upload-content {
+.upload-file-box {
   width: 100%;
   padding: 0.75rem 1rem;
   background-color: #374151;
@@ -187,33 +169,33 @@
   box-sizing: border-box;
 }
 
-.file-upload:hover .file-upload-content {
+.upload-file:hover .upload-file-box {
   border-color: #6b7280;
   background-color: rgba(75, 85, 99, 0.5);
 }
 
-.file-upload-inner {
+.upload-file-inner {
   display: flex;
   align-items: center;
   color: #9ca3af;
 }
 
-.file-icon {
+.upload-file-icon {
   margin-right: 0.75rem;
   font-size: 1.125rem;
   flex-shrink: 0;
 }
 
-.file-upload-text {
+.upload-file-text {
   font-size: 0.875rem;
 }
 
-.file-upload input {
+.upload-file input {
   display: none;
 }
 
 /* Upload Button */
-.upload-button {
+.upload-submit {
   width: 100%;
   background: #6366f1;
   border: none;
@@ -230,59 +212,56 @@
   gap: 0.5rem;
 }
 
-.upload-button:hover {
+.upload-submit:hover {
   background: #4f46e5;
 }
 
-.upload-button:disabled {
+.upload-submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Message Styles */
-.message {
+/* Messages */
+.upload-message {
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
   text-align: center;
 }
 
-.message.success {
+.upload-message.success {
   background-color: rgba(16, 185, 129, 0.2);
   color: #10b981;
 }
 
-.message.error {
+.upload-message.error {
   background-color: rgba(239, 68, 68, 0.2);
   color: #ef4444;
 }
 
-/* Unauthenticated State */
-.unauthenticated-container {
+/* Unauthenticated */
+.upload-unauthenticated {
   min-height: 100vh;
   background-color: #111827;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
-}
-
-.unauthenticated-content {
   text-align: center;
 }
 
-.unauthenticated-title {
+.upload-unauthenticated h1 {
   font-size: 1.5rem;
   font-weight: bold;
   color: #ffffff;
   margin-bottom: 1rem;
 }
 
-.unauthenticated-message {
+.upload-unauthenticated p {
   color: #9ca3af;
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 640px) {
   .upload-page {
     padding: 1rem 0.5rem;
@@ -296,7 +275,7 @@
     font-size: 1.125rem;
   }
 
-  .dropdown-menu {
+  .upload-dropdown-menu {
     max-height: 10rem;
   }
 }
@@ -306,7 +285,7 @@
     padding: 1rem;
   }
 
-  .form-group {
+  .upload-form-group {
     gap: 1rem;
   }
 }
