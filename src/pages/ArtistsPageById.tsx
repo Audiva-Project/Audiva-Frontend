@@ -1,31 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ArtistImageSection from "@/components/sections/ArtistImageSection";
-import PlaylistSection from "@/components/sections/PlaylistSection";
-import PopularArtist from "@/components/sections/PopularArtist";
 import PopularSong from "@/components/sections/PopularSong";
 import TopAlbums from "@/components/sections/TopAlbums";
-import { artist, playlists } from "@/data/mockData";
 import { Artist } from "@/types";
-import { useAuthStore } from "@/stores/authStore";
-import type { AuthState } from "@/stores/authStore";
+import api from "@/utils/api";
 
 export default function ArtistsPageById() {
   const { id } = useParams<{ id: string }>();
   const [artistData, setArtistData] = useState<Artist | null>(null);
-  const token = useAuthStore((state: AuthState) => state.token);
+  const [popularSongs, setPopularSongs] = useState([]);
 
+  // ✅ Luôn luôn đặt hook ở đầu
   useEffect(() => {
     const fetchArtist = async () => {
       try {
         const response = await fetch(
           `http://localhost:8080/identity/artists/${id}`
-          // {
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //     Authorization: `Bearer ${token}`,
-          //   },
-          // }
         );
         if (!response.ok) throw new Error("Network response was not ok");
 
@@ -39,14 +30,20 @@ export default function ArtistsPageById() {
     if (id) fetchArtist();
   }, [id]);
 
-  if (!artistData) return <p>Loading artist...</p>;
+  useEffect(() => {
+    const fetchPopularSongs = async () => {
+      try {
+        const response = await api.get(`/identity/api/songs/artist/${id}`);
+        setPopularSongs(response.data.result.content);
+      } catch (error) {
+        console.error("Error fetching popular songs:", error);
+      }
+    };
 
-  const popularSongs = artistData.albums.flatMap(album =>
-    album.songs.map(song => ({
-      ...song,
-      albumTitle: album.title
-    }))
-  ).sort((a, b) => (b.playCount ?? 0) - (a.playCount ?? 0))
+    if (id) fetchPopularSongs();
+  }, [id]);
+
+  if (!artistData) return <p>Loading artist...</p>;
 
   return (
     <div className="page-container">
@@ -54,16 +51,8 @@ export default function ArtistsPageById() {
         imgUrl={`http://localhost:8080/identity/audio/${artistData.avatar}`}
         name={artistData.name}
       />
-      <PopularSong
-        songs={popularSongs} />
+      <PopularSong songs={popularSongs} />
       <TopAlbums albums={artistData.albums} />
-      <PopularArtist
-        title={{
-          main: `${artistData.name} Fans `,
-          highlight: "Also Listen To",
-        }}
-        artists={artist}
-      />
     </div>
   );
 }

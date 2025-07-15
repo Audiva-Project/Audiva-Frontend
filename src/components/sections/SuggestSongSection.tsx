@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MoreHorizontal} from "lucide-react";
+import { Crown, MoreHorizontal, Star } from "lucide-react";
 import type { Song } from "@/types";
 import api from "@/utils/api";
 import { useOutletContext } from "react-router-dom";
@@ -34,7 +34,9 @@ const SuggestSongSection = () => {
     let hasMore = true;
 
     while (hasMore) {
-      const response = await api.get(`/identity/api/songs?page=${page}&size=50`);
+      const response = await api.get(
+        `/identity/api/songs?page=${page}&size=50`
+      );
       const data = response.data as { content: Song[]; last: boolean };
       all = all.concat(data.content || []);
       hasMore = !data.last;
@@ -85,9 +87,12 @@ const SuggestSongSection = () => {
       setCurrentSong(song);
       setIsPlaying(true);
       try {
-        await fetch(`http://localhost:8080/identity/api/songs/${song.id}/play`, {
-          method: "POST",
-        });
+        await fetch(
+          `http://localhost:8080/identity/api/songs/${song.id}/play`,
+          {
+            method: "POST",
+          }
+        );
       } catch (error) {
         console.error("Error increasing play count:", error);
       }
@@ -142,7 +147,7 @@ const SuggestSongSection = () => {
           {suggestedSongs.map((song) => {
             const isCurrent = currentSong?.id === song.id;
             const isThisPlaying = isCurrent && isPlaying;
-
+            console.log("---->", song.premium);
             return (
               <div key={song.id} className="suggest-item">
                 <img
@@ -152,7 +157,16 @@ const SuggestSongSection = () => {
                   onClick={() => handlePlay(song)}
                 />
                 <div className="suggest-info" onClick={() => handlePlay(song)}>
-                  <div className="suggest-song-title">{song.title}</div>
+                  <div className="suggest-song-title flex items-center gap-1">
+                    {song.title}
+                    {song.premium && (
+                      <Crown
+                        size={16}
+                        color="#facc15"
+                        className="text-yellow-400 premium-icon"
+                      />
+                    )}
+                  </div>
                   <div className="suggest-song-artist">
                     {song.artists.map((a) => a.name).join(", ")}
                   </div>

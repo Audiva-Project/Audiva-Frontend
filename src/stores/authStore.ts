@@ -97,21 +97,6 @@ export const useAuthStore = create<AuthState>()(
 
             const userData = (userResponse.data as any).result;
 
-            const user: User = {
-              id: userData.id,
-              name: userData.lastName
-                ? `${userData.firstName} ${userData.lastName}`.trim()
-                : userData.firstName,
-              email: userData.username,
-              avatar:
-                userData.avatar ||
-                `https://greekherald.com.au/wp-content/uploads/2020/07/default-avatar.png`,
-              playlists: userData.playlists,
-              premium: userData.premium ?? false,
-            };
-
-            set({ user });
-
             const premiumRes = await api.get("/identity/user-premium/me", {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -134,6 +119,21 @@ export const useAuthStore = create<AuthState>()(
               premiumEndDate: premiumData?.endDate ?? null,
               isLoading: false,
             }));
+
+            const user: User = {
+              id: userData.id,
+              name: userData.lastName
+                ? `${userData.firstName} ${userData.lastName}`.trim()
+                : userData.firstName,
+              email: userData.username,
+              avatar:
+                userData.avatar ||
+                `https://greekherald.com.au/wp-content/uploads/2020/07/default-avatar.png`,
+              playlists: userData.playlists,
+              premium: isPremium,
+            };
+
+            set({ user });
           } catch (error: any) {
             let message = "Đăng nhập không thành công";
             if (error.response?.status === 401) {

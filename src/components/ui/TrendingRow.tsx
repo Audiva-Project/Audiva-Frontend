@@ -1,11 +1,11 @@
-import { Pause, Play } from "lucide-react"
-import type { Song } from "@/types"
-import "./TrendingRow.css"
-import { useOutletContext } from "react-router-dom"
+import { Pause, Play } from "lucide-react";
+import type { Song } from "@/types";
+import "./TrendingRow.css";
+import { useOutletContext } from "react-router-dom";
 
 interface TrendingRowProps {
-  song: Song
-  rank: number
+  song: Song;
+  rank: number;
 }
 
 interface OutletContextType {
@@ -16,7 +16,8 @@ interface OutletContextType {
 }
 
 const TrendingRow = ({ song, rank }: TrendingRowProps) => {
-  const { currentSong, setCurrentSong, isPlaying, setIsPlaying } = useOutletContext<OutletContextType>();
+  const { currentSong, setCurrentSong, isPlaying, setIsPlaying } =
+    useOutletContext<OutletContextType>();
   const isCurrent = currentSong?.id === song.id;
   const isThisPlaying = isCurrent && isPlaying;
 
@@ -27,9 +28,12 @@ const TrendingRow = ({ song, rank }: TrendingRowProps) => {
       setCurrentSong(song);
       setIsPlaying(true);
       try {
-        await fetch(`http://localhost:8080/identity/api/songs/${song.id}/play`, {
-          method: "POST",
-        });
+        await fetch(
+          `http://localhost:8080/identity/api/songs/${song.id}/play`,
+          {
+            method: "POST",
+          }
+        );
         console.log("Play count increased!");
       } catch (err) {
         console.error("Play count error:", err);
@@ -54,9 +58,17 @@ const TrendingRow = ({ song, rank }: TrendingRowProps) => {
           className="song-thumbnail"
         />
         <div className="song-details">
-          <div className="song-title">{song.title}</div>
+          <div
+            className="song-title"
+            style={{ display: "flex", alignItems: "center", gap: "6px" }}
+          >
+            <span>{song.title}</span>
+            {song.premium && <span className="premium-badge">Premium</span>}
+          </div>
           <div className="song-artist">
-            {song.artist || song.artists?.map(a => a.name).join(", ") || "Unknown Artist"}
+            {song.artist ||
+              song.artists?.map((a) => a.name).join(", ") ||
+              "Unknown Artist"}
           </div>
         </div>
         <button className="play-btn-small" onClick={handlePlayClick}>
@@ -68,11 +80,12 @@ const TrendingRow = ({ song, rank }: TrendingRowProps) => {
         </button>
       </div>
 
-      <div className="row-cell album">{song.album?.title || song.albumTitle || 'Unknown Album'}</div>
+      <div className="row-cell album">
+        {song.album?.title || song.albumTitle || "Unknown Album"}
+      </div>
       <div className="row-cell play">{song.playCount}</div>
-
     </div>
-  )
-}
+  );
+};
 
-export default TrendingRow
+export default TrendingRow;

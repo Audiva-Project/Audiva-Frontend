@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./ArtistPage.css";
-import { Link } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import type { AuthState } from "@/stores/authStore";
 import PopularArtist from "@/components/sections/PopularArtist";

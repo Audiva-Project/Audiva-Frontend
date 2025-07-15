@@ -124,10 +124,10 @@ const Header = () => {
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchQuery.trim() !== "") {
-      navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`)
-      setSearchQuery("")
+      navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery("");
     }
-  }
+  };
 
   return (
     <>
@@ -140,6 +140,7 @@ const Header = () => {
             className="header-search-input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearch}
           />
         </div>
 
