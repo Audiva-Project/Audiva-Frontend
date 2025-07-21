@@ -52,7 +52,7 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoading: true, error: null });
 
           try {
-            const response = await api.post("/identity/auth/token", {
+            const response = await api.post("/auth/token", {
               username: identifier,
               password,
             });
@@ -66,30 +66,8 @@ export const useAuthStore = create<AuthState>()(
               token,
               isAuthenticated: true,
             });
-            // const anonymousId = localStorage.getItem("anonymousId");
-            // if (anonymousId) {
-            //   try {
-            //     await api.post(
-            //       "/identity/api/history/merge",
-            //       { anonymousId },
-            //       {
-            //         headers: {
-            //           Authorization: `Bearer ${token}`,
-            //         },
-            //       }
-            //     );
-            //     // Xóa anonymousId sau khi merge thành công
-            //     localStorage.removeItem("anonymousId");
-            //     document.cookie = "anonymousId=; Max-Age=0; path=/";
-            //     console.log("Merged anonymous history into user account");
-            //   } catch (err) {
-            //     console.warn("Failed to merge anonymous history", err);
-            //   }
-            //   console.log("Anonymous ID found:", anonymousId);
-            // }
 
-            // Fetch user data
-            const userResponse = await api.get("/identity/users/me", {
+            const userResponse = await api.get("/users/me", {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -97,7 +75,7 @@ export const useAuthStore = create<AuthState>()(
 
             const userData = (userResponse.data as any).result;
 
-            const premiumRes = await api.get("/identity/user-premium/me", {
+            const premiumRes = await api.get("/user-premium/me", {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -182,12 +160,9 @@ export const useAuthStore = create<AuthState>()(
           if (!token) return;
 
           try {
-            const userRes = await api.get<{ result: any }>(
-              "/identity/users/me",
-              {
-                headers: { Authorization: `Bearer ${token}` },
-              }
-            );
+            const userRes = await api.get<{ result: any }>("/users/me", {
+              headers: { Authorization: `Bearer ${token}` },
+            });
             const userData = userRes.data?.result;
 
             const user: User = {
@@ -201,7 +176,7 @@ export const useAuthStore = create<AuthState>()(
               premium: userData.premium ?? false,
             };
 
-            const premiumRes = await api.get("/identity/user-premium/me", {
+            const premiumRes = await api.get("/user-premium/me", {
               headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -242,7 +217,7 @@ export const useAuthStore = create<AuthState>()(
           try {
             const token = get().token;
             if (token) {
-              await api.post("/identity/auth/logout", { token });
+              await api.post("/auth/logout", { token });
             }
           } catch (error) {
             console.warn("Logout API call failed", error);
@@ -255,6 +230,9 @@ export const useAuthStore = create<AuthState>()(
             token: null,
             isAuthenticated: false,
             isLoading: false,
+            premium: false,
+            premiumEndDate: null,
+            premiumStartDate: null,
           });
         },
 

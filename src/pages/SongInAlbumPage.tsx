@@ -3,6 +3,7 @@ import { useOutletContext, useParams } from "react-router-dom";
 import axios from "axios";
 import SongInAlbumSection from "@/components/sections/SongInAlbumSection";
 import { Song } from "@/types";
+import api from "@/utils/api";
 
 interface Album {
   id: number;
@@ -24,10 +25,7 @@ const SongInAlbumPage: React.FC = () => {
   useEffect(() => {
     const fetchAlbum = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/identity/api/albums/${id}`
-        );
-        console.log(response.data);
+        const response = await api.get(`/albums/${id}`);
         const data = response.data as { result: Album };
         setAlbum(data.result);
         setSongs(data.result.songs || []);

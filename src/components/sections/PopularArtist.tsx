@@ -39,9 +39,7 @@ const PopularArtist: React.FC<ArtistSectionProps> = ({
               <div className="artist-image-container">
                 <img
                   src={
-                    artist.avatar
-                      ? `http://localhost:8080/identity/audio/${artist.avatar}`
-                      : "/default-avatar.png"
+                    artist.avatar ? `${artist.avatar}` : "/default-avatar.png"
                   }
                   alt={artist.name}
                   className="artist-image"

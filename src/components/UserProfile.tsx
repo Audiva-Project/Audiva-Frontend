@@ -56,9 +56,7 @@ export default function ProfilePage() {
 
     const fetchPremiumInfo = async () => {
       try {
-        const res = await api.get<PremiumApiResponse>(
-          "/identity/user-premium/me"
-        );
+        const res = await api.get<PremiumApiResponse>("/user-premium/me");
         setPremiumInfo({
           status: res.data?.status || "inactive",
           plan: res.data?.premiumName || "Free",
@@ -94,7 +92,7 @@ export default function ProfilePage() {
     });
 
     await api.put(
-      `/identity/users/${user?.id}`,
+      `/users/${user?.id}`,
       {
         firstName: editForm.name,
         password: editForm.password || undefined,

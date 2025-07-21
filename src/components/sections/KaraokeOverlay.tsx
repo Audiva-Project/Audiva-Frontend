@@ -30,7 +30,9 @@ export default function KaraokeOverlay({
   const progressBarRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
-  const [repeatMode, setRepeatMode] = useState<"off" | "repeat-one" | "repeat-all">("off");
+  const [repeatMode, setRepeatMode] = useState<
+    "off" | "repeat-one" | "repeat-all"
+  >("off");
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -120,7 +122,7 @@ export default function KaraokeOverlay({
       <div className="karaoke-left">
         {song?.thumbnailUrl && (
           <img
-            src={`http://localhost:8080/identity/audio/${song.thumbnailUrl}`}
+            src={`${song.thumbnailUrl}`}
             alt="Background"
             className="karaoke-img"
           />
@@ -144,7 +146,8 @@ export default function KaraokeOverlay({
               size={16}
               color={repeatMode !== "off" ? "#1db954" : "white"}
               style={{
-                transform: repeatMode === "repeat-one" ? "rotate(360deg)" : "none",
+                transform:
+                  repeatMode === "repeat-one" ? "rotate(360deg)" : "none",
                 transition: "transform 0.3s",
               }}
             />

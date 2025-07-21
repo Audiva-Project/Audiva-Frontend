@@ -27,7 +27,7 @@ const UploadPage: React.FC = () => {
   useEffect(() => {
     const fetchArtists = async () => {
       try {
-        const response = await api.get("/identity/artists", {
+        const response = await api.get("/artists", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -93,25 +93,21 @@ const UploadPage: React.FC = () => {
     });
 
     try {
-      const response = await fetch("http://localhost:8080/identity/api/songs", {
-        method: "POST",
+      const response = await api.post("/songs", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
-        body: formData,
       });
 
-      if (response.ok) {
-        setMessage("Tải bài hát thành công!");
-        setSongName("");
-        setFile(null);
-        setThumbnail(null);
-        setSelectedArtistIds([]);
-      } else {
-        setMessage("Tải bài hát thất bại.");
-      }
+      setMessage("Tải bài hát thành công!");
+      setSongName("");
+      setFile(null);
+      setThumbnail(null);
+      setSelectedArtistIds([]);
     } catch (error) {
-      setMessage("Đã xảy ra lỗi khi tải bài hát.");
+      setMessage("Tải bài hát thất bại.");
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }

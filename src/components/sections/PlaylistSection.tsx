@@ -13,7 +13,7 @@ const PlaylistSection = () => {
 
   const fetchPlaylists = async () => {
     try {
-      const response = await api.get("/identity/api/playlists");
+      const response = await api.get("/playlists");
       setPlaylists(response.data);
     } catch (error) {
       console.error("Failed to fetch playlists:", error);
@@ -30,7 +30,7 @@ const PlaylistSection = () => {
       const formData = new FormData();
       formData.append("name", name);
 
-      await api.post("/identity/api/playlists", formData, {
+      await api.post("/playlists", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -54,7 +54,7 @@ const PlaylistSection = () => {
     if (!window.confirm("Bạn chắc chắn muốn xoá playlist này?")) return;
 
     try {
-      await api.delete(`/identity/api/playlists/${playlistId}`);
+      await api.delete(`/playlists/${playlistId}`);
       alert("Xoá playlist thành công!");
 
       await fetchPlaylists();
@@ -88,7 +88,7 @@ const PlaylistSection = () => {
             <div className="playlist-card">
               <div className="playlist-image-container">
                 <img
-                  src={`http://localhost:8080/identity/audio/${playlist.thumbnailUrl}`}
+                  src={`${playlist.thumbnailUrl}`}
                   alt={playlist.name}
                   className="playlist-image"
                 />

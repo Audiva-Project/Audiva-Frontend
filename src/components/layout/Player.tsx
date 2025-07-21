@@ -21,6 +21,7 @@ import { logListening } from "@/utils/listeningHistory";
 import { AuthState, useAuthStore } from "@/stores/authStore";
 import { useKaraoke } from "@/hooks/useKaraoke";
 import KaraokeOverlay from "../sections/KaraokeOverlay";
+import api from "@/utils/api";
 
 interface PlayerProps {
   currentSong: Song | null;
@@ -37,8 +38,6 @@ const Player = ({
   setCurrentSong,
   songs,
 }: PlayerProps) => {
-  console.log("Current song in Player:", songs);
-
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
@@ -66,16 +65,22 @@ const Player = ({
     (p) => p.name?.toLowerCase() === "playlist"
   )?.id;
 
+  useEffect(() => {
+    if (!currentSong && songs.length > 0) {
+      setCurrentSong(songs[3]);
+    }
+  }, [currentSong, songs, setCurrentSong]);
+
   const handleAddToFavorites = async () => {
     if (!token) return alert("Bạn cần đăng nhập để sử dụng tính năng này!");
     if (!favoriteId) return alert("Favorite Playlist ID không tồn tại!");
     if (!currentSong) return alert("Không có bài hát nào được chọn!");
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/identity/api/playlists/${favoriteId}/add/${currentSong.id}`,
+      const response = await api.post(
+        `/playlists/${favoriteId}/add/${currentSong.id}`,
+        {},
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -83,7 +88,7 @@ const Player = ({
         }
       );
 
-      if (response.ok) {
+      if (response.status == 200) {
         alert("Đã thêm bài hát vào Favorites!");
         setIsLiked(true);
       } else {
@@ -101,17 +106,18 @@ const Player = ({
     if (!currentSong) return alert("Không có bài hát nào được chọn!");
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/identity/api/playlists/${playlistId}/add/${currentSong.id}`,
+      const response = await api.post(
+        `/playlists/${playlistId}/add/${currentSong.id}`,
+        {},
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      if (response.ok) {
+
+      if (response.status === 200) {
         alert("Đã thêm bài hát vào Playlist!");
         setIsAddedToPlaylist(true);
       } else {
@@ -243,23 +249,16 @@ const Player = ({
   }, [volume]);
 
   const handleSkipForward = () => {
-    console.log("Skipping to next song");
-    console.log("songs:", songs);
-    // log current song before skipping
-    console.log("Current song before skipping:", currentSong);
-
     if (!currentSong || songs.length === 0) return;
     const currentIndex = songs.findIndex(
       (s) => Number(s.id) === Number(currentSong.id)
     );
-    console.log("Current index:", currentIndex);
 
     if (currentIndex === -1) {
       setCurrentSong(songs[0]);
     }
 
     const nextIndex = (currentIndex + 1) % songs.length;
-    console.log("Skipping to next song:", songs[nextIndex]);
     setCurrentSong(songs[nextIndex]);
     setIsPlaying(true);
   };
@@ -318,41 +317,35 @@ const Player = ({
     }
 
     try {
-      const downloadUrl = `http://localhost:8080/identity/api/songs/${currentSong.id}/download?quality=${quality}`;
-
-      const response = await fetch(downloadUrl, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        if (response.status === 403) {
-          alert("Bạn đã hết lượt tải cho hôm nay!");
-        } else {
-          alert("Không thể tải bài hát!");
+      const response = await api.get(
+        `/songs/${currentSong.id}/download?quality=${quality}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: "blob", // quan trọng!
         }
-        return;
-      }
+      );
 
-      const blob = await response.blob();
+      const blob = response.data;
 
-      // Tạo link ẩn
+      // Tạo link tải
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-
       link.download = `${currentSong.title || "song"}.mp3`;
-
       document.body.appendChild(link);
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
       setDownloadModalOpen(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Download failed:", error);
-      alert("Tải bài hát thất bại!");
+      if (error.response?.status === 403) {
+        alert("Bạn đã hết lượt tải cho hôm nay!");
+      } else {
+        alert("Tải bài hát thất bại!");
+      }
     }
   };
 
@@ -364,7 +357,7 @@ const Player = ({
           <div className="track-image">
             {currentSong?.thumbnailUrl && (
               <img
-                src={`http://localhost:8080/identity/audio/${currentSong.thumbnailUrl}`}
+                src={`${currentSong.thumbnailUrl}`}
                 alt={currentSong.title}
               />
             )}
@@ -550,7 +543,7 @@ const Player = ({
         <audio
           key={currentSong?.id}
           ref={audioRef}
-          src={`http://localhost:8080/identity/audio/${currentSong.audioUrl}`}
+          src={`${currentSong.audioUrl}`}
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
           onEnded={handleEnded}

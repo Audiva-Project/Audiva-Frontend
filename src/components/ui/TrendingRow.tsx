@@ -2,6 +2,7 @@ import { Pause, Play } from "lucide-react";
 import type { Song } from "@/types";
 import "./TrendingRow.css";
 import { useOutletContext } from "react-router-dom";
+import api from "@/utils/api";
 
 interface TrendingRowProps {
   song: Song;
@@ -28,13 +29,7 @@ const TrendingRow = ({ song, rank }: TrendingRowProps) => {
       setCurrentSong(song);
       setIsPlaying(true);
       try {
-        await fetch(
-          `http://localhost:8080/identity/api/songs/${song.id}/play`,
-          {
-            method: "POST",
-          }
-        );
-        console.log("Play count increased!");
+        await api.post(`/songs/${song.id}/play`);
       } catch (err) {
         console.error("Play count error:", err);
       }
@@ -49,11 +44,7 @@ const TrendingRow = ({ song, rank }: TrendingRowProps) => {
 
       <div className="row-cell song-info">
         <img
-          src={
-            song.thumbnailUrl
-              ? `http://localhost:8080/identity/audio/${song.thumbnailUrl}`
-              : "/placeholder.svg"
-          }
+          src={song.thumbnailUrl ? `${song.thumbnailUrl}` : "/placeholder.svg"}
           alt={song.title}
           className="song-thumbnail"
         />

@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from "react";
 import "./SongCard.css";
 import { useAuthStore } from "@/stores/authStore";
 import type { AuthState } from "@/stores/authStore";
+import api from "@/utils/api";
 
 interface OutletContextType {
   currentSong: Song | null;
@@ -13,7 +14,15 @@ interface OutletContextType {
   setIsPlaying: (playing: boolean) => void;
 }
 
-const SongCard = ({ song, showArtist = true, playlistId }: { song: Song; showArtist?: boolean, playlistId?: number }) => {
+const SongCard = ({
+  song,
+  showArtist = true,
+  playlistId,
+}: {
+  song: Song;
+  showArtist?: boolean;
+  playlistId?: number;
+}) => {
   const { setCurrentSong, setIsPlaying, currentSong, isPlaying } =
     useOutletContext<OutletContextType>();
 
@@ -42,21 +51,17 @@ const SongCard = ({ song, showArtist = true, playlistId }: { song: Song; showArt
       return;
     }
     try {
-      const response = await fetch(
-        `http://localhost:8080/identity/api/playlists/${playlistId}/add/${song.id}`,
+      const response = await api.post(
+        `/playlists/${playlistId}/add/${song.id}`,
+        {},
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      if (response.ok) {
-        alert("Bài hát được thêm thành công!");
-      } else {
-        alert("Bài hát đã tồn tại trong playlist.");
-      }
+      alert("Bài hát được thêm thành công!");
     } catch (error) {
       console.error(error);
       alert("An error occurred.");
@@ -74,30 +79,24 @@ const SongCard = ({ song, showArtist = true, playlistId }: { song: Song; showArt
       return;
     }
     try {
-      const response = await fetch(
-        `http://localhost:8080/identity/api/playlists/${playlistId}/remove/${song.id}`,
+      const response = await api.delete(
+        `/playlists/${playlistId}/remove/${song.id}`,
         {
-          method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      if (response.ok) {
-        alert("Bài hát đã được xoá khỏi playlist");
-        window.location.reload(); // hoặc gọi callback để cập nhật list
-      } else {
-        alert("Xoá thất bại");
-      }
+
+      alert("Bài hát đã được xoá khỏi playlist");
     } catch (error) {
-      console.error(error);
-      alert("An error occurred.");
+      console.error("Xoá bài hát thất bại:", error);
+      alert("Xoá thất bại");
     } finally {
       setShowMenu(false);
     }
   };
-
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -113,9 +112,7 @@ const SongCard = ({ song, showArtist = true, playlistId }: { song: Song; showArt
       setCurrentSong(song);
       setIsPlaying(true);
       try {
-        await fetch(`http://localhost:8080/identity/api/songs/${song.id}/play`, {
-          method: "POST",
-        });
+        await api.post(`/songs/${song.id}/play`);
       } catch (error) {
         console.error("Error increasing play count:", error);
       }
@@ -123,7 +120,7 @@ const SongCard = ({ song, showArtist = true, playlistId }: { song: Song; showArt
   };
 
   const thumbnailUrl = song.thumbnailUrl
-    ? `http://localhost:8080/identity/audio/${song.thumbnailUrl}`
+    ? `${song.thumbnailUrl}`
     : "/placeholder.svg";
 
   return (
@@ -145,7 +142,10 @@ const SongCard = ({ song, showArtist = true, playlistId }: { song: Song; showArt
             <div className="options-popup">
               <ul>
                 {user?.playlists?.map((playlist) => (
-                  <li key={playlist.id} onClick={() => handleAddTo(playlist.id)}>
+                  <li
+                    key={playlist.id}
+                    onClick={() => handleAddTo(playlist.id)}
+                  >
                     Add to {playlist.name}
                   </li>
                 ))}
@@ -165,11 +165,15 @@ const SongCard = ({ song, showArtist = true, playlistId }: { song: Song; showArt
           <p className="song-artist">
             {song.artists && song.artists.length > 0
               ? song.artists.map((artist, index) => (
-                <Link key={artist.id} to={`/artists/${artist.id}`} className="artist-link">
-                  {artist.name}
-                  {index < song.artists.length - 1 ? ", " : ""}
-                </Link>
-              ))
+                  <Link
+                    key={artist.id}
+                    to={`/artists/${artist.id}`}
+                    className="artist-link"
+                  >
+                    {artist.name}
+                    {index < song.artists.length - 1 ? ", " : ""}
+                  </Link>
+                ))
               : "Unknown Artist"}
           </p>
         )}

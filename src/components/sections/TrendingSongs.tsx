@@ -18,7 +18,7 @@ const TrendingSongs = () => {
   useEffect(() => {
     const fetchTrendingSongs = async () => {
       try {
-        const response = await api.get("/identity/api/songs");
+        const response = await api.get("/songs");
         const data = response.data as { content?: Song[] };
         const fetchedSongs = data.content || [];
 

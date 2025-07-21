@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./ArtistPage.css";
 import PopularArtist from "@/components/sections/PopularArtist";
 import Banner from "@/components/sections/Banner";
+import api from "@/utils/api";
 
 type Artist = {
   id: number;
@@ -15,20 +16,19 @@ const ArtistPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch("http://localhost:8080/identity/artists", {
-      // headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: `Bearer ${token}`
-      // }
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setArtists(data);
+    const fetchArtists = async () => {
+      try {
+        const response = await api.get("/artists");
+        setArtists(response.data);
+      } catch (error) {
+        console.error("Failed to fetch artists:", error);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+      }
+    };
 
+    fetchArtists();
+  }, []);
   if (loading) return <div>Loading artists...</div>;
 
   return (

@@ -37,7 +37,7 @@ export default function Component() {
       name: "Audiva",
       badge: "PLUS",
       price: "13.000đ",
-      period: "/tháng",
+      period: "/Tháng",
       description: "Nghe nhạc với chất lượng cao nhất, không quảng cáo",
       features: [
         "Nghe nhạc không quảng cáo",
@@ -55,7 +55,7 @@ export default function Component() {
       badge: "PREMIUM",
       price: "41.000đ",
       period: "/tháng",
-      description: "Toàn bộ đặc quyền Plus cùng kho nhạc Premium",
+      description: "Toàn bộ đặc quyền Premium cùng kho nhạc Premium",
       features: [
         "Kho nhạc Premium",
         "Nghe nhạc không quảng cáo",
@@ -85,7 +85,7 @@ export default function Component() {
   useEffect(() => {
     const fetchPremiumStatus = async () => {
       try {
-        const res = await api.get("/identity/user-premium/me", {
+        const res = await api.get("/user-premium/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -120,7 +120,7 @@ export default function Component() {
       setLoading(true);
       setError("");
       const response = await api.post(
-        `/identity/api/premium/buy?userId=${userId}`,
+        `/api/premium/buy?userId=${userId}`,
         {},
         {
           headers: {
@@ -217,7 +217,7 @@ export default function Component() {
           ))}
         </div>
 
-        <div className="bottom-cta">
+        {/* <div className="bottom-cta">
           <div className="cta-card">
             <h3 className="cta-title">Bắt đầu dùng thử miễn phí</h3>
             <p className="cta-description">
@@ -226,7 +226,7 @@ export default function Component() {
             </p>
             <button className="cta-button">Dùng thử 7 ngày miễn phí</button>
           </div>
-        </div>
+        </div> */}
 
         <div className="footer-info">
           <p>Có thể hủy bất cứ lúc nào • Không cam kết dài hạn • Hỗ trợ 24/7</p>

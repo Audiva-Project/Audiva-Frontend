@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import api from "@/utils/api"
+import { useEffect, useState } from "react";
+import api from "@/utils/api";
 import { Artist } from "@/types";
 
 export function useArtists() {
@@ -8,14 +8,14 @@ export function useArtists() {
   useEffect(() => {
     const fetchArtists = async () => {
       try {
-        const response = await api.get("/identity/artists")
-        setArtists(response.data as Artist[])
+        const response = await api.get("/artists");
+        setArtists(response.data as Artist[]);
       } catch (err) {
-        console.error("Error fetching artists:", err)
+        console.error("Error fetching artists:", err);
       }
-    }
-    fetchArtists()
-  }, [])
+    };
+    fetchArtists();
+  }, []);
 
-  return artists
+  return artists;
 }

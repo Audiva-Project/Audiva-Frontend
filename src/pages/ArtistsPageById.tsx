@@ -11,17 +11,11 @@ export default function ArtistsPageById() {
   const [artistData, setArtistData] = useState<Artist | null>(null);
   const [popularSongs, setPopularSongs] = useState([]);
 
-  // ✅ Luôn luôn đặt hook ở đầu
   useEffect(() => {
     const fetchArtist = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/identity/artists/${id}`
-        );
-        if (!response.ok) throw new Error("Network response was not ok");
-
-        const data = await response.json();
-        setArtistData(data);
+        const response = await api.get(`/artists/${id}`);
+        setArtistData(response.data);
       } catch (error) {
         console.error("Error fetching artist:", error);
       }
@@ -33,7 +27,7 @@ export default function ArtistsPageById() {
   useEffect(() => {
     const fetchPopularSongs = async () => {
       try {
-        const response = await api.get(`/identity/api/songs/artist/${id}`);
+        const response = await api.get(`/songs/artist/${id}`);
         setPopularSongs(response.data.result.content);
       } catch (error) {
         console.error("Error fetching popular songs:", error);
@@ -48,7 +42,7 @@ export default function ArtistsPageById() {
   return (
     <div className="page-container">
       <ArtistImageSection
-        imgUrl={`http://localhost:8080/identity/audio/${artistData.avatar}`}
+        imgUrl={`${artistData.avatar}`}
         name={artistData.name}
       />
 

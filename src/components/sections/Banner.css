@@ -39,7 +39,7 @@
 .banner-subtitle {
   font-size: 1.25rem;
   color: #e5e7eb;
-  max-width: 32rem;
+  max-width: 100%;
   line-height: 1.6;
   animation: fadeInUp 0.8s ease-out 0.2s both;
 }

@@ -19,7 +19,7 @@ export default function ThanksPage() {
       try {
         if (!token) return;
 
-        const res = await api.get("/identity/user-premium/me", {
+        const res = await api.get("/user-premium/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -29,8 +29,6 @@ export default function ThanksPage() {
           premiumData?.status === "SUCCESS" &&
           !!premiumData?.endDate &&
           new Date(premiumData.endDate) > new Date();
-
-        console.log("Premium status:", isPremium);
 
         useAuthStore.setState((state) => ({
           premium: isPremium,

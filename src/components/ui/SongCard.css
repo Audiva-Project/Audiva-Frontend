@@ -93,6 +93,7 @@
   color: var(--text-secondary);
   text-decoration: none;
   transition: color var(--transition);
+  width: 100%;
 }
 
 .more-options-button {
@@ -125,7 +126,12 @@
   top: 50%; /* Center vertically */
   left: 50%; /* Center horizontally */
   transform: translate(-50%, -50%); /* Adjust for its own size */
-  background: rgba(45, 45, 45, 0.95); /* Darker background with some transparency */
+  background: rgba(
+    45,
+    45,
+    45,
+    0.95
+  ); /* Darker background with some transparency */
   color: white; /* White text for better contrast */
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow */

@@ -26,7 +26,6 @@ const HistoryPage: React.FC = () => {
 
   useEffect(() => {
     getListeningHistory(token ?? undefined).then((data) => {
-      console.log("History data:", data);
       setHistory(data);
     });
   }, [token]);

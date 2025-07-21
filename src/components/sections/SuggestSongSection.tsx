@@ -34,9 +34,7 @@ const SuggestSongSection = () => {
     let hasMore = true;
 
     while (hasMore) {
-      const response = await api.get(
-        `/identity/api/songs?page=${page}&size=50`
-      );
+      const response = await api.get(`/songs?page=${page}&size=50`);
       const data = response.data as { content: Song[]; last: boolean };
       all = all.concat(data.content || []);
       hasMore = !data.last;
@@ -87,12 +85,7 @@ const SuggestSongSection = () => {
       setCurrentSong(song);
       setIsPlaying(true);
       try {
-        await fetch(
-          `http://localhost:8080/identity/api/songs/${song.id}/play`,
-          {
-            method: "POST",
-          }
-        );
+        await api.post(`/songs/${song.id}/play`);
       } catch (error) {
         console.error("Error increasing play count:", error);
       }
@@ -100,27 +93,22 @@ const SuggestSongSection = () => {
   };
 
   const handleAddTo = async (playlistId: number, songId: number) => {
-    console.log("Add to:", playlistId, songId);
     if (!token) {
       alert("Bạn cần đăng nhập để sử dụng tính năng này!");
       return;
     }
     try {
-      const response = await fetch(
-        `http://localhost:8080/identity/api/playlists/${playlistId}/add/${songId}`,
+      const response = await api.post(
+        `/playlists/${playlistId}/add/${songId}`,
+        {},
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      if (response.ok) {
-        alert("Bài hát được thêm thành công!");
-      } else {
-        alert("Bài hát đã tồn tại trong playlist.");
-      }
+      alert("Bài hát được thêm thành công!");
     } catch (error) {
       console.error(error);
       alert("An error occurred.");
@@ -151,7 +139,7 @@ const SuggestSongSection = () => {
               <div key={song.id} className="suggest-item">
                 <img
                   className="suggest-thumb"
-                  src={`http://localhost:8080/identity/audio/${song.thumbnailUrl}`}
+                  src={`${song.thumbnailUrl}`}
                   alt={song.title}
                   onClick={() => handlePlay(song)}
                 />

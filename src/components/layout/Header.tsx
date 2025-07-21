@@ -45,12 +45,10 @@ const Header = () => {
     notificationId: number,
     e: React.MouseEvent
   ) => {
-    // request to delete notification /identity/api/notifications/{{id}}
-    await api
-      .delete(`/identity/api/notifications/${notificationId}`)
-      .catch((error) => {
-        console.error("Failed to delete notification", error);
-      });
+    // request to delete notification /notifications/{{id}}
+    await api.delete(`/notifications/${notificationId}`).catch((error) => {
+      console.error("Failed to delete notification", error);
+    });
 
     e.stopPropagation();
     setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
@@ -71,12 +69,10 @@ const Header = () => {
   };
 
   const markAsRead = async (notificationId: number) => {
-    // request to mark notification as read /identity/api/notifications/{{id}}/read
-    await api
-      .post(`/identity/api/notifications/${notificationId}/read`)
-      .catch((error) => {
-        console.error("Failed to mark notification as read", error);
-      });
+    // request to mark notification as read /notifications/{{id}}/read
+    await api.post(`/notifications/${notificationId}/read`).catch((error) => {
+      console.error("Failed to mark notification as read", error);
+    });
 
     setNotifications((prev) =>
       prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
@@ -106,7 +102,7 @@ const Header = () => {
     if (!user) return;
     const fetchNotifications = async () => {
       try {
-        const res = await api.get("/identity/api/notifications/me");
+        const res = await api.get("/notifications/me");
         const data = (res.data as { result: Notification[] }).result;
         const enriched = data.map((item: Notification) => ({
           ...item,

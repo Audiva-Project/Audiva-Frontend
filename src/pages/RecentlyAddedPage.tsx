@@ -19,7 +19,7 @@ const RecentlyAddedPage = () => {
       }
 
       try {
-        const response = await api.get("/identity/api/songs/created-by-me", {
+        const response = await api.get("/songs/created-by-me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const content = response.data.result.content;
