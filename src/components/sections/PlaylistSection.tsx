@@ -1,83 +1,81 @@
-import { useEffect, useState } from "react";
-import "@/components/sections/PlaylistSection.css";
-import { useAuthStore } from "@/stores/authStore";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Trash } from "lucide-react";
 import api from "@/utils/api";
+import { Playlist } from "@/types";
+import { useAuthStore } from "@/stores/authStore";
+import BaseModal from "@/components/ui/BaseModal";
+import "@/components/sections/PlaylistSection.css";
 
 const PlaylistSection = () => {
-  const [playlists, setPlaylists] = useState<any[]>([]);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const token = useAuthStore((state) => state.token);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
 
-  const fetchPlaylists = async () => {
+  const token = useAuthStore((state) => state.token);
+  const navigate = useNavigate();
+
+  const fetchPlaylists = useCallback(async () => {
     try {
-      const response = await api.get("/playlists");
-      setPlaylists(response.data);
-    } catch (error) {
-      console.error("Failed to fetch playlists:", error);
+      const res = await api.get("/playlists");
+      setPlaylists(res.data as Playlist[]);
+    } catch (err) {
+      console.error("Failed to fetch playlists:", err);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleAddNewPlaylist = async () => {
-    const name = prompt("Enter new playlist name:");
-    if (!name) return;
+  useEffect(() => {
+    fetchPlaylists();
+  }, [fetchPlaylists]);
+
+  const handleCreatePlaylist = async () => {
+    if (!name || !thumbnailFile) {
+      return alert("Vui lòng nhập tên và chọn ảnh thumbnail!");
+    }
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("thumbnail", thumbnailFile);
 
     try {
-      const formData = new FormData();
-      formData.append("name", name);
-
       await api.post("/playlists", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
       alert("Playlist created!");
-      await fetchPlaylists();
-      await useAuthStore.getState().refreshUser();
-    } catch (error) {
-      console.error(error);
-      alert("An error occurred while creating playlist.");
+      setIsModalOpen(false);
+      setName("");
+      setThumbnailFile(null);
+      fetchPlaylists();
+    } catch (err) {
+      console.error(err);
+      alert("Đã xảy ra lỗi khi tạo playlist.");
     }
   };
 
   const handleDelete = async (playlistId: number) => {
-    if (!token) {
-      alert("Bạn cần đăng nhập để thực hiện thao tác này!");
-      return;
-    }
-
+    if (!token) return alert("Bạn cần đăng nhập để thực hiện thao tác này!");
     if (!window.confirm("Bạn chắc chắn muốn xoá playlist này?")) return;
 
     try {
       await api.delete(`/playlists/${playlistId}`);
       alert("Xoá playlist thành công!");
-
-      await fetchPlaylists();
-      await useAuthStore.getState().refreshUser();
-    } catch (error) {
-      console.error("Error:", error);
+      fetchPlaylists();
+    } catch (err) {
+      console.error(err);
       alert("Đã xảy ra lỗi khi xoá playlist!");
     }
   };
 
-  useEffect(() => {
-    fetchPlaylists();
-  }, []);
+  const renderContent = () => {
+    if (loading) return <p>Đang tải playlists...</p>;
+    if (!playlists.length) return <p>Không tìm thấy playlists.</p>;
 
-  if (loading) return <p>Loading playlists...</p>;
-  if (!playlists.length) return <p>No playlists found.</p>;
-
-  return (
-    <div className="playlist-list-section">
-      <button className="add-playlist-button" onClick={handleAddNewPlaylist}>
-        + Add New Playlist
-      </button>
-
+    return (
       <div className="playlist-list">
         {playlists.map((playlist) => (
           <section
@@ -88,16 +86,16 @@ const PlaylistSection = () => {
             <div className="playlist-card">
               <div className="playlist-image-container">
                 <img
-                  src={`${playlist.thumbnailUrl}`}
+                  src={playlist.thumbnailUrl}
                   alt={playlist.name}
                   className="playlist-image"
                 />
                 <button
+                  className="delete-btn"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDelete(playlist.id);
+                    handleDelete(Number(playlist.id));
                   }}
-                  className="delete-btn"
                 >
                   <Trash size={18} />
                 </button>
@@ -107,6 +105,38 @@ const PlaylistSection = () => {
           </section>
         ))}
       </div>
+    );
+  };
+
+  return (
+    <div className="playlist-list-section">
+      <button
+        className="add-playlist-button"
+        onClick={() => setIsModalOpen(true)}
+      >
+        + Thêm Playlist mới
+      </button>
+
+      <BaseModal
+        isOpen={isModalOpen}
+        title="Thêm Playlist mới"
+        onClose={() => setIsModalOpen(false)}
+      >
+        <input
+          type="text"
+          placeholder="Tên playlist"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setThumbnailFile(e.target.files?.[0] || null)}
+        />
+        <button onClick={handleCreatePlaylist}>Tạo Playlist</button>
+      </BaseModal>
+
+      {renderContent()}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import PlaylistlistSection from "@/components/sections/PlaylistSection";
+import PlaylistSection from "@/components/sections/PlaylistSection";
 import { useAuthStore } from "@/stores/authStore";
 import "@/pages/PlaylistPage.css";
 
@@ -20,7 +20,7 @@ const PlaylistPage = () => {
   return (
     <div className="playlist-page">
       <h1 className="playlist-heading">PLAYLIST CỦA BẠN</h1>
-      <PlaylistlistSection />
+      <PlaylistSection />
     </div>
   );
 };

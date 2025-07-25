@@ -34,7 +34,7 @@ const AlbumSection = ({ albumId }: AlbumSectionProps) => {
   }, [albumId]);
 
   const handleViewAllClick = () => {
-    navigate(`/albums/${albumId}`); // Navigate to the album-specific page
+    navigate(`/albums/${albumId}`);
   };
 
   return (

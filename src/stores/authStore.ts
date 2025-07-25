@@ -24,7 +24,6 @@ export interface AuthState {
     lastName: string;
     dob: string;
   }) => Promise<void>;
-  refreshUser: () => Promise<void>;
   logout: () => Promise<void>;
 
   setUser: (user: User) => void;
@@ -152,64 +151,6 @@ export const useAuthStore = create<AuthState>()(
               isLoading: false,
             });
             throw new Error(message);
-          }
-        },
-
-        refreshUser: async () => {
-          const token = get().token;
-          if (!token) return;
-
-          try {
-            const userRes = await api.get<{ result: any }>("/users/me", {
-              headers: { Authorization: `Bearer ${token}` },
-            });
-            const userData = userRes.data?.result;
-
-            const user: User = {
-              id: userData.id,
-              name: `${userData.firstName} ${userData.lastName}`.trim(),
-              email: userData.username,
-              avatar:
-                userData.avatar ||
-                "https://greekherald.com.au/wp-content/uploads/2020/07/default-avatar.png",
-              playlists: userData.playlists,
-              premium: userData.premium ?? false,
-            };
-
-            const premiumRes = await api.get("/user-premium/me", {
-              headers: { Authorization: `Bearer ${token}` },
-            });
-
-            const premiumData = premiumRes.data as PremiumData;
-
-            const isPremium = !!(
-              premiumData &&
-              premiumData.status === "SUCCESS" &&
-              premiumData.endDate &&
-              new Date(premiumData.endDate) > new Date()
-            );
-
-            set({
-              user: null,
-              token: null,
-              isAuthenticated: false,
-              isLoading: false,
-              premium: null,
-              premiumStartDate: null,
-              premiumEndDate: null,
-            });
-          } catch (error) {
-            console.error("Logout failed:", error);
-
-            set({
-              user: null,
-              token: null,
-              isAuthenticated: false,
-              isLoading: false,
-              premium: null,
-              premiumStartDate: null,
-              premiumEndDate: null,
-            });
           }
         },
 

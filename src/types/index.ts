@@ -1,41 +1,42 @@
 export interface Song {
-  id: number
-  title: string
-  artist: string
-  album?: Album
+  id: number;
+  title: string;
+  artist: string;
+  album?: Album;
   albumTitle?: string;
-  thumbnailUrl: string
-  audioUrl: string
-  releaseDate: string
-  createdBy?: string
-  playCount: number
+  thumbnailUrl: string;
+  audioUrl: string;
+  releaseDate: string;
+  createdBy?: string;
+  playCount: number;
   artists: {
     id: number;
     name: string;
   }[];
-  premium?: boolean
+  premium?: boolean;
 }
 
 export interface Playlist {
-  id: string
-  name: string
-  description: string
-  coverUrl: string
-  songs: Song[]
-  createdAt: string
-  premium: boolean
+  id: string;
+  name: string;
+  description: string;
+  coverUrl: string;
+  songs: Song[];
+  createdAt: string;
+  thumbnailUrl: string;
+  premium: boolean;
 }
 
 export interface User {
-  id: string
-  name: string
-  email: string
-  avatar: string
-  premium?: boolean
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+  premium?: boolean;
   playlists: {
-    id: number
-    name: string
-  }[]
+    id: number;
+    name: string;
+  }[];
 }
 
 export interface Album {
@@ -57,10 +58,10 @@ export interface Artist {
 }
 
 export type Notification = {
-  id: number
-  title: string
-  message: string
-  isRead: boolean
-  readAt: string | null
-  createdDate: string
-}
+  id: number;
+  title: string;
+  message: string;
+  isRead: boolean;
+  readAt: string | null;
+  createdDate: string;
+};
